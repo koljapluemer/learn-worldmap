@@ -173,11 +173,26 @@ const updateMapTransform = () => {
   svg.value
     .selectAll('path')
     .attr('d', path as any)
+
+  // Update circle positions if they exist
+  if (props.countryToHighlight) {
+    const countryFeature = mapData.value.features.find(
+      (f: any) => f.properties.name === props.countryToHighlight
+    )
+    if (countryFeature) {
+      const centroid = path.centroid(countryFeature)
+      highlightCircles.value.forEach(circle => {
+        d3.select(circle)
+          .attr('cx', centroid[0])
+          .attr('cy', centroid[1])
+      })
+    }
+  }
 }
 
 // Update highlighting when props change
 watch(() => props.countryToHighlight, (newCountry) => {
-  if (!containerRef.value) return
+  if (!containerRef.value || !projection.value || !mapData.value) return
 
   // Reset all countries
   d3.select(containerRef.value)
@@ -202,13 +217,18 @@ watch(() => props.countryToHighlight, (newCountry) => {
 
     // Add circle around the country if requested
     if (props.useCircleAroundHighlight) {
-      const bounds = (countryPath.node() as SVGPathElement)?.getBBox()
-      if (bounds) {
+      const countryFeature = mapData.value.features.find(
+        (f: any) => f.properties.name === newCountry
+      )
+      if (countryFeature) {
+        const path = d3.geoPath().projection(projection.value)
+        const centroid = path.centroid(countryFeature)
+        
         const svg = d3.select(containerRef.value).select('svg')
         const circle = svg.append('circle')
-          .attr('cx', bounds.x + bounds.width / 2)
-          .attr('cy', bounds.y + bounds.height / 2)
-          .attr('r', 38) // Half of cursor size (76/2)
+          .attr('cx', centroid[0])
+          .attr('cy', centroid[1])
+          .attr('r', 38)
           .attr('class', 'highlight-circle')
           .style('stroke', props.highlightColor || '#3b82f6')
           .style('fill', 'none')
