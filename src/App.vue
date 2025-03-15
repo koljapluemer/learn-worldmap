@@ -17,6 +17,16 @@
     <div class="relative">
       <RouterView />
     </div>
+
+    <!-- Footer -->
+    <footer class="p-4 text-center text-xs text-base-content/70">
+      <p class="mb-1">
+        Made with ♥ by <a href="https://koljapluemer.com" target="_blank" rel="noopener noreferrer" class="link">Kolja Sam</a>
+      </p>
+      <p class="max-w-md mx-auto">
+        I'm using the privacy-friendly <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer" class="link">Goatcounter</a> to track page views and an I store some pseudonymous learning data. No personal data is collected, and cookies are used solely for tracking your learning progress on your device.
+      </p>
+    </footer>
   </div>
 </template>
 
