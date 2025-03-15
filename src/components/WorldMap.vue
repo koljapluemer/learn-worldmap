@@ -18,6 +18,7 @@ const { containerRef, cursor, isCursorOverlappingElement } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
 
 const handleMapClick = (event: Event) => {
+  console.log('handleMapClick')
   event.preventDefault()
   event.stopPropagation()
   
@@ -78,7 +79,7 @@ watch(() => props.countryToHighlight, (newCountry) => {
         const circle = svg.append('circle')
           .attr('cx', bounds.x + bounds.width / 2)
           .attr('cy', bounds.y + bounds.height / 2)
-          .attr('r', Math.max(bounds.width, bounds.height) / 2 + 20)
+          .attr('r', 38) // Half of cursor size (76/2)
           .attr('class', 'highlight-circle')
           .style('stroke', props.highlightColor || '#3b82f6')
           .style('fill', 'none')
@@ -88,6 +89,24 @@ watch(() => props.countryToHighlight, (newCountry) => {
     }
   }
 }, { immediate: true })
+
+// Watch for highlight color changes
+watch(() => props.highlightColor, (newColor) => {
+  if (!containerRef.value || !newColor) return
+
+  // Update the country fill color
+  if (props.countryToHighlight) {
+    d3.select(containerRef.value)
+      .selectAll('path')
+      .filter((d: any) => d.properties.name === props.countryToHighlight)
+      .attr('fill', newColor)
+  }
+
+  // Update the circle color
+  highlightCircles.value.forEach(circle => {
+    d3.select(circle).style('stroke', newColor)
+  })
+})
 
 onMounted(async () => {
   if (!containerRef.value) return
@@ -141,8 +160,6 @@ onMounted(async () => {
   <div 
     ref="containerRef" 
     class="w-full h-full"
-    @click="handleMapClick"
-    @touchend="handleMapClick"
   >
     <slot></slot>
   </div>

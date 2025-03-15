@@ -16,16 +16,8 @@ const countryToHighlight = ref<string | undefined>(undefined)
 const highlightColor = ref<string>('#3b82f6') // Default blue
 const useCircleAroundHighlight = ref(false)
 
-// Messages based on game state
-const instructionMessage = computed(() => {
-  if (attempts.value === 0) {
-    return `Find ${props.targetCountryToClick} on the map`
-  } else {
-    return `Keep trying! Find ${props.targetCountryToClick}`
-  }
-})
 
-const feedbackMessage = ref('')
+const feedbackMessage = ref(`Find ${props.targetCountryToClick} on the map`)
 
 const handleMapClicked = (touchedCountries: string[]) => {
   attempts.value++
@@ -37,11 +29,9 @@ const handleMapClicked = (touchedCountries: string[]) => {
     useCircleAroundHighlight.value = true
 
     if (attempts.value === 1) {
-      feedbackMessage.value = 'Perfect! First try!'
-    } else if (attempts.value === 2) {
-      feedbackMessage.value = 'Good job! You got it on the second try.'
+      feedbackMessage.value = `That's ${props.targetCountryToClick}. First try!`
     } else {
-      feedbackMessage.value = `You found it after ${attempts.value} tries. Keep practicing!`
+      feedbackMessage.value = `You found ${props.targetCountryToClick} after ${attempts.value} tries.`
     }
     
     emit('gameComplete', { 
@@ -50,7 +40,7 @@ const handleMapClicked = (touchedCountries: string[]) => {
     })
   } else {
     // Wrong country - highlight target after first miss
-    feedbackMessage.value = ''
+    feedbackMessage.value = `${props.targetCountryToClick} is here, try again.`
     if (attempts.value === 1) {
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#3b82f6' // Blue
@@ -62,7 +52,7 @@ const handleMapClicked = (touchedCountries: string[]) => {
 // Reset game state when target country changes
 watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
-  feedbackMessage.value = ''
+  feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`
   countryToHighlight.value = undefined
   highlightColor.value = '#3b82f6'
   useCircleAroundHighlight.value = false
@@ -75,15 +65,10 @@ watch(() => props.targetCountryToClick, () => {
     <div class="space-y-2">
       <!-- Instructions -->
       <div class="text-lg font-semibold text-center">
-        {{ instructionMessage }}
-      </div>
-      
-      <!-- Feedback (only shown when there is feedback) -->
-      <div v-if="feedbackMessage" 
-           class="text-lg font-semibold text-center"
-           :class="{'text-green-600': highlightColor === '#22c55e'}">
         {{ feedbackMessage }}
       </div>
+      
+
     </div>
 
     <!-- Map Container -->

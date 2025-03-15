@@ -56,7 +56,6 @@ onMounted(async () => {
     <!-- Game Component -->
     <WorldMapGame
       v-if="currentCountry"
-      :key="currentCountry"
       :target-country-to-click="currentCountry"
       @game-complete="handleGameComplete"
     />
