@@ -66,9 +66,14 @@ export function useCustomCursor(size: number = 76) {
     document.body.classList.remove('hovering-map')
   }
 
-  const isCursorOverlappingElement = (element: Element, cursorX: number, cursorY: number): boolean => {
+  const isCursorOverlappingElement = (
+    element: Element, 
+    cursorX: number, 
+    cursorY: number,
+    detectionRadiusMultiplier: number = 1
+  ): boolean => {
     const rect = element.getBoundingClientRect()
-    const cursorRadius = size / 2
+    const cursorRadius = (size / 2) * detectionRadiusMultiplier
 
     // Calculate the closest point on the rectangle to the cursor center
     const closestX = Math.max(rect.left, Math.min(cursorX, rect.right))

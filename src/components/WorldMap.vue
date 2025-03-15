@@ -69,11 +69,19 @@ const handleMapClick = (event: Event) => {
   
   if (!cursor.value) return
 
-  // Get cursor position
-  const cursorX = event instanceof MouseEvent ? event.clientX : 
-                 (event as TouchEvent).touches?.[0]?.clientX ?? 0
-  const cursorY = event instanceof MouseEvent ? event.clientY : 
-                 (event as TouchEvent).touches?.[0]?.clientY ?? 0
+  let cursorX: number
+  let cursorY: number
+
+  if (event instanceof MouseEvent) {
+    cursorX = event.clientX
+    cursorY = event.clientY
+  } else if (event instanceof TouchEvent && event.changedTouches?.length > 0) {
+    // Use changedTouches for touchend event
+    cursorX = event.changedTouches[0].clientX
+    cursorY = event.changedTouches[0].clientY
+  } else {
+    return // Invalid event type
+  }
 
   // Calculate distance to target country center
   const distance = calculateDistanceToCountryCenter(cursorX, cursorY)
@@ -84,7 +92,9 @@ const handleMapClick = (event: Event) => {
   
   if (countryElements) {
     countryElements.forEach(element => {
-      if (isCursorOverlappingElement(element, cursorX, cursorY)) {
+      // For touch events, increase the detection radius slightly
+      const detectionRadius = event instanceof TouchEvent ? 1.2 : 1
+      if (isCursorOverlappingElement(element, cursorX, cursorY, detectionRadius)) {
         const countryName = element.getAttribute('data-country')
         if (countryName) touchedCountries.push(countryName)
       }
