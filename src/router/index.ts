@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import ManageFlashcardsView from '../views/ManageFlashcardsView.vue';
 import PracticeFlashcardsView from '../views/PracticeFlashcardsView.vue';
+import WorldMapGame from '../views/WorldMapGame.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -18,6 +19,11 @@ const router = createRouter({
       path: '/practice',
       name: 'practice',
       component: PracticeFlashcardsView
+    },
+    {
+      path: '/worldmap',
+      name: 'worldmap',
+      component: WorldMapGame
     }
   ]
 });

@@ -14,6 +14,9 @@
               <router-link to="/practice" class="btn btn-ghost">Practice</router-link>
             </li>
             <li>
+              <router-link to="/worldmap" class="btn btn-ghost">World Map Game</router-link>
+            </li>
+            <li>
               <button class="btn btn-ghost text-error" @click="resetDatabase">Reset DB</button>
             </li>
           </ul>
