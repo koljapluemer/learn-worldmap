@@ -1,8 +1,19 @@
 import { ref, computed } from 'vue'
-import { db, CountryCard } from '../db/database'
+import type { ComputedRef } from 'vue'
+import { db } from '../db/database'
+import type { CountryCard } from '../db/database'
 import { createEmptyCard, fsrs, Rating } from 'ts-fsrs'
 
-export function useGeographyLearning() {
+export interface GeographyLearning {
+  currentCountry: ComputedRef<string | null>
+  message: ComputedRef<string>
+  isHighlighted: ComputedRef<boolean>
+  setAvailableCountries: (countries: string[]) => void
+  selectRandomCountry: () => Promise<void>
+  handleCountryClick: (country: string) => Promise<void>
+}
+
+export function useGeographyLearning(): GeographyLearning {
   const currentCountry = ref<string | null>(null)
   const message = ref<string>('')
   const isHighlighted = ref(false)

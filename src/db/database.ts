@@ -1,5 +1,6 @@
-import Dexie, { Table } from 'dexie';
-import { Card } from 'ts-fsrs';
+import Dexie from 'dexie'
+import type { Table } from 'dexie'
+import type { Card } from 'ts-fsrs'
 
 export interface CountryCard extends Card {
   countryName: string;

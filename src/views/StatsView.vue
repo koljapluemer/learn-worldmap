@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { db, CountryCard } from '../db/database'
+import { db, type CountryCard } from '../db/database'
 
 const cards = ref<CountryCard[]>([])
 
