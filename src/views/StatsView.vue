@@ -15,6 +15,7 @@
             <th>State</th>
             <th>Win Streak</th>
             <th>Fail Streak</th>
+            <th>Level</th>
           </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
             <td>{{ card.state }}</td>
             <td>{{ card.winStreak || 0 }}</td>
             <td>{{ card.failStreak || 0 }}</td>
+            <td>{{ card.level || 0 }}</td>
           </tr>
         </tbody>
       </table>

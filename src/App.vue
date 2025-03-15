@@ -13,9 +13,6 @@
             <li>
               <router-link to="/stats" class="btn btn-ghost">Stats</router-link>
             </li>
-            <li>
-              <button class="btn btn-ghost text-error" @click="resetDatabase">Reset DB</button>
-            </li>
           </ul>
         </div>
       </div>
@@ -27,7 +24,5 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { useDexie } from './composables/useDexie';
 
-const { resetDatabase } = useDexie();
 </script>

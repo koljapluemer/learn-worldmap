@@ -8,6 +8,8 @@ const props = defineProps<{
   countryToHighlight?: string
   highlightColor?: string
   useCircleAroundHighlight?: boolean
+  zoomLevel?: number
+  targetCountry?: string
 }>()
 
 const emit = defineEmits<{
@@ -16,6 +18,8 @@ const emit = defineEmits<{
 
 const { containerRef, cursor, isCursorOverlappingElement } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
+const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
+const mapData = ref<any>(null)
 
 const handleMapClick = (event: Event) => {
   console.log('handleMapClick')
@@ -44,6 +48,44 @@ const handleMapClick = (event: Event) => {
   }
 
   emit('mapClicked', touchedCountries)
+}
+
+const updateMapTransform = () => {
+  if (!svg.value || !mapData.value || !containerRef.value) return
+
+  const width = containerRef.value.clientWidth
+  const height = containerRef.value.clientHeight
+
+  // Create a projection centered on the target country if specified
+  const projection = d3.geoMercator()
+  
+  if (props.targetCountry && props.zoomLevel && props.zoomLevel > 100) {
+    // Find the target country's geometry
+    const targetFeature = mapData.value.features.find(
+      (f: any) => f.properties.name === props.targetCountry
+    )
+    
+    if (targetFeature) {
+      // Calculate the centroid of the target country
+      const centroid = d3.geoCentroid(targetFeature)
+      
+      // Set up the projection centered on the target country with zoom
+      projection
+        .center(centroid)
+        .scale((props.zoomLevel / 100) * Math.min(width, height) / 2)
+        .translate([width / 2, height / 2])
+    } else {
+      projection.fitSize([width, height], mapData.value)
+    }
+  } else {
+    projection.fitSize([width, height], mapData.value)
+  }
+
+  // Update the paths with the new projection
+  const path = d3.geoPath().projection(projection)
+  svg.value
+    .selectAll('path')
+    .attr('d', path as any)
 }
 
 // Update highlighting when props change
@@ -90,6 +132,11 @@ watch(() => props.countryToHighlight, (newCountry) => {
   }
 }, { immediate: true })
 
+// Watch for zoom level or target country changes
+watch([() => props.zoomLevel, () => props.targetCountry], () => {
+  updateMapTransform()
+})
+
 // Watch for highlight color changes
 watch(() => props.highlightColor, (newColor) => {
   if (!containerRef.value || !newColor) return
@@ -115,12 +162,12 @@ onMounted(async () => {
   document.body.classList.add('hovering-map')
   
   // Load world map data
-  const data = await getMapData()
+  mapData.value = await getMapData()
 
   // Set up the SVG
   const width = containerRef.value.clientWidth
   const height = containerRef.value.clientHeight
-  const svg = d3.select(containerRef.value)
+  svg.value = d3.select(containerRef.value)
     .append('svg')
     .attr('width', width)
     .attr('height', height)
@@ -128,16 +175,13 @@ onMounted(async () => {
     .style('top', '0')
     .style('left', '0')
 
-  // Create a projection
-  const projection = d3.geoMercator()
-    .fitSize([width, height], data)
-
-  // Create a path generator
-  const path = d3.geoPath().projection(projection)
+  // Initial map setup
+  updateMapTransform()
 
   // Draw the map
-  svg.selectAll('path')
-    .data(data.features)
+  const path = d3.geoPath().projection(d3.geoMercator().fitSize([width, height], mapData.value))
+  svg.value.selectAll('path')
+    .data(mapData.value.features)
     .enter()
     .append('path')
     .attr('d', path as any)

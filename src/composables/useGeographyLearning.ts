@@ -20,6 +20,7 @@ export function useGeographyLearning(): GeographyLearning {
   const targetCountryIsHighlighted = ref(false)
   const isFirstTry = ref(true)
   const availableCountries = ref<string[]>([])
+  const lastPlayedCountry = ref<string | null>(null)
 
   const setAvailableCountries = (countries: string[]) => {
     availableCountries.value = countries
@@ -35,15 +36,24 @@ export function useGeographyLearning(): GeographyLearning {
     console.log(`Found ${dueCards.length} due cards`)
     
     if (dueCards.length > 0) {
+      // Filter out the last played country if it exists
+      const availableDueCards = dueCards.filter(card => card.countryName !== lastPlayedCountry.value)
+      
+      // If we filtered out the only due card, use all due cards
+      const cardsToChooseFrom = availableDueCards.length > 0 ? availableDueCards : dueCards
+      
       // Randomly select one of the due cards
-      const randomDueCard = dueCards[Math.floor(Math.random() * dueCards.length)]
+      const randomDueCard = cardsToChooseFrom[Math.floor(Math.random() * cardsToChooseFrom.length)]
       targetCountryToClick.value = randomDueCard.countryName
-      console.log(`Selected due card: ${targetCountryToClick.value}, due at: ${randomDueCard.due.toISOString()}`)
+      lastPlayedCountry.value = randomDueCard.countryName
+      console.log(`Selected due card: ${targetCountryToClick.value}, due at: ${randomDueCard.due.toISOString()}, level: ${randomDueCard.level}`)
     } else {
       // If no due cards, get all cards to find unseen countries
       const allCards = await getAllCards()
       const seenCountries = new Set(allCards.map(card => card.countryName))
-      const unseenCountries = availableCountries.value.filter(country => !seenCountries.has(country))
+      const unseenCountries = availableCountries.value.filter(country => 
+        !seenCountries.has(country) && country !== lastPlayedCountry.value
+      )
       console.log(`Found ${unseenCountries.length} unseen countries`)
       
       if (unseenCountries.length > 0) {
@@ -57,16 +67,26 @@ export function useGeographyLearning(): GeographyLearning {
           ...emptyCard,
           countryName: selectedCountry,
           winStreak: 0,
-          failStreak: 0
+          failStreak: 0,
+          level: 0
         } as CountryCard
         await saveCard(newCard)
         console.log(`Created new card for unseen country: ${selectedCountry}`)
         
         targetCountryToClick.value = selectedCountry
+        lastPlayedCountry.value = selectedCountry
       } else {
-        // If all countries have been seen, just pick a random one
-        const randomIndex = Math.floor(Math.random() * availableCountries.value.length)
-        targetCountryToClick.value = availableCountries.value[randomIndex]
+        // If all countries have been seen, pick a random one that's not the last played
+        const availableForRandom = availableCountries.value.filter(country => 
+          country !== lastPlayedCountry.value
+        )
+        
+        // If we filtered out the only country, use all countries
+        const countriesToChooseFrom = availableForRandom.length > 0 ? availableForRandom : availableCountries.value
+        
+        const randomIndex = Math.floor(Math.random() * countriesToChooseFrom.length)
+        targetCountryToClick.value = countriesToChooseFrom[randomIndex]
+        lastPlayedCountry.value = targetCountryToClick.value
         console.log(`All countries seen, selected random country: ${targetCountryToClick.value}`)
       }
     }
@@ -77,11 +97,20 @@ export function useGeographyLearning(): GeographyLearning {
   const updateCardStreaks = (card: CountryCard, isCorrect: boolean, isFirstTry: boolean): void => {
     if (!card.winStreak) card.winStreak = 0
     if (!card.failStreak) card.failStreak = 0
+    if (!card.level) card.level = 0
 
     if (isCorrect) {
       if (isFirstTry) {
         card.winStreak += 1
         card.failStreak = 0
+        
+        // Level up when winStreak hits 1
+        if (card.winStreak === 1) {
+          card.level += 1
+          card.winStreak = 0
+          card.due = new Date() // Set due immediately
+          console.log(`Level up! ${card.countryName} is now level ${card.level}`)
+        }
       } else {
         card.winStreak = 0
         card.failStreak += 1
@@ -89,6 +118,13 @@ export function useGeographyLearning(): GeographyLearning {
     } else {
       card.winStreak = 0
       card.failStreak += 1
+      
+      // Level down when failStreak hits 3
+      if (card.failStreak === 3) {
+        card.level -= 1
+        card.failStreak = 0
+        console.log(`Level down! ${card.countryName} is now level ${card.level}`)
+      }
     }
   }
 
@@ -111,21 +147,42 @@ export function useGeographyLearning(): GeographyLearning {
       return
     }
 
-    const f = fsrs()
+    // First update our streaks and level
     if (attempts === 1) {
       card.winStreak = (card.winStreak || 0) + 1
       card.failStreak = 0
+      
+      // Level up when winStreak hits 1
+      if (card.winStreak === 1) {
+        card.level = (card.level || 0) + 1
+        card.winStreak = 0
+        card.due = new Date() // Set due immediately
+        console.log(`Level up! ${card.countryName} is now level ${card.level}, due set to now`)
+      }
     } else {
       card.winStreak = 0
       card.failStreak = (card.failStreak || 0) + 1
+      
+      // Level down when failStreak hits 3
+      if (card.failStreak === 3) {
+        card.level = (card.level || 0) - 1
+        card.failStreak = 0
+        console.log(`Level down! ${card.countryName} is now level ${card.level}`)
+      }
     }
 
+    // Then apply FSRS with our modified card
+    const f = fsrs()
     const result = f.next(card, new Date(), rating)
+
+    // Save with our modifications taking precedence
     await saveCard({ 
-      ...result.card, 
-      countryName: country,
+      ...result.card,           // FSRS base updates
+      countryName: country,     // Our overrides
       winStreak: card.winStreak,
-      failStreak: card.failStreak
+      failStreak: card.failStreak,
+      level: card.level,
+      due: card.due || result.card.due // Use our due date if we set it, otherwise FSRS due date
     })
 
     // Select next country after a delay
@@ -153,15 +210,21 @@ export function useGeographyLearning(): GeographyLearning {
         return
       }
 
-      const f = fsrs()
+      // First update our streaks and level
       updateCardStreaks(card, true, isFirstTry.value)
 
+      // Then apply FSRS with our modified card
+      const f = fsrs()
       const result = f.next(card, new Date(), rating)
+
+      // Save with our modifications taking precedence
       await saveCard({ 
-        ...result.card, 
-        countryName: clickedCountry,
+        ...result.card,           // FSRS base updates
+        countryName: clickedCountry, // Our overrides
         winStreak: card.winStreak,
-        failStreak: card.failStreak
+        failStreak: card.failStreak,
+        level: card.level,
+        due: card.due || result.card.due // Use our due date if we set it, otherwise FSRS due date
       })
 
       // Select next country after a short delay
@@ -182,15 +245,21 @@ export function useGeographyLearning(): GeographyLearning {
           return
         }
 
-        const f = fsrs()
+        // First update our streaks and level
         updateCardStreaks(card, false, false)
 
+        // Then apply FSRS with our modified card
+        const f = fsrs()
         const result = f.next(card, new Date(), Rating.Again)
+
+        // Save with our modifications taking precedence
         await saveCard({ 
-          ...result.card, 
-          countryName: targetCountryToClick.value,
+          ...result.card,           // FSRS base updates
+          countryName: targetCountryToClick.value, // Our overrides
           winStreak: card.winStreak,
-          failStreak: card.failStreak
+          failStreak: card.failStreak,
+          level: card.level,
+          due: card.due || result.card.due // Use our due date if we set it, otherwise FSRS due date
         })
 
         // Move to next country after a delay

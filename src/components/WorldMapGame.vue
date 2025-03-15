@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import WorldMap from './WorldMap.vue'
+import { useDexie } from '../composables/useDexie'
 
 const props = defineProps<{
   targetCountryToClick: string
@@ -15,9 +16,33 @@ const attempts = ref(0)
 const countryToHighlight = ref<string | undefined>(undefined)
 const highlightColor = ref<string>('#3b82f6') // Default blue
 const useCircleAroundHighlight = ref(false)
-
+const zoomLevel = ref(100) // Base zoom level in percentage
+const { getCard } = useDexie()
 
 const feedbackMessage = ref(`Find ${props.targetCountryToClick} on the map`)
+
+// Initialize level-based settings when target country changes
+const initializeCountryLevel = async () => {
+  const card = await getCard(props.targetCountryToClick)
+  const level = card?.level || 0
+  
+  // Handle negative levels - show highlight immediately
+  if (level < 0) {
+    countryToHighlight.value = props.targetCountryToClick
+    highlightColor.value = '#3b82f6'
+    useCircleAroundHighlight.value = true
+  } else {
+    countryToHighlight.value = undefined
+    useCircleAroundHighlight.value = false
+  }
+
+  // Set zoom level based on level (exponential curve)
+  zoomLevel.value = level > 0 
+    ? 100 + Math.pow(2, level) // Base zoom (100) + 2^level
+    : 100
+  
+  feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`
+}
 
 const handleMapClicked = (touchedCountries: string[]) => {
   attempts.value++
@@ -52,11 +77,9 @@ const handleMapClicked = (touchedCountries: string[]) => {
 // Reset game state when target country changes
 watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
-  feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`
-  countryToHighlight.value = undefined
   highlightColor.value = '#3b82f6'
-  useCircleAroundHighlight.value = false
-})
+  initializeCountryLevel()
+}, { immediate: true })
 </script>
 
 <template>
@@ -67,8 +90,6 @@ watch(() => props.targetCountryToClick, () => {
       <div class="text-lg font-semibold text-center">
         {{ feedbackMessage }}
       </div>
-      
-
     </div>
 
     <!-- Map Container -->
@@ -77,6 +98,8 @@ watch(() => props.targetCountryToClick, () => {
         :country-to-highlight="countryToHighlight"
         :highlight-color="highlightColor"
         :use-circle-around-highlight="useCircleAroundHighlight"
+        :zoom-level="zoomLevel"
+        :target-country="targetCountryToClick"
         @map-clicked="handleMapClicked"
       />
     </div>

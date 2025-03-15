@@ -6,6 +6,7 @@ export interface CountryCard extends Card {
   countryName: string;
   winStreak: number;
   failStreak: number;
+  level: number;
 }
 
 class GeographyDB extends Dexie {
@@ -13,8 +14,8 @@ class GeographyDB extends Dexie {
 
   constructor() {
     super('GeographyDB');
-    this.version(1).stores({
-      countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak'
+    this.version(2).stores({
+      countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak, level'
     });
   }
 }
