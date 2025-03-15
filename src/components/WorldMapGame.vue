@@ -36,9 +36,9 @@ const initializeCountryLevel = async () => {
     useCircleAroundHighlight.value = false
   }
 
-  // Set zoom level based on level (exponential curve)
+  // Set zoom level based on level linear
   zoomLevel.value = level > 0 
-    ? 100 + Math.pow(2, level) // Base zoom (100) + 2^level
+    ? 100 + 5 * level
     : 100
   
   feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`

@@ -56,24 +56,67 @@ const updateMapTransform = () => {
   const width = containerRef.value.clientWidth
   const height = containerRef.value.clientHeight
 
-  // Create a projection centered on the target country if specified
+  // Get the base (world) projection and scale
+  const worldProjection = d3.geoMercator().fitSize([width, height], mapData.value)
+  const worldScale = worldProjection.scale()
+  
+  // Create our working projection
   const projection = d3.geoMercator()
   
-  if (props.targetCountry && props.zoomLevel && props.zoomLevel > 100) {
+  if (props.targetCountry) {
     // Find the target country's geometry
     const targetFeature = mapData.value.features.find(
       (f: any) => f.properties.name === props.targetCountry
     )
     
     if (targetFeature) {
-      // Calculate the centroid of the target country
+      // Get the country-focused projection and scale
+      const countryProjection = d3.geoMercator().fitSize([width, height], targetFeature)
+      const countryScale = countryProjection.scale()
+      
+      // Calculate zoom progress (0 = world view, 1 = country view)
+      const zoomProgress = props.zoomLevel 
+        ? Math.min((props.zoomLevel - 100) / 75, 1) // Full zoom at level 15 (100 + 75)
+        : 0
+      
+      // Reduce the maximum zoom to ensure neighboring countries are visible
+      // We only zoom in 60% of the way to the country-specific scale
+      const maxZoomScale = worldScale + (countryScale - worldScale) * 0.6
+      const currentScale = worldScale + (maxZoomScale - worldScale) * zoomProgress
+      
+      // Log scales for debugging
+      console.log('Scales:', {
+        worldScale,
+        countryScale,
+        maxZoomScale,
+        zoomProgress,
+        currentScale,
+        zoomLevel: props.zoomLevel
+      })
+      
+      // Get the country's centroid for positioning
       const centroid = d3.geoCentroid(targetFeature)
       
-      // Set up the projection centered on the target country with zoom
-      projection
-        .center(centroid)
-        .scale((props.zoomLevel / 100) * Math.min(width, height) / 2)
-        .translate([width / 2, height / 2])
+      // Calculate random position if we're zoomed in
+      if (zoomProgress > 0) {
+        const gridSize = 3
+        const cellWidth = width / gridSize
+        const cellHeight = height / gridSize
+        
+        const cellX = Math.floor(Math.random() * gridSize)
+        const cellY = Math.floor(Math.random() * gridSize)
+        
+        const targetX = cellX * cellWidth + cellWidth / 2
+        const targetY = cellY * cellHeight + cellHeight / 2
+        
+        projection
+          .center(centroid)
+          .scale(currentScale)
+          .translate([targetX, targetY])
+      } else {
+        // At world view, use standard projection
+        projection.fitSize([width, height], mapData.value)
+      }
     } else {
       projection.fitSize([width, height], mapData.value)
     }
