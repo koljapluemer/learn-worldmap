@@ -19,7 +19,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
+  <div class="container mx-auto">
     <!-- Game Component -->
     <WorldMapGame
       v-if="targetCountryToClick"

@@ -1,28 +1,25 @@
 <template>
   <div class="min-h-screen bg-base-200">
-    <div class="navbar bg-base-100 shadow-lg">
-      <div class="container mx-auto">
-        <div class="flex-1">
-          <router-link :to="{ name: 'play' }" class="btn btn-ghost text-xl">Geography Learning</router-link>
-        </div>
-        <div class="flex-none">
-          <ul class="menu menu-horizontal px-1">
-            <li>
-              <router-link :to="{ name: 'play' }" class="btn btn-ghost">Play</router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'stats' }" class="btn btn-ghost">Stats</router-link>
-            </li>
+    <header class="bg-base-100 shadow-sm px-4 py-2">
+      <div class="flex items-center justify-between">
+        <h1 class="font-medium">Learn the World Map</h1>
+          <ul class="flex gap-1">
+            <li><router-link class="btn btn-sm" :to="{ name: 'play' }">Play</router-link></li>
+            <li><router-link  class="btn btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
           </ul>
-        </div>
       </div>
-    </div>
+    </header>
 
-    <RouterView />
+    <!-- Instruction card - will be rendered by child components when needed -->
+      <slot name="instruction" class="mb-2 p-4 bg-base-100 shadow-md rounded-lg text-base leading-relaxed" />
+
+    <!-- Main content area - no margins/padding -->
+    <div class="relative">
+      <RouterView />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-
 </script>

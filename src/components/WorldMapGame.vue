@@ -109,14 +109,11 @@ watch(() => props.targetCountryToClick, () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col">
     <!-- Game Messages -->
-    <div class="space-y-2">
-      <!-- Instructions -->
       <div class="text-lg font-semibold text-center">
         {{ feedbackMessage }}
       </div>
-    </div>
 
     <!-- Map Container -->
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden">
