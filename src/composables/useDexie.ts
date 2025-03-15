@@ -2,6 +2,7 @@ import Dexie from 'dexie'
 import type { Table } from 'dexie'
 import type { Card } from 'ts-fsrs'
 import { v4 as uuidv4 } from 'uuid'
+import { logLearningEventToFirebase } from '../services/firebase'
 
 export interface CountryCard extends Card {
   countryName: string;
@@ -83,9 +84,17 @@ export function useDexie() {
 
   const saveLearningEvent = async (event: Omit<LearningEvent, 'deviceId'>): Promise<void> => {
     const deviceId = await getOrCreateDeviceId();
-    await db.learningEvents.add({
+    const fullEvent = {
       ...event,
       deviceId
+    };
+    
+    // Save to local Dexie database
+    await db.learningEvents.add(fullEvent);
+    
+    // Log to Firebase (don't await - fire and forget)
+    logLearningEventToFirebase(fullEvent).catch(error => {
+      console.error('Failed to log learning event to Firebase:', error);
     });
   }
 
