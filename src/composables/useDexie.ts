@@ -89,6 +89,13 @@ export function useDexie() {
     });
   }
 
+  const getLearningEventsForCountry = async (country: string): Promise<LearningEvent[]> => {
+    return await db.learningEvents
+      .where('country')
+      .equals(country)
+      .toArray();
+  }
+
   const resetDatabase = async (): Promise<void> => {
     await db.delete();
     await db.open();
@@ -100,6 +107,7 @@ export function useDexie() {
     getAllCards,
     getDueCards,
     saveLearningEvent,
+    getLearningEventsForCountry,
     resetDatabase
   }
 } 

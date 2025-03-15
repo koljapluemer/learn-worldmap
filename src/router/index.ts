@@ -1,13 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import StatsView from '../views/StatsView.vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import PlayView from '../views/PlayView.vue';
+import StatsView from '../views/StatsView.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
-      redirect: '/manage'
+      redirect: { name: 'play' }
     },
     {
       path: '/play',
@@ -18,6 +18,12 @@ const router = createRouter({
       path: '/stats',
       name: 'stats',
       component: StatsView
+    },
+    {
+      path: '/stats/:country',
+      name: 'countryStats',
+      component: () => import('../views/CountryStatsView.vue'),
+      props: true
     }
   ]
 });
