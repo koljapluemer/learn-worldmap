@@ -13,13 +13,55 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'mapClicked', touchedCountries: string[]): void
+  (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
 }>()
 
 const { containerRef, cursor, isCursorOverlappingElement } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)
+const projection = ref<d3.GeoProjection>()
+
+const calculateDistanceToCountryCenter = (clickX: number, clickY: number): number => {
+  if (!props.targetCountry || !projection.value || !mapData.value) return 0
+
+  // Find target country feature
+  const targetFeature = mapData.value.features.find(
+    (f: any) => f.properties.name === props.targetCountry
+  )
+  if (!targetFeature) return 0
+
+  // Get target country centroid coordinates
+  const targetCentroid = d3.geoCentroid(targetFeature)
+
+  // Convert screen coordinates back to [longitude, latitude]
+  const svgRect = containerRef.value?.getBoundingClientRect()
+  if (!svgRect) return 0
+  
+  const relativeClickX = clickX - svgRect.left
+  const relativeClickY = clickY - svgRect.top
+  
+  // Invert the projection to get geographic coordinates of the click
+  const clickCoords = projection.value.invert?.([relativeClickX, relativeClickY])
+  if (!clickCoords) return 0
+
+  // Calculate great-circle distance in kilometers
+  // Using the Haversine formula
+  const [lon1, lat1] = clickCoords
+  const [lon2, lat2] = targetCentroid
+  
+  const R = 6371 // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+  const distance = R * c
+
+  return distance
+}
 
 const handleMapClick = (event: Event) => {
   event.preventDefault()
@@ -32,6 +74,9 @@ const handleMapClick = (event: Event) => {
                  (event as TouchEvent).touches?.[0]?.clientX ?? 0
   const cursorY = event instanceof MouseEvent ? event.clientY : 
                  (event as TouchEvent).touches?.[0]?.clientY ?? 0
+
+  // Calculate distance to target country center
+  const distance = calculateDistanceToCountryCenter(cursorX, cursorY)
 
   // Find all countries that the cursor overlaps with
   const touchedCountries: string[] = []
@@ -46,7 +91,7 @@ const handleMapClick = (event: Event) => {
     })
   }
 
-  emit('mapClicked', touchedCountries)
+  emit('mapClicked', touchedCountries, distance)
 }
 
 const updateMapTransform = () => {
@@ -60,7 +105,7 @@ const updateMapTransform = () => {
   const worldScale = worldProjection.scale()
   
   // Create our working projection
-  const projection = d3.geoMercator()
+  projection.value = d3.geoMercator()
   
   if (props.targetCountry) {
     // Find the target country's geometry
@@ -98,23 +143,23 @@ const updateMapTransform = () => {
         const targetX = cellX * cellWidth + cellWidth / 2
         const targetY = cellY * cellHeight + cellHeight / 2
         
-        projection
+        projection.value
           .center(centroid)
           .scale(currentScale)
           .translate([targetX, targetY])
       } else {
         // At world view, use standard projection
-        projection.fitSize([width, height], mapData.value)
+        projection.value.fitSize([width, height], mapData.value)
       }
     } else {
-      projection.fitSize([width, height], mapData.value)
+      projection.value.fitSize([width, height], mapData.value)
     }
   } else {
-    projection.fitSize([width, height], mapData.value)
+    projection.value.fitSize([width, height], mapData.value)
   }
 
   // Update the paths with the new projection
-  const path = d3.geoPath().projection(projection)
+  const path = d3.geoPath().projection(projection.value)
   svg.value
     .selectAll('path')
     .attr('d', path as any)

@@ -1,6 +1,7 @@
 import Dexie from 'dexie'
 import type { Table } from 'dexie'
 import type { Card } from 'ts-fsrs'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface CountryCard extends Card {
   countryName: string;
@@ -9,18 +10,54 @@ export interface CountryCard extends Card {
   level: number;
 }
 
+export interface LearningEvent {
+  id?: number;  // Auto-incremented primary key
+  deviceId: string;
+  timestamp: Date;
+  country: string;
+  msFromExerciseToFirstClick: number;
+  msFromExerciseToFinishClick: number;
+  numberOfClicksNeeded: number;
+  distanceOfFirstClickToCenterOfCountry: number;
+}
+
+export interface DeviceInfo {
+  id: string;
+  deviceId: string;
+}
+
 class GeographyDB extends Dexie {
   countryCards!: Table<CountryCard>;
+  learningEvents!: Table<LearningEvent>;
+  deviceInfo!: Table<DeviceInfo>;
 
   constructor() {
     super('GeographyDB');
-    this.version(2).stores({
-      countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak, level'
+    this.version(3).stores({
+      countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak, level',
+      learningEvents: '++id, deviceId, timestamp, country',
+      deviceInfo: 'id'
     });
   }
 }
 
 const db = new GeographyDB();
+
+// Initialize or get device ID
+async function getOrCreateDeviceId(): Promise<string> {
+  const deviceInfoKey = 'device';
+  let deviceInfo = await db.deviceInfo.get(deviceInfoKey);
+  
+  if (!deviceInfo) {
+    deviceInfo = {
+      id: deviceInfoKey,
+      deviceId: uuidv4()
+    };
+    await db.deviceInfo.put(deviceInfo);
+  }
+  
+  return deviceInfo.deviceId;
+}
 
 export function useDexie() {
   const getCard = async (countryName: string): Promise<CountryCard | undefined> => {
@@ -44,6 +81,14 @@ export function useDexie() {
       .toArray();
   }
 
+  const saveLearningEvent = async (event: Omit<LearningEvent, 'deviceId'>): Promise<void> => {
+    const deviceId = await getOrCreateDeviceId();
+    await db.learningEvents.add({
+      ...event,
+      deviceId
+    });
+  }
+
   const resetDatabase = async (): Promise<void> => {
     await db.delete();
     await db.open();
@@ -54,6 +99,7 @@ export function useDexie() {
     saveCard,
     getAllCards,
     getDueCards,
+    saveLearningEvent,
     resetDatabase
   }
 } 

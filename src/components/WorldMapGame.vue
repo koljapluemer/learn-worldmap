@@ -17,7 +17,12 @@ const countryToHighlight = ref<string | undefined>(undefined)
 const highlightColor = ref<string>('#3b82f6') // Default blue
 const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100) // Base zoom level in percentage
-const { getCard } = useDexie()
+const { getCard, saveLearningEvent } = useDexie()
+
+// Learning event tracking
+const exerciseStartTime = ref<number>(0)
+const firstClickTime = ref<number | null>(null)
+const firstClickDistance = ref<number | null>(null)
 
 const feedbackMessage = ref(`Find ${props.targetCountryToClick} on the map`)
 
@@ -42,10 +47,21 @@ const initializeCountryLevel = async () => {
     : 100
   
   feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`
+  
+  // Start tracking time for this exercise
+  exerciseStartTime.value = Date.now()
+  firstClickTime.value = null
+  firstClickDistance.value = null
 }
 
-const handleMapClicked = (touchedCountries: string[]) => {
+const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: number) => {
   attempts.value++
+  
+  // Track first click timing and distance
+  if (attempts.value === 1) {
+    firstClickTime.value = Date.now()
+    firstClickDistance.value = distanceToTarget || 0
+  }
   
   if (touchedCountries.includes(props.targetCountryToClick)) {
     // Correct country found
@@ -58,6 +74,16 @@ const handleMapClicked = (touchedCountries: string[]) => {
     } else {
       feedbackMessage.value = `You found ${props.targetCountryToClick} after ${attempts.value} tries.`
     }
+    
+    // Save learning event
+    await saveLearningEvent({
+      timestamp: new Date(),
+      country: props.targetCountryToClick,
+      msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
+      msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
+      numberOfClicksNeeded: attempts.value,
+      distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
+    })
     
     emit('gameComplete', { 
       country: props.targetCountryToClick, 
