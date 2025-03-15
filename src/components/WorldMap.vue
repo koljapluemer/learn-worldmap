@@ -75,7 +75,7 @@ const handleMapClick = (event: Event) => {
   if (event instanceof MouseEvent) {
     cursorX = event.clientX
     cursorY = event.clientY
-  } else if (event instanceof TouchEvent && event.changedTouches?.length > 0) {
+  } else if (typeof TouchEvent !== 'undefined' && event instanceof TouchEvent && event.changedTouches?.length > 0) {
     // Use changedTouches for touchend event
     cursorX = event.changedTouches[0].clientX
     cursorY = event.changedTouches[0].clientY
@@ -93,7 +93,7 @@ const handleMapClick = (event: Event) => {
   if (countryElements) {
     countryElements.forEach(element => {
       // For touch events, increase the detection radius slightly
-      const detectionRadius = event instanceof TouchEvent ? 1.2 : 1
+      const detectionRadius = typeof TouchEvent !== 'undefined' && event instanceof TouchEvent ? 1.2 : 1
       if (isCursorOverlappingElement(element, cursorX, cursorY, detectionRadius)) {
         const countryName = element.getAttribute('data-country')
         if (countryName) touchedCountries.push(countryName)
@@ -329,8 +329,7 @@ body.hovering-map .custom-cursor {
 
 @media (hover: none) {
   .custom-cursor {
-    display: block !important;
-    opacity: 0.5;
+    display: none !important;
   }
 }
 </style>
