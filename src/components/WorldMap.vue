@@ -9,6 +9,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'countryClick', country: string): void
+  (e: 'mapLoaded', countries: string[]): void
 }>()
 
 const mapContainer = ref<HTMLElement | null>(null)
@@ -19,6 +20,10 @@ onMounted(async () => {
   // Load world map data
   const response = await fetch('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
   const data = await response.json()
+
+  // Get list of available countries and emit it
+  const countries = data.features.map((f: any) => f.properties.name)
+  emit('mapLoaded', countries)
 
   // Set up the SVG
   const width = mapContainer.value.clientWidth

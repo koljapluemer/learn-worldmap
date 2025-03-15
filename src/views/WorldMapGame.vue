@@ -3,9 +3,19 @@ import { ref } from 'vue'
 import WorldMap from '../components/WorldMap.vue'
 import { useCustomCursor } from '../composables/useCustomCursor'
 import { useSpacedRepetition } from '../composables/useSpacedRepetition'
+import { useGeographyLearning } from '../composables/useGeographyLearning'
+import { onMounted } from 'vue'
 
 const { createOrUpdateCard } = useSpacedRepetition()
 const { containerRef, cursor, isCursorOverlappingElement } = useCustomCursor(76)
+const {
+  currentCountry,
+  message,
+  isHighlighted,
+  setAvailableCountries,
+  selectRandomCountry,
+  handleCountryClick
+} = useGeographyLearning()
 
 const handleCountryClick = (country: string) => {
   if (!cursor.value) return
@@ -25,16 +35,34 @@ const handleCountryClick = (country: string) => {
     alert('Try again! Click on France.')
   }
 }
+
+// Listen for available countries from the map component
+const onMapLoaded = (countries: string[]) => {
+  setAvailableCountries(countries)
+  selectRandomCountry()
+}
+
+onMounted(async () => {
+  // Initial setup - countries will be populated when map loads
+  setAvailableCountries([])
+  await selectRandomCountry()
+})
 </script>
 
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Find France on the Map</h1>
-    <div ref="containerRef" class="w-full h-[600px] border rounded-lg touch-none">
+    <!-- Message Box -->
+    <div class="mb-4 p-4 bg-base-200 rounded-lg shadow-lg text-center text-lg font-semibold">
+      {{ message }}
+    </div>
+
+    <!-- Map Container -->
+    <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden">
       <WorldMap
-        highlight-country="France"
+        :highlight-country="isHighlighted ? currentCountry || undefined : undefined"
         highlight-color="#ff6b6b"
         @country-click="handleCountryClick"
+        @map-loaded="onMapLoaded"
       />
     </div>
   </div>
