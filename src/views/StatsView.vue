@@ -43,7 +43,8 @@ const { getAllCards } = useDexie()
 const cards = ref<CountryCard[]>([])
 
 const formatDate = (date: Date) => {
-  return new Date(date).toLocaleDateString()
+  // show human readable date and time  
+  return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 }
 
 onMounted(async () => {

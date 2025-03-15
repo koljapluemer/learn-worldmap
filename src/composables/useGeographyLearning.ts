@@ -14,7 +14,7 @@ export interface GeographyLearning {
 }
 
 export function useGeographyLearning(): GeographyLearning {
-  const { getCard, saveCard } = useDexie()
+  const { getCard, saveCard, getDueCards, getAllCards } = useDexie()
   const targetCountryToClick = ref<string | null>(null)
   const message = ref<string>('')
   const targetCountryIsHighlighted = ref(false)
@@ -30,9 +30,47 @@ export function useGeographyLearning(): GeographyLearning {
     targetCountryIsHighlighted.value = false
     isFirstTry.value = true
     
-    // Get a random country from the available list
-    const randomIndex = Math.floor(Math.random() * availableCountries.value.length)
-    targetCountryToClick.value = availableCountries.value[randomIndex]
+    // First check for due cards
+    const dueCards = await getDueCards()
+    console.log(`Found ${dueCards.length} due cards`)
+    
+    if (dueCards.length > 0) {
+      // Randomly select one of the due cards
+      const randomDueCard = dueCards[Math.floor(Math.random() * dueCards.length)]
+      targetCountryToClick.value = randomDueCard.countryName
+      console.log(`Selected due card: ${targetCountryToClick.value}, due at: ${randomDueCard.due.toISOString()}`)
+    } else {
+      // If no due cards, get all cards to find unseen countries
+      const allCards = await getAllCards()
+      const seenCountries = new Set(allCards.map(card => card.countryName))
+      const unseenCountries = availableCountries.value.filter(country => !seenCountries.has(country))
+      console.log(`Found ${unseenCountries.length} unseen countries`)
+      
+      if (unseenCountries.length > 0) {
+        // Randomly select an unseen country
+        const randomIndex = Math.floor(Math.random() * unseenCountries.length)
+        const selectedCountry = unseenCountries[randomIndex]
+        
+        // Create and save empty card for the new country
+        const emptyCard = createEmptyCard()
+        const newCard = {
+          ...emptyCard,
+          countryName: selectedCountry,
+          winStreak: 0,
+          failStreak: 0
+        } as CountryCard
+        await saveCard(newCard)
+        console.log(`Created new card for unseen country: ${selectedCountry}`)
+        
+        targetCountryToClick.value = selectedCountry
+      } else {
+        // If all countries have been seen, just pick a random one
+        const randomIndex = Math.floor(Math.random() * availableCountries.value.length)
+        targetCountryToClick.value = availableCountries.value[randomIndex]
+        console.log(`All countries seen, selected random country: ${targetCountryToClick.value}`)
+      }
+    }
+    
     message.value = `Click ${targetCountryToClick.value}`
   }
 
@@ -68,24 +106,18 @@ export function useGeographyLearning(): GeographyLearning {
     }
 
     let card = await getCard(country)
-    const f = fsrs()
-    
     if (!card) {
-      const emptyCard = createEmptyCard()
-      card = { 
-        ...emptyCard, 
-        countryName: country,
-        winStreak: attempts === 1 ? 1 : 0,
-        failStreak: attempts === 1 ? 0 : 1
-      } as CountryCard
+      console.error('Card not found for country:', country)
+      return
+    }
+
+    const f = fsrs()
+    if (attempts === 1) {
+      card.winStreak = (card.winStreak || 0) + 1
+      card.failStreak = 0
     } else {
-      if (attempts === 1) {
-        card.winStreak = (card.winStreak || 0) + 1
-        card.failStreak = 0
-      } else {
-        card.winStreak = 0
-        card.failStreak = (card.failStreak || 0) + 1
-      }
+      card.winStreak = 0
+      card.failStreak = (card.failStreak || 0) + 1
     }
 
     const result = f.next(card, new Date(), rating)
@@ -114,22 +146,15 @@ export function useGeographyLearning(): GeographyLearning {
         message.value = `Good job finding ${clickedCountry} on the second try!`
       }
 
-      // Get or create card
+      // Get card (it should exist now)
       let card = await getCard(clickedCountry)
-      const f = fsrs()
-      
       if (!card) {
-        // First time seeing this country
-        const emptyCard = createEmptyCard()
-        card = { 
-          ...emptyCard, 
-          countryName: clickedCountry,
-          winStreak: isFirstTry.value ? 1 : 0,
-          failStreak: isFirstTry.value ? 0 : 1
-        } as CountryCard
-      } else {
-        updateCardStreaks(card, true, isFirstTry.value)
+        console.error('Card not found for country:', clickedCountry)
+        return
       }
+
+      const f = fsrs()
+      updateCardStreaks(card, true, isFirstTry.value)
 
       const result = f.next(card, new Date(), rating)
       await saveCard({ 
@@ -152,19 +177,13 @@ export function useGeographyLearning(): GeographyLearning {
         message.value = `That's not quite right. ${targetCountryToClick.value} was highlighted.`
         
         let card = await getCard(targetCountryToClick.value)
-        const f = fsrs()
-        
         if (!card) {
-          const emptyCard = createEmptyCard()
-          card = { 
-            ...emptyCard, 
-            countryName: targetCountryToClick.value,
-            winStreak: 0,
-            failStreak: 1
-          } as CountryCard
-        } else {
-          updateCardStreaks(card, false, false)
+          console.error('Card not found for country:', targetCountryToClick.value)
+          return
         }
+
+        const f = fsrs()
+        updateCardStreaks(card, false, false)
 
         const result = f.next(card, new Date(), Rating.Again)
         await saveCard({ 

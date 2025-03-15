@@ -34,6 +34,15 @@ export function useDexie() {
     return await db.countryCards.toArray();
   }
 
+  const getDueCards = async (): Promise<CountryCard[]> => {
+    const now = new Date();
+    console.log('Checking for due cards at:', now.toISOString());
+    return await db.countryCards
+      .where('due')
+      .below(now)
+      .toArray();
+  }
+
   const resetDatabase = async (): Promise<void> => {
     await db.delete();
     await db.open();
@@ -43,6 +52,7 @@ export function useDexie() {
     getCard,
     saveCard,
     getAllCards,
+    getDueCards,
     resetDatabase
   }
 } 
