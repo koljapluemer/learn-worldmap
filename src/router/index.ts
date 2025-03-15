@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import WorldMapGame from '../views/WorldMapGame.vue';
 import StatsView from '../views/StatsView.vue';
+import PlayView from '../views/PlayView.vue';
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -9,9 +10,9 @@ const router = createRouter({
       redirect: '/manage'
     },
     {
-      path: '/worldmap',
-      name: 'worldmap',
-      component: WorldMapGame
+      path: '/play',
+      name: 'play',
+      component: PlayView
     },
     {
       path: '/stats',

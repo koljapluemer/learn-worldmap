@@ -8,13 +8,10 @@
         <div class="flex-none">
           <ul class="menu menu-horizontal px-1">
             <li>
-              <router-link to="/manage" class="btn btn-ghost">Manage Cards</router-link>
+              <router-link to="/play" class="btn btn-ghost">Play</router-link>
             </li>
             <li>
-              <router-link to="/practice" class="btn btn-ghost">Practice</router-link>
-            </li>
-            <li>
-              <router-link to="/worldmap" class="btn btn-ghost">World Map Game</router-link>
+              <router-link to="/stats" class="btn btn-ghost">Stats</router-link>
             </li>
             <li>
               <button class="btn btn-ghost text-error" @click="resetDatabase">Reset DB</button>
