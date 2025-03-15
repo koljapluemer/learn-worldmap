@@ -13,6 +13,8 @@
             <th>Reps</th>
             <th>Lapses</th>
             <th>State</th>
+            <th>Win Streak</th>
+            <th>Fail Streak</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +26,8 @@
             <td>{{ card.reps }}</td>
             <td>{{ card.lapses }}</td>
             <td>{{ card.state }}</td>
+            <td>{{ card.winStreak || 0 }}</td>
+            <td>{{ card.failStreak || 0 }}</td>
           </tr>
         </tbody>
       </table>
@@ -33,8 +37,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { db, type CountryCard } from '../db/database'
+import { useDexie, type CountryCard } from '../composables/useDexie'
 
+const { getAllCards } = useDexie()
 const cards = ref<CountryCard[]>([])
 
 const formatDate = (date: Date) => {
@@ -42,6 +47,6 @@ const formatDate = (date: Date) => {
 }
 
 onMounted(async () => {
-  cards.value = await db.countryCards.toArray()
+  cards.value = await getAllCards()
 })
 </script> 

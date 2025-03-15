@@ -1,8 +1,7 @@
 import { ref, computed } from 'vue'
 import type { ComputedRef } from 'vue'
-import { db } from '../db/database'
-import type { CountryCard } from '../db/database'
 import { createEmptyCard, fsrs, Rating } from 'ts-fsrs'
+import { useDexie, type CountryCard } from './useDexie'
 
 export interface GeographyLearning {
   targetCountryToClick: ComputedRef<string | null>
@@ -11,9 +10,11 @@ export interface GeographyLearning {
   setAvailableCountries: (countries: string[]) => void
   selectRandomCountry: () => Promise<void>
   handleCountryClick: (country: string) => Promise<void>
+  handleGameCompletion: (country: string, attempts: number) => Promise<void>
 }
 
 export function useGeographyLearning(): GeographyLearning {
+  const { getCard, saveCard } = useDexie()
   const targetCountryToClick = ref<string | null>(null)
   const message = ref<string>('')
   const targetCountryIsHighlighted = ref(false)
@@ -35,6 +36,70 @@ export function useGeographyLearning(): GeographyLearning {
     message.value = `Click ${targetCountryToClick.value}`
   }
 
+  const updateCardStreaks = (card: CountryCard, isCorrect: boolean, isFirstTry: boolean): void => {
+    if (!card.winStreak) card.winStreak = 0
+    if (!card.failStreak) card.failStreak = 0
+
+    if (isCorrect) {
+      if (isFirstTry) {
+        card.winStreak += 1
+        card.failStreak = 0
+      } else {
+        card.winStreak = 0
+        card.failStreak += 1
+      }
+    } else {
+      card.winStreak = 0
+      card.failStreak += 1
+    }
+  }
+
+  const handleGameCompletion = async (country: string, attempts: number) => {
+    let rating: Rating
+    switch (attempts) {
+      case 1:
+        rating = Rating.Good
+        break
+      case 2:
+        rating = Rating.Hard
+        break
+      default:
+        rating = Rating.Again
+    }
+
+    let card = await getCard(country)
+    const f = fsrs()
+    
+    if (!card) {
+      const emptyCard = createEmptyCard()
+      card = { 
+        ...emptyCard, 
+        countryName: country,
+        winStreak: attempts === 1 ? 1 : 0,
+        failStreak: attempts === 1 ? 0 : 1
+      } as CountryCard
+    } else {
+      if (attempts === 1) {
+        card.winStreak = (card.winStreak || 0) + 1
+        card.failStreak = 0
+      } else {
+        card.winStreak = 0
+        card.failStreak = (card.failStreak || 0) + 1
+      }
+    }
+
+    const result = f.next(card, new Date(), rating)
+    await saveCard({ 
+      ...result.card, 
+      countryName: country,
+      winStreak: card.winStreak,
+      failStreak: card.failStreak
+    })
+
+    // Select next country after a delay
+    setTimeout(selectRandomCountry, 2000)
+  }
+
   const handleCountryClick = async (clickedCountry: string) => {
     if (!targetCountryToClick.value) return
 
@@ -49,18 +114,30 @@ export function useGeographyLearning(): GeographyLearning {
         message.value = `Good job finding ${clickedCountry} on the second try!`
       }
 
-      // Update or create card in database
-      let card = await db.countryCards.get(clickedCountry)
+      // Get or create card
+      let card = await getCard(clickedCountry)
       const f = fsrs()
       
       if (!card) {
         // First time seeing this country
         const emptyCard = createEmptyCard()
-        card = { ...emptyCard, countryName: clickedCountry } as CountryCard
+        card = { 
+          ...emptyCard, 
+          countryName: clickedCountry,
+          winStreak: isFirstTry.value ? 1 : 0,
+          failStreak: isFirstTry.value ? 0 : 1
+        } as CountryCard
+      } else {
+        updateCardStreaks(card, true, isFirstTry.value)
       }
 
       const result = f.next(card, new Date(), rating)
-      await db.countryCards.put({ ...result.card, countryName: clickedCountry })
+      await saveCard({ 
+        ...result.card, 
+        countryName: clickedCountry,
+        winStreak: card.winStreak,
+        failStreak: card.failStreak
+      })
 
       // Select next country after a short delay
       setTimeout(selectRandomCountry, 2000)
@@ -74,17 +151,28 @@ export function useGeographyLearning(): GeographyLearning {
         // Failed second attempt
         message.value = `That's not quite right. ${targetCountryToClick.value} was highlighted.`
         
-        // Update card with Rating.Again
-        let card = await db.countryCards.get(targetCountryToClick.value)
+        let card = await getCard(targetCountryToClick.value)
         const f = fsrs()
         
         if (!card) {
           const emptyCard = createEmptyCard()
-          card = { ...emptyCard, countryName: targetCountryToClick.value } as CountryCard
+          card = { 
+            ...emptyCard, 
+            countryName: targetCountryToClick.value,
+            winStreak: 0,
+            failStreak: 1
+          } as CountryCard
+        } else {
+          updateCardStreaks(card, false, false)
         }
 
         const result = f.next(card, new Date(), Rating.Again)
-        await db.countryCards.put({ ...result.card, countryName: targetCountryToClick.value })
+        await saveCard({ 
+          ...result.card, 
+          countryName: targetCountryToClick.value,
+          winStreak: card.winStreak,
+          failStreak: card.failStreak
+        })
 
         // Move to next country after a delay
         setTimeout(selectRandomCountry, 2000)
@@ -98,6 +186,7 @@ export function useGeographyLearning(): GeographyLearning {
     targetCountryIsHighlighted: computed(() => targetCountryIsHighlighted.value),
     setAvailableCountries,
     selectRandomCountry,
-    handleCountryClick
+    handleCountryClick,
+    handleGameCompletion
   }
 } 
