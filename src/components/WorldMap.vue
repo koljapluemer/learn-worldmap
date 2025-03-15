@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from '../composables/useCustomCursor'
 import { getMapData } from '../services/mapData'
@@ -242,6 +242,21 @@ watch(() => props.highlightColor, (newColor) => {
   })
 })
 
+const handleResize = () => {
+  if (!containerRef.value || !svg.value) return
+
+  const width = containerRef.value.clientWidth
+  const height = containerRef.value.clientHeight
+
+  // Update SVG dimensions
+  svg.value
+    .attr('width', width)
+    .attr('height', height)
+
+  // Update map projection and redraw
+  updateMapTransform()
+}
+
 onMounted(async () => {
   if (!containerRef.value) return
 
@@ -284,6 +299,20 @@ onMounted(async () => {
 
   // Enable cursor tracking
   containerRef.value.classList.add('cursor-tracking')
+
+  // Add resize listener
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  // Clean up resize listener
+  window.removeEventListener('resize', handleResize)
+  
+  // Clean up click handlers if containerRef still exists
+  if (containerRef.value) {
+    containerRef.value.removeEventListener('click', handleMapClick)
+    containerRef.value.removeEventListener('touchend', handleMapClick)
+  }
 })
 </script>
 
