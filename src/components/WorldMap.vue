@@ -22,7 +22,6 @@ const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)
 
 const handleMapClick = (event: Event) => {
-  console.log('handleMapClick')
   event.preventDefault()
   event.stopPropagation()
   
@@ -83,16 +82,6 @@ const updateMapTransform = () => {
       // We only zoom in 60% of the way to the country-specific scale
       const maxZoomScale = worldScale + (countryScale - worldScale) * 0.6
       const currentScale = worldScale + (maxZoomScale - worldScale) * zoomProgress
-      
-      // Log scales for debugging
-      console.log('Scales:', {
-        worldScale,
-        countryScale,
-        maxZoomScale,
-        zoomProgress,
-        currentScale,
-        zoomLevel: props.zoomLevel
-      })
       
       // Get the country's centroid for positioning
       const centroid = d3.geoCentroid(targetFeature)

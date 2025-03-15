@@ -33,7 +33,6 @@ export function useGeographyLearning(): GeographyLearning {
     
     // First check for due cards
     const dueCards = await getDueCards()
-    console.log(`Found ${dueCards.length} due cards`)
     
     // Filter out the last played country from due cards
     const availableDueCards = dueCards.filter(card => card.countryName !== lastPlayedCountry.value)
@@ -43,7 +42,6 @@ export function useGeographyLearning(): GeographyLearning {
       const randomDueCard = availableDueCards[Math.floor(Math.random() * availableDueCards.length)]
       targetCountryToClick.value = randomDueCard.countryName
       lastPlayedCountry.value = randomDueCard.countryName
-      console.log(`Selected due card: ${targetCountryToClick.value}, due at: ${randomDueCard.due.toISOString()}, level: ${randomDueCard.level}`)
       return
     }
 
@@ -53,7 +51,6 @@ export function useGeographyLearning(): GeographyLearning {
     const unseenCountries = availableCountries.value.filter(country => 
       !seenCountries.has(country) && country !== lastPlayedCountry.value
     )
-    console.log(`Found ${unseenCountries.length} unseen countries`)
     
     if (unseenCountries.length > 0) {
       // Select from unseen countries
@@ -70,7 +67,6 @@ export function useGeographyLearning(): GeographyLearning {
         level: 0
       } as CountryCard
       await saveCard(newCard)
-      console.log(`Created new card for unseen country: ${selectedCountry}`)
       
       targetCountryToClick.value = selectedCountry
       lastPlayedCountry.value = selectedCountry
@@ -86,7 +82,6 @@ export function useGeographyLearning(): GeographyLearning {
     const randomIndex = Math.floor(Math.random() * availableForRandom.length)
     targetCountryToClick.value = availableForRandom[randomIndex]
     lastPlayedCountry.value = targetCountryToClick.value
-    console.log(`Selected random country: ${targetCountryToClick.value}`)
     message.value = `Click ${targetCountryToClick.value}`
   }
 
@@ -109,8 +104,6 @@ export function useGeographyLearning(): GeographyLearning {
         if (card.winStreak === requiredWinStreak) {
           card.level += 1
           card.winStreak = 0
-          // Note: We'll set due date after FSRS calculation
-          console.log(`Level up! ${card.countryName} is now level ${card.level} (required streak was: ${requiredWinStreak})`)
         }
       } else {
         card.winStreak = 0
@@ -124,7 +117,6 @@ export function useGeographyLearning(): GeographyLearning {
       if (card.failStreak === 3) {
         card.level -= 1
         card.failStreak = 0
-        console.log(`Level down! ${card.countryName} is now level ${card.level}`)
       }
     }
   }
@@ -174,15 +166,12 @@ export function useGeographyLearning(): GeographyLearning {
       if (card.failStreak === 3) {
         card.level = (card.level || 0) - 1
         card.failStreak = 0
-        console.log(`Level down! ${card.countryName} is now level ${card.level}`)
       }
     }
 
     // Then apply FSRS with our modified card
     const f = fsrs()
-    console.log(`Applying FSRS for ${country} with rating: ${Rating[rating]}, current due: ${card.due?.toISOString()}`)
     const result = f.next(card, new Date(), rating)
-    console.log(`FSRS suggested next due date: ${result.card.due?.toISOString()}`)
 
     // Save with our modifications taking precedence for everything EXCEPT due date
     const finalCard = {
@@ -191,22 +180,10 @@ export function useGeographyLearning(): GeographyLearning {
       winStreak: card.winStreak,
       failStreak: card.failStreak,
       level: card.level,
-      // Level up: 30 seconds, otherwise minimum intervals
-      ...(willLevelUp 
-        ? { due: new Date(new Date().getTime() + 30 * 1000) } 
-        : { due: new Date(Math.max(
-            result.card.due.getTime(),
-            new Date().getTime() + (attempts <= 2 ? 4 : 1) * 60 * 1000
-          ))
-        })
+      // Only override due date for level ups
+      ...(willLevelUp && { due: new Date(new Date().getTime() + 30 * 1000) })
     }
     await saveCard(finalCard)
-
-    if (willLevelUp) {
-      console.log(`Level up! ${country} is now level ${card.level} (required streak was: ${requiredWinStreak}), due in 30 seconds`)
-    } else {
-      console.log(`${country} using due date: ${finalCard.due?.toISOString()} (ensuring minimum ${attempts <= 2 ? '4' : '1'} minute interval)`)
-    }
 
     // Select next country after a delay
     setTimeout(selectRandomCountry, 2000)
@@ -247,9 +224,7 @@ export function useGeographyLearning(): GeographyLearning {
 
       // Then apply FSRS with our modified card
       const f = fsrs()
-      console.log(`Applying FSRS for ${clickedCountry} with rating: ${Rating[rating]}, current due: ${card.due?.toISOString()}`)
       const result = f.next(card, new Date(), rating)
-      console.log(`FSRS suggested next due date: ${result.card.due?.toISOString()}`)
 
       // Save with our modifications taking precedence for everything EXCEPT due date
       const finalCard = {
@@ -258,22 +233,10 @@ export function useGeographyLearning(): GeographyLearning {
         winStreak: card.winStreak,
         failStreak: card.failStreak,
         level: card.level,
-        // Level up: 30 seconds, otherwise minimum 4 minute interval for correct answers
-        ...(willLevelUp 
-          ? { due: new Date(new Date().getTime() + 30 * 1000) } 
-          : { due: new Date(Math.max(
-              result.card.due.getTime(),
-              new Date().getTime() + 4 * 60 * 1000
-            ))
-          })
+        // Only override due date for level ups
+        ...(willLevelUp && { due: new Date(new Date().getTime() + 30 * 1000) })
       }
       await saveCard(finalCard)
-
-      if (willLevelUp) {
-        console.log(`Level up! ${clickedCountry} is now level ${card.level} (required streak was: ${requiredWinStreak}), due in 30 seconds`)
-      } else {
-        console.log(`${clickedCountry} using due date: ${finalCard.due?.toISOString()} (ensuring minimum 4 minute interval)`)
-      }
 
       // Select next country after a short delay
       setTimeout(selectRandomCountry, 2000)
@@ -298,9 +261,7 @@ export function useGeographyLearning(): GeographyLearning {
 
         // Then apply FSRS with our modified card
         const f = fsrs()
-        console.log(`Applying FSRS for ${targetCountryToClick.value} with rating: Again, current due: ${card.due?.toISOString()}`)
         const result = f.next(card, new Date(), Rating.Again)
-        console.log(`FSRS suggested next due date: ${result.card.due?.toISOString()}`)
 
         // Save with our modifications taking precedence for everything EXCEPT due date
         const finalCard = {
@@ -308,16 +269,9 @@ export function useGeographyLearning(): GeographyLearning {
           countryName: targetCountryToClick.value, // Our overrides
           winStreak: card.winStreak,
           failStreak: card.failStreak,
-          level: card.level,
-          // Ensure minimum 1 minute interval for failed attempts
-          due: new Date(Math.max(
-            result.card.due.getTime(),
-            new Date().getTime() + 1 * 60 * 1000
-          ))
+          level: card.level
         }
         await saveCard(finalCard)
-
-        console.log(`${targetCountryToClick.value} using due date: ${finalCard.due?.toISOString()} (ensuring minimum 1 minute interval)`)
 
         // Move to next country after a delay
         setTimeout(selectRandomCountry, 2000)
