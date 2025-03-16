@@ -17,6 +17,7 @@ const countryToHighlight = ref<string | undefined>(undefined)
 const highlightColor = ref<string>('#3b82f6') // Default blue
 const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100) // Base zoom level in percentage
+const isLoading = ref(false) // Add loading state
 const { getCard, saveLearningEvent } = useDexie()
 
 // Learning event tracking
@@ -55,6 +56,9 @@ const initializeCountryLevel = async () => {
 }
 
 const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: number) => {
+  // Prevent clicks during loading state
+  if (isLoading.value) return
+  
   attempts.value++
   
   // Track first click timing and distance
@@ -68,6 +72,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
     countryToHighlight.value = props.targetCountryToClick
     highlightColor.value = '#22c55e' // Green
     useCircleAroundHighlight.value = true
+    isLoading.value = true // Set loading state
 
     if (attempts.value === 1) {
       feedbackMessage.value = `That's ${props.targetCountryToClick}. First try!`
@@ -104,6 +109,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
 watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
   highlightColor.value = '#3b82f6'
+  isLoading.value = false // Reset loading state
   initializeCountryLevel()
 }, { immediate: true })
 </script>
