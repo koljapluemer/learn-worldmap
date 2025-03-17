@@ -38,26 +38,28 @@ const goToPractice = () => {
       
       <div class="space-y-4 mb-6">
         <p>1. You'll be presented with 10 random countries to locate</p>
-        <p>2. Each country has a different zoom level</p>
-        <p>3. Score points based on accuracy and speed:</p>
-        <ul class="list-disc list-inside ml-4">
-          <li>1000 points for correct first try</li>
-          <li>50-1000 points based on time taken</li>
-          <li>0 points for incorrect attempts</li>
-        </ul>
+        <p>2. Place the red circle on the country as fast as you can</p>
+        <p>3. You will get more points the faster you are, but miss and you get 0 points</p>
         <p>4. Challenge can only be completed once per day</p>
+        <p class="text-xs">By the way, you don't need to zoom. You only need to be as accurate as the circle is big.</p>
+      </div>
+      
+      <!-- Countdown Display -->
+      <div v-if="isCountingDown" class="text-center mb-6">
+        <div class="text-6xl font-bold text-primary">{{ countdown }}</div>
       </div>
       
       <div class="flex justify-end gap-2">
         <button 
           class="btn btn-ghost"
-          @click="$emit('close')"
+          @click="goToPractice"
         >
-          Cancel
+          Practice
         </button>
         <button 
           class="btn btn-primary"
-          @click="$emit('start')"
+          @click="startCountdown"
+          :disabled="isCountingDown"
         >
           Start Challenge
         </button>
