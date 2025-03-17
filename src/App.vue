@@ -5,6 +5,7 @@
         <h1 class="text-xs md:text-base font-medium">Learn the World Map</h1>
           <ul class="flex gap-0.5 md:gap-1">
             <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'play' }">Play</router-link></li>
+            <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'challenge' }">Challenge</router-link></li>
             <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
           </ul>
       </div>

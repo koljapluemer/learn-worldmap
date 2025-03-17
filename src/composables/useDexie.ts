@@ -1,6 +1,5 @@
-import Dexie from 'dexie'
-import type { Table } from 'dexie'
-import type { Card } from 'ts-fsrs'
+import Dexie, { type Table } from 'dexie'
+import { createEmptyCard, type Card } from 'ts-fsrs'
 import { v4 as uuidv4 } from 'uuid'
 import { logLearningEventToFirebase } from '../services/firebase'
 
@@ -22,27 +21,42 @@ export interface LearningEvent {
   distanceOfFirstClickToCenterOfCountry: number;
 }
 
+export interface DailyChallenge {
+  date: string;
+  totalScore: number;
+  totalTimeMs: number;
+  averageTimeMs: number;
+  results: {
+    country: string;
+    correct: boolean;
+    timeMs: number;
+    zoomLevel: number;
+  }[];
+}
+
 export interface DeviceInfo {
   id: string;
   deviceId: string;
 }
 
-class GeographyDB extends Dexie {
+export class GeographyDatabase extends Dexie {
   countryCards!: Table<CountryCard>;
   learningEvents!: Table<LearningEvent>;
+  dailyChallenges!: Table<DailyChallenge>;
   deviceInfo!: Table<DeviceInfo>;
 
   constructor() {
-    super('GeographyDB');
+    super('GeographyDatabase');
     this.version(3).stores({
       countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak, level',
       learningEvents: '++id, deviceId, timestamp, country',
+      dailyChallenges: 'date',
       deviceInfo: 'id'
     });
   }
 }
 
-const db = new GeographyDB();
+const db = new GeographyDatabase();
 
 // Initialize or get device ID
 async function getOrCreateDeviceId(): Promise<string> {
@@ -105,6 +119,14 @@ export function useDexie() {
       .toArray();
   }
 
+  const getDailyChallenge = async (date: string): Promise<DailyChallenge | undefined> => {
+    return await db.dailyChallenges.get(date);
+  }
+
+  const saveDailyChallenge = async (date: string, challenge: DailyChallenge): Promise<void> => {
+    await db.dailyChallenges.put(challenge);
+  }
+
   const resetDatabase = async (): Promise<void> => {
     await db.delete();
     await db.open();
@@ -117,6 +139,8 @@ export function useDexie() {
     getDueCards,
     saveLearningEvent,
     getLearningEventsForCountry,
+    getDailyChallenge,
+    saveDailyChallenge,
     resetDatabase
   }
 } 

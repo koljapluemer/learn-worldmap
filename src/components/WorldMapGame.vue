@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import WorldMap from './WorldMap.vue'
 import { useDexie } from '../composables/useDexie'
 
@@ -38,6 +38,8 @@ const feedbackMessage = computed(() => {
 
 // Initialize level-based settings when target country changes
 const initializeCountryLevel = async () => {
+  if (!props.targetCountryToClick) return
+  
   const card = await getCard(props.targetCountryToClick)
   const level = card?.level || 0
   
@@ -122,6 +124,20 @@ watch(() => props.targetCountryToClick, () => {
   isLoading.value = false // Reset loading state
   initializeCountryLevel()
 }, { immediate: true })
+
+// Watch for visibility changes
+watch(() => props.targetCountryToClick, (newValue) => {
+  if (newValue) {
+    document.body.classList.add('hovering-map')
+  } else {
+    document.body.classList.remove('hovering-map')
+  }
+}, { immediate: true })
+
+// Clean up on unmount
+onUnmounted(() => {
+  document.body.classList.remove('hovering-map')
+})
 </script>
 
 <template>
