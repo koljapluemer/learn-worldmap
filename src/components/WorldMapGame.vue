@@ -19,13 +19,22 @@ const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100) // Base zoom level in percentage
 const isLoading = ref(false) // Add loading state
 const { getCard, saveLearningEvent } = useDexie()
+const isTouchDevice = ref('ontouchstart' in window)
 
 // Learning event tracking
 const exerciseStartTime = ref<number>(0)
 const firstClickTime = ref<number | null>(null)
 const firstClickDistance = ref<number | null>(null)
+const dynamicMessage = ref<string | null>(null)
 
-const feedbackMessage = ref(`Find ${props.targetCountryToClick} on the map`)
+const feedbackMessage = computed(() => {
+  if (dynamicMessage.value) return dynamicMessage.value
+  
+  const countryName = `<strong>${props.targetCountryToClick}</strong>`
+  return isTouchDevice.value 
+    ? `Drag the red circle onto ${countryName}`
+    : `Place the red circle so that it touches ${countryName}`
+})
 
 // Initialize level-based settings when target country changes
 const initializeCountryLevel = async () => {
@@ -47,7 +56,8 @@ const initializeCountryLevel = async () => {
     ? 100 + 5 * level
     : 100
   
-  feedbackMessage.value = `Find ${props.targetCountryToClick} on the map`
+  // Reset dynamic message
+  dynamicMessage.value = null
   
   // Start tracking time for this exercise
   exerciseStartTime.value = Date.now()
@@ -75,9 +85,9 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
     isLoading.value = true // Set loading state
 
     if (attempts.value === 1) {
-      feedbackMessage.value = `That's ${props.targetCountryToClick}. First try!`
+      dynamicMessage.value = `That's <strong>${props.targetCountryToClick}</strong>. First try!`
     } else {
-      feedbackMessage.value = `You found ${props.targetCountryToClick} after ${attempts.value} tries.`
+      dynamicMessage.value = `You found <strong>${props.targetCountryToClick}</strong> after ${attempts.value} tries.`
     }
     
     // Save learning event
@@ -96,7 +106,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
     })
   } else {
     // Wrong country - highlight target after first miss
-    feedbackMessage.value = `${props.targetCountryToClick} is here, try again.`
+    dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
     if (attempts.value === 1) {
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#3b82f6' // Blue
@@ -117,8 +127,7 @@ watch(() => props.targetCountryToClick, () => {
 <template>
   <div class="flex flex-col">
     <!-- Game Messages -->
-      <div class="text-lg font-semibold text-center">
-        {{ feedbackMessage }}
+      <div class="text-lg font-semibold text-center" v-html="feedbackMessage">
       </div>
 
     <!-- Map Container -->

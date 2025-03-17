@@ -24,7 +24,7 @@
         Made with ♥ by <a href="https://koljapluemer.com" target="_blank" rel="noopener noreferrer" class="link">Kolja Sam</a>
       </p>
       <p class="max-w-md mx-auto">
-        I'm using the privacy-friendly <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer" class="link">Goatcounter</a> to track page views and an I store some pseudonymous learning data. No personal data is collected, and cookies are used solely for tracking your learning progress on your device.
+        I'm using the privacy-friendly <a href="https://www.goatcounter.com" target="_blank" rel="noopener noreferrer" class="link">Goatcounter</a> to track page views and an I store some pseudonymous learning data. No personal data is collected, and cookies are used solely for tracking your learning progress on your device. This app is <a href="https://github.com/koljapluemer/learn-worldmap" target="_blank" rel="noopener noreferrer" class="link">open source</a>.
       </p>
     </footer>
   </div>
