@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-screen bg-base-200">
-    <header class="bg-base-100 shadow-sm px-4 py-2">
+    <header class="bg-base-100 shadow-sm p-1 ">
       <div class="flex items-center justify-between">
-        <h1 class="font-medium">Learn the World Map</h1>
-          <ul class="flex gap-1">
-            <li><router-link class="btn btn-sm" :to="{ name: 'play' }">Play</router-link></li>
-            <li><router-link  class="btn btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
+        <h1 class="text-xs md:text-base font-medium">Learn the World Map</h1>
+          <ul class="flex gap-0.5 md:gap-1">
+            <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'play' }">Play</router-link></li>
+            <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
           </ul>
       </div>
     </header>
