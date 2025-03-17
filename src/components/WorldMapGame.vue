@@ -5,6 +5,7 @@ import { useDexie } from '../composables/useDexie'
 
 const props = defineProps<{
   targetCountryToClick: string
+  zoomLevel?: number // Optional prop for challenge mode
 }>()
 
 const emit = defineEmits<{
@@ -40,23 +41,38 @@ const feedbackMessage = computed(() => {
 const initializeCountryLevel = async () => {
   if (!props.targetCountryToClick) return
   
-  const card = await getCard(props.targetCountryToClick)
-  const level = card?.level || 0
-  
-  // Handle negative levels - show highlight immediately
-  if (level < 0) {
-    countryToHighlight.value = props.targetCountryToClick
-    highlightColor.value = '#3b82f6'
-    useCircleAroundHighlight.value = true
+  // If zoomLevel prop is provided (challenge mode), use it directly
+  if (props.zoomLevel !== undefined) {
+    zoomLevel.value = props.zoomLevel
+    // Handle negative levels - show highlight immediately
+    if (props.zoomLevel < 100) {
+      countryToHighlight.value = props.targetCountryToClick
+      highlightColor.value = '#3b82f6'
+      useCircleAroundHighlight.value = true
+    } else {
+      countryToHighlight.value = undefined
+      useCircleAroundHighlight.value = false
+    }
   } else {
-    countryToHighlight.value = undefined
-    useCircleAroundHighlight.value = false
-  }
+    // Standard play mode - use database-based zoom levels
+    const card = await getCard(props.targetCountryToClick)
+    const level = card?.level || 0
+    
+    // Handle negative levels - show highlight immediately
+    if (level < 0) {
+      countryToHighlight.value = props.targetCountryToClick
+      highlightColor.value = '#3b82f6'
+      useCircleAroundHighlight.value = true
+    } else {
+      countryToHighlight.value = undefined
+      useCircleAroundHighlight.value = false
+    }
 
-  // Set zoom level based on level linear
-  zoomLevel.value = level > 0 
-    ? 100 + 5 * level
-    : 100
+    // Set zoom level based on level linear
+    zoomLevel.value = level > 0 
+      ? 100 + 5 * level
+      : 100
+  }
   
   // Reset dynamic message
   dynamicMessage.value = null

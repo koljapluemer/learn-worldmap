@@ -62,7 +62,8 @@ export function useDailyChallenge() {
     for (let i = 0; i < 10; i++) {
       const randomIndex = Math.floor(seededRandom(seed + i) * countries.length)
       const country = countries[randomIndex]
-      const zoomLevel = Math.floor(seededRandom(seed + i + 1000) * 75) + 100 // Random zoom between 100 and 175
+      // Generate random zoom level between 100 (world view) and 175 (zoomed in)
+      const zoomLevel = Math.floor(seededRandom(seed + i + 1000) * 75) + 100
       challengeCountries.push({ country, zoomLevel })
     }
     

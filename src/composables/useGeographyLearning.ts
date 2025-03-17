@@ -181,7 +181,7 @@ export function useGeographyLearning(): GeographyLearning {
       failStreak: card.failStreak,
       level: card.level,
       // Only override due date for level ups
-      ...(willLevelUp && { due: new Date(new Date().getTime() + 30 * 1000) })
+      ...(willLevelUp && { due: new Date(new Date().getTime() + 10 * 1000) })
     }
     await saveCard(finalCard)
 
