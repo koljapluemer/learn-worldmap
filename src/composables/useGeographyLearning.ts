@@ -185,6 +185,9 @@ export function useGeographyLearning(): GeographyLearning {
     }
     await saveCard(finalCard)
 
+    // Dispatch progress update event
+    window.dispatchEvent(new Event('learning-progress-update'))
+
     // Select next country after a delay
     setTimeout(selectRandomCountry, 2000)
   }
@@ -238,6 +241,9 @@ export function useGeographyLearning(): GeographyLearning {
       }
       await saveCard(finalCard)
 
+      // Dispatch progress update event
+      window.dispatchEvent(new Event('learning-progress-update'))
+
       // Select next country after a short delay
       setTimeout(selectRandomCountry, 2000)
     } else {
@@ -272,6 +278,9 @@ export function useGeographyLearning(): GeographyLearning {
           level: card.level
         }
         await saveCard(finalCard)
+
+        // Dispatch progress update event
+        window.dispatchEvent(new Event('learning-progress-update'))
 
         // Move to next country after a delay
         setTimeout(selectRandomCountry, 2000)

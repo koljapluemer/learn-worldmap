@@ -10,6 +10,24 @@
       </div>
     </header>
 
+    <!-- Progress bar -->
+    <div class="h-1 bg-base-200">
+      <div class="flex h-full">
+        <div 
+          class="bg-success transition-all duration-300" 
+          :style="{ width: `${progressPercentages.notDue}%` }"
+        ></div>
+        <div 
+          class="bg-warning transition-all duration-300" 
+          :style="{ width: `${progressPercentages.due}%` }"
+        ></div>
+        <div 
+          class="bg-base-300 transition-all duration-300" 
+          :style="{ width: `${progressPercentages.neverLearned}%` }"
+        ></div>
+      </div>
+    </div>
+
     <!-- Instruction card - will be rendered by child components when needed -->
       <slot name="instruction" class="mb-2 p-4 bg-base-100 shadow-md rounded-lg text-base leading-relaxed" />
 
@@ -32,4 +50,28 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
+import { onMounted, watch, onUnmounted } from 'vue';
+import { useLearningProgress } from './composables/useLearningProgress';
+import { availableCountries } from './services/mapData';
+
+const { progressPercentages, setAvailableCountries, updateProgress } = useLearningProgress();
+
+// Initialize progress tracking
+onMounted(async () => {
+  setAvailableCountries(availableCountries.value);
+  await updateProgress();
+  
+  // Listen for progress update events
+  window.addEventListener('learning-progress-update', updateProgress);
+});
+
+// Clean up event listener
+onUnmounted(() => {
+  window.removeEventListener('learning-progress-update', updateProgress);
+});
+
+// Update progress when route changes
+watch(() => window.location.hash, async () => {
+  await updateProgress();
+});
 </script>
