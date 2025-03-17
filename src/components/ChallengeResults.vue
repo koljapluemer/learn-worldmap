@@ -41,7 +41,7 @@ const shareMessage = computed(() => {
          `Time: *${totalTime}*\n\n` +
          `Results: ${emojis}\n\n` +
          `Can you beat my score?\n` +
-         `Play at https://map.koljapluemer.com/challenge`
+         `Play at https://map.koljapluemer.com/#/challenge`
 })
 
 const shareLinks = {
