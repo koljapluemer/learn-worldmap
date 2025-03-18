@@ -292,6 +292,8 @@ export function useCustomCursor(size: number = 76) {
     isVisible: state.value.isVisible,
     isDragging: state.value.isDragging,
     isCursorOverlappingElement: (element: Element, cursorX: number, cursorY: number) =>
-      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length > 0
+      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length > 0,
+    findTouchedCountries: (container: HTMLElement | null, cursorX: number, cursorY: number) =>
+      findTouchedCountries(container, cursorX, cursorY, size)
   }
 } 

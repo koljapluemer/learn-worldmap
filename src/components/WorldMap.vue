@@ -16,7 +16,7 @@ const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
 }>()
 
-const { containerRef, cursor, isCursorOverlappingElement } = useCustomCursor(76)
+const { containerRef, cursor, isCursorOverlappingElement, findTouchedCountries } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)
@@ -67,18 +67,18 @@ const handleMapClick = (event: Event) => {
   event.preventDefault()
   event.stopPropagation()
   
-  if (!cursor.value) return
-
   let cursorX: number
   let cursorY: number
 
   if (event instanceof MouseEvent) {
     cursorX = event.clientX
     cursorY = event.clientY
-  } else if (typeof TouchEvent !== 'undefined' && event instanceof TouchEvent && event.changedTouches?.length > 0) {
-    // Use changedTouches for touchend event
-    cursorX = event.changedTouches[0].clientX
-    cursorY = event.changedTouches[0].clientY
+  } else if (typeof TouchEvent !== 'undefined' && event instanceof TouchEvent) {
+    // Handle both touchstart and touchend events
+    const touch = event.type === 'touchend' ? event.changedTouches[0] : event.touches[0]
+    if (!touch) return
+    cursorX = touch.clientX
+    cursorY = touch.clientY
   } else {
     return // Invalid event type
   }
@@ -86,20 +86,8 @@ const handleMapClick = (event: Event) => {
   // Calculate distance to target country center
   const distance = calculateDistanceToCountryCenter(cursorX, cursorY)
 
-  // Find all countries that the cursor overlaps with
-  const touchedCountries: string[] = []
-  const countryElements = containerRef.value?.querySelectorAll('path')
-  
-  if (countryElements) {
-    countryElements.forEach(element => {
-      // For touch events, increase the detection radius slightly
-      const detectionRadius = typeof TouchEvent !== 'undefined' && event instanceof TouchEvent ? 1.2 : 1
-      if (isCursorOverlappingElement(element, cursorX, cursorY, detectionRadius)) {
-        const countryName = element.getAttribute('data-country')
-        if (countryName) touchedCountries.push(countryName)
-      }
-    })
-  }
+  // Find all countries that the cursor overlaps with using the precise detection
+  const touchedCountries = findTouchedCountries(containerRef.value, cursorX, cursorY, 76)
 
   emit('mapClicked', touchedCountries, distance)
 }
@@ -313,8 +301,9 @@ onMounted(async () => {
     .attr('class', 'country')
     .attr('data-country', (d: any) => d.properties.name)
 
-  // Add click handlers
+  // Add click and touch handlers
   containerRef.value.addEventListener('click', handleMapClick)
+  containerRef.value.addEventListener('touchstart', handleMapClick, { passive: false })
   containerRef.value.addEventListener('touchend', handleMapClick)
 
   // Enable cursor tracking
@@ -331,6 +320,7 @@ onUnmounted(() => {
   // Clean up click handlers if containerRef still exists
   if (containerRef.value) {
     containerRef.value.removeEventListener('click', handleMapClick)
+    containerRef.value.removeEventListener('touchstart', handleMapClick)
     containerRef.value.removeEventListener('touchend', handleMapClick)
   }
 })
@@ -377,6 +367,9 @@ body.hovering-map .custom-cursor {
 }
 
 @media (hover: none) {
+  body.hovering-map {
+    cursor: auto;
+  }
   .custom-cursor {
     display: none !important;
   }
@@ -386,7 +379,7 @@ body.hovering-map .custom-cursor {
 <style scoped>
 .country {
   transition: fill 0.3s ease;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .country:hover {
