@@ -96,16 +96,6 @@ const applyCursorStyles = (size: number): void => {
   document.head.appendChild(style)
 }
 
-// Cursor state management
-const updateCursorVisibility = (isVisible: boolean): void => {
-  document.body.classList.toggle('hovering-map', isVisible)
-}
-
-const updateCursorPosition = (cursor: HTMLElement, position: PointerPosition): void => {
-  cursor.style.left = `${position.clientX}px`
-  cursor.style.top = `${position.clientY}px`
-}
-
 // Touch handling functions
 const getTouchFromEvent = (e: Event): Touch | null => {
   const touchEvent = e as TouchEventWithTouches
@@ -182,6 +172,37 @@ export function useCustomCursor(size: number = 76) {
   })
   const containerRef = ref<HTMLElement | null>(null)
 
+  const updateCursorVisibility = (isVisible: boolean): void => {
+    document.body.classList.toggle('hovering-map', isVisible)
+  }
+
+  const updateCursorPosition = (cursor: HTMLElement, position: PointerPosition): void => {
+    if (!state.value.element || !containerRef.value) return
+
+    const rect = containerRef.value.getBoundingClientRect()
+    const cursorRadius = 38 // Half of the cursor size (76/2)
+
+    // Constrain the cursor position within the map boundaries
+    const constrainedX = Math.max(rect.left + cursorRadius, Math.min(position.clientX, rect.right - cursorRadius))
+    const constrainedY = Math.max(rect.top + cursorRadius, Math.min(position.clientY, rect.bottom - cursorRadius))
+
+    cursor.style.left = `${constrainedX}px`
+    cursor.style.top = `${constrainedY}px`
+  }
+
+  const initializeCursorPosition = () => {
+    if (!state.value.element || !containerRef.value) return
+
+    const rect = containerRef.value.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+
+    updateCursorPosition(state.value.element, {
+      clientX: centerX,
+      clientY: centerY
+    })
+  }
+
   const handleMouseMove = (e: MouseEvent) => {
     if (state.value.isVisible && state.value.element) {
       updateCursorPosition(state.value.element, {
@@ -203,9 +224,15 @@ export function useCustomCursor(size: number = 76) {
 
   const handleTouchStart = (e: Event) => {
     const touch = getTouchFromEvent(e)
-    if (!touch || !state.value.element) return
+    if (!touch || !state.value.element || !containerRef.value) return
 
-    if (isTouchOnCursor(touch, state.value.element, size)) {
+    const rect = containerRef.value.getBoundingClientRect()
+    const cursorRadius = 38 // Half of the cursor size (76/2)
+
+    // Only handle touch events that start within the map boundaries
+    if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+        touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+      // On mobile, always show and position the cursor at the touch point
       state.value.isDragging = true
       state.value.isTouchDevice = true
       state.value.isVisible = true
@@ -258,6 +285,9 @@ export function useCustomCursor(size: number = 76) {
     state.value.element = createCursorElement(size)
     applyCursorStyles(size)
 
+    // Initialize cursor position
+    initializeCursorPosition()
+
     if (!state.value.isTouchDevice) {
       document.addEventListener('mousemove', handleMouseMove)
       containerRef.value.addEventListener('mouseenter', handleContainerEnter)
@@ -267,6 +297,9 @@ export function useCustomCursor(size: number = 76) {
     document.addEventListener('touchstart', handleTouchStart, { passive: false })
     document.addEventListener('touchmove', handleTouchMove)
     document.addEventListener('touchend', handleTouchEnd)
+
+    // Add resize handler to reposition cursor if needed
+    window.addEventListener('resize', initializeCursorPosition)
   })
 
   onUnmounted(() => {
@@ -279,6 +312,7 @@ export function useCustomCursor(size: number = 76) {
     document.removeEventListener('touchstart', handleTouchStart)
     document.removeEventListener('touchmove', handleTouchMove)
     document.removeEventListener('touchend', handleTouchEnd)
+    window.removeEventListener('resize', initializeCursorPosition)
 
     if (state.value.element?.parentNode) {
       state.value.element.parentNode.removeChild(state.value.element)
