@@ -14,7 +14,7 @@ export function useCustomCursor(size: number = 76) {
   } = useCursorState(size)
 
   const { applyCursorStyles } = useCursorStyles(size)
-  const { handleInteractionEnd } = useCountryDetection(size)
+  const { handleInteractionEnd, findTouchedCountries } = useCountryDetection(size)
 
   // Initialize styles
   applyCursorStyles()
@@ -42,6 +42,9 @@ export function useCustomCursor(size: number = 76) {
     isTouchDevice: state.value.isTouchDevice,
     isVisible: state.value.isVisible,
     isDragging: state.value.isDragging,
-    initializeCursorPosition
+    initializeCursorPosition,
+    findTouchedCountries,
+    isCursorOverlappingElement: (element: Element, cursorX: number, cursorY: number) =>
+      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length > 0
   }
 } 

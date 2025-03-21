@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import WorldMapGame from '../components/WorldMapGame.vue'
-import { useGeographyLearning } from '../composables/useGeographyLearning'
+import { useGeographyLearning } from '../composables/geography/useGeographyLearning'
 import { useLearningProgress } from '../composables/useLearningProgress'
 import { availableCountries, loadMapData } from '../services/mapData'
 

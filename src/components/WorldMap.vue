@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
-import { useCustomCursor } from '../composables/useCustomCursor'
+import { useCustomCursor } from '../composables/cursor/useCustomCursor'
 import { getMapData } from '../services/mapData'
 
 const props = defineProps<{
