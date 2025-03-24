@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test-ct": "playwright test -c playwright-ct.config.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
@@ -26,6 +27,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@playwright/experimental-ct-vue": "^1.51.1",
     "@testing-library/vue": "^8.1.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/d3": "^7.4.3",
