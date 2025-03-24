@@ -1,8 +1,7 @@
 // tests/playwright.spec.ts
-import { test } from './test-utils';
-import { expect } from 'playwright/test';
+import { test, expect } from 'playwright/test';
 
-test('app starts and displays expected content', async ({ page, cleanupStorage }) => {
+test('app starts and displays expected content', async ({ page }) => {
   // Navigate to your app's URL (adjust the port if needed)
   await page.goto('http://localhost:5173');
 
