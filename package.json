@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test-ct": "playwright test -c playwright-ct.config.ts",
+    "test:e2e": "playwright test",
     "testdev": "npm run dev -- --mode test"
   },
   "dependencies": {
