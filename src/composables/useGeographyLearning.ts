@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import type { ComputedRef } from 'vue'
 import { createEmptyCard, fsrs, Rating } from 'ts-fsrs'
 import { useDexie, type CountryCard } from './useDexie'
+import { seededRandomElement, getCurrentSeed } from '../utils/random'
 
 export interface GeographyLearning {
   targetCountryToClick: ComputedRef<string | null>
@@ -38,8 +39,9 @@ export function useGeographyLearning(): GeographyLearning {
     const availableDueCards = dueCards.filter(card => card.countryName !== lastPlayedCountry.value)
     
     if (availableDueCards.length > 0) {
-      // Select from available due cards
-      const randomDueCard = availableDueCards[Math.floor(Math.random() * availableDueCards.length)]
+      // Select from available due cards using seeded random
+      const seed = getCurrentSeed()
+      const randomDueCard = seededRandomElement(seed, availableDueCards)
       targetCountryToClick.value = randomDueCard.countryName
       lastPlayedCountry.value = randomDueCard.countryName
       return
@@ -53,9 +55,9 @@ export function useGeographyLearning(): GeographyLearning {
     )
     
     if (unseenCountries.length > 0) {
-      // Select from unseen countries
-      const randomIndex = Math.floor(Math.random() * unseenCountries.length)
-      const selectedCountry = unseenCountries[randomIndex]
+      // Select from unseen countries using seeded random
+      const seed = getCurrentSeed()
+      const selectedCountry = seededRandomElement(seed, unseenCountries)
       
       // Create and save empty card for the new country
       const emptyCard = createEmptyCard()
@@ -79,8 +81,8 @@ export function useGeographyLearning(): GeographyLearning {
       country !== lastPlayedCountry.value
     )
     
-    const randomIndex = Math.floor(Math.random() * availableForRandom.length)
-    targetCountryToClick.value = availableForRandom[randomIndex]
+    const seed = getCurrentSeed()
+    targetCountryToClick.value = seededRandomElement(seed, availableForRandom)
     lastPlayedCountry.value = targetCountryToClick.value
     message.value = `Click ${targetCountryToClick.value}`
   }

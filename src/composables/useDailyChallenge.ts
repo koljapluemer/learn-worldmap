@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { availableCountries } from '../services/mapData'
+import { seededRandom, getDailySeed, seededRandomInt } from '../utils/random'
 
 enum ChallengeState {
   NOT_STARTED = 'NOT_STARTED',
@@ -13,19 +14,6 @@ interface ChallengeResult {
   correct: boolean
   timeMs: number
   zoomLevel: number
-}
-
-// Seeded random number generator
-function seededRandom(seed: number) {
-  const x = Math.sin(seed++) * 10000
-  return x - Math.floor(x)
-}
-
-// Generate daily seed from UTC date
-function getDailySeed(): number {
-  const now = new Date()
-  const utcDate = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`
-  return utcDate.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
 }
 
 // Calculate score based on time
@@ -60,10 +48,9 @@ export function useDailyChallenge() {
     const challengeCountries: { country: string; zoomLevel: number }[] = []
     
     for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(seededRandom(seed + i) * countries.length)
-      const country = countries[randomIndex]
+      const country = countries[seededRandomInt(seed + i, 0, countries.length)]
       // Generate random zoom level between 100 (world view) and 175 (zoomed in)
-      const zoomLevel = Math.floor(seededRandom(seed + i + 1000) * 75) + 100
+      const zoomLevel = seededRandomInt(seed + i + 1000, 100, 176)
       challengeCountries.push({ country, zoomLevel })
     }
     
