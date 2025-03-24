@@ -9,10 +9,30 @@ export function seededRandom(seed: number): number {
 }
 
 /**
+ * Get the current seed value based on environment
+ * @returns A number representing the seed
+ */
+function getSeedValue(): number {
+  // In test mode, return a consistent seed value
+  if (import.meta.env.MODE === 'test') {
+    return 123456789 // Consistent seed for tests
+  }
+  
+  const now = new Date()
+  const utcDateTime = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}T${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}:${String(now.getUTCSeconds()).padStart(2, '0')}.${String(now.getUTCMilliseconds()).padStart(3, '0')}`
+  return utcDateTime.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+}
+
+/**
  * Generate a daily seed from UTC date
  * @returns A number representing the seed for the current UTC date
  */
 export function getDailySeed(): number {
+  // In test mode, return a consistent seed value
+  if (import.meta.env.MODE === 'test') {
+    return 987654321 // Consistent daily seed for tests
+  }
+  
   const now = new Date()
   const utcDate = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}`
   return utcDate.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
@@ -23,9 +43,7 @@ export function getDailySeed(): number {
  * @returns A number representing the seed for the current UTC datetime
  */
 export function getCurrentSeed(): number {
-  const now = new Date()
-  const utcDateTime = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}-${String(now.getUTCDate()).padStart(2, '0')}T${String(now.getUTCHours()).padStart(2, '0')}:${String(now.getUTCMinutes()).padStart(2, '0')}:${String(now.getUTCSeconds()).padStart(2, '0')}.${String(now.getUTCMilliseconds()).padStart(3, '0')}`
-  return utcDateTime.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return getSeedValue()
 }
 
 /**
