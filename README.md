@@ -1,5 +1,20 @@
-# Vue 3 + TypeScript + Vite
+# Learn the Worldmap
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Development
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+### Testing
+
+For now, there are some E2E tests, which were recorded with Playwright.
+You'll find them in the `tests/` directory.
+
+To run them, execute the app with the test env var set, by running:
+
+```
+npm run testdev
+```
+
+Leave this running, and in another terminal, run the tests:
+
+```
+npm run test:e2e
+```
