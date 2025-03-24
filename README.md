@@ -1,5 +1,9 @@
 # Learn the Worldmap
 
+![screenshot of the app showing excerpts from the worldmap where the user is challenged to select a country](screenshot.png)
+
+_do you know where the countries are?_
+
 ## Development
 
 ### Testing
