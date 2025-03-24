@@ -295,8 +295,8 @@ onMounted(async () => {
     .enter()
     .append('path')
     .attr('d', path as any)
-    .attr('fill', '#ccc')
-    .attr('stroke', '#fff')
+    .attr('fill', '#e0f2fe')  // Washed out blue
+    .attr('stroke', '#38bdf8')  // Splashy blue
     .attr('stroke-width', 0.5)
     .attr('class', 'country')
     .attr('data-country', (d: any) => d.properties.name)
@@ -377,27 +377,18 @@ body.hovering-map .custom-cursor {
 </style>
 
 <style scoped>
-.country {
-  transition: fill 0.3s ease;
-  pointer-events: auto;
-}
 
-.country:hover {
-  fill: #e2e8f0;
-}
-
-.highlighted {
-  fill: #3b82f6 !important;
-  stroke: #3b82f6;
+.country.highlighted {
+  fill: #3b82f6; /* Tailwind blue-500 */
+  stroke: #2563eb; /* Tailwind blue-600 */
   stroke-width: 1;
 }
 
 .highlight-circle {
-  fill: none;
-  stroke: #3b82f6;
-  stroke-width: 2;
-  stroke-dasharray: 5,5;
-  opacity: 0.8;
   pointer-events: none;
+  stroke-dasharray: 4;
+  animation: rotate 20s linear infinite;
 }
+
+
 </style> 
