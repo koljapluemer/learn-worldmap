@@ -86,6 +86,12 @@ export function useDailyChallenge() {
   const handleCountryCompletion = (correct: boolean, timeMs: number) => {
     if (state.value !== ChallengeState.IN_PROGRESS || !startTime.value) return
     
+    console.log('handleCountryCompletion - Before:', {
+      currentIndex: currentCountryIndex.value,
+      resultsLength: results.value.length,
+      state: state.value
+    })
+    
     const currentCountry = dailyChallenge.value[currentCountryIndex.value]
     const score = correct ? calculateScore(timeMs) : 0
     
@@ -99,21 +105,21 @@ export function useDailyChallenge() {
     currentScore.value += score
     totalTimeMs.value += timeMs
     
-    // Move to next country or end challenge
+    console.log('handleCountryCompletion - After push:', {
+      resultsLength: results.value.length,
+      lastResult: results.value[results.value.length - 1]
+    })
+    
+    // Move to next country
     if (currentCountryIndex.value < 9) {
       currentCountryIndex.value++
-    } else {
-      endChallenge()
     }
-  }
-  
-  // End the challenge and save completion status
-  const endChallenge = () => {
-    if (!startTime.value) return
-    
-    const today = new Date().toISOString().split('T')[0]
-    localStorage.setItem(`challenge_completed_${today}`, 'true')
-    state.value = ChallengeState.COMPLETED
+
+    console.log('handleCountryCompletion - End:', {
+      currentIndex: currentCountryIndex.value,
+      resultsLength: results.value.length,
+      state: state.value
+    })
   }
   
   return {
@@ -127,7 +133,6 @@ export function useDailyChallenge() {
     startChallenge,
     showRules,
     handleCountryCompletion,
-    endChallenge,
     ChallengeState // Export the enum for use in components
   }
 } 
