@@ -83,6 +83,10 @@ export function useDexie() {
     await db.countryCards.put(card);
   }
 
+  const deleteCard = async (countryName: string): Promise<void> => {
+    await db.countryCards.delete(countryName);
+  }
+
   const getAllCards = async (): Promise<CountryCard[]> => {
     return await db.countryCards.toArray();
   }
@@ -135,6 +139,7 @@ export function useDexie() {
   return {
     getCard,
     saveCard,
+    deleteCard,
     getAllCards,
     getDueCards,
     saveLearningEvent,

@@ -15,7 +15,7 @@ export interface GeographyLearning {
 }
 
 export function useGeographyLearning(): GeographyLearning {
-  const { getCard, saveCard, getDueCards, getAllCards } = useDexie()
+  const { getCard, saveCard, getDueCards, getAllCards, deleteCard } = useDexie()
   const targetCountryToClick = ref<string | null>(null)
   const message = ref<string>('')
   const targetCountryIsHighlighted = ref(false)
@@ -23,8 +23,22 @@ export function useGeographyLearning(): GeographyLearning {
   const availableCountries = ref<string[]>([])
   const lastPlayedCountry = ref<string | null>(null)
 
-  const setAvailableCountries = (countries: string[]) => {
+  const setAvailableCountries = async (countries: string[]) => {
     availableCountries.value = countries
+    await cleanupInvalidCountries()
+  }
+
+  // Function to clean up invalid countries from the database
+  const cleanupInvalidCountries = async () => {
+    const allCards = await getAllCards()
+    const validCountries = new Set(availableCountries.value)
+    
+    for (const card of allCards) {
+      if (!validCountries.has(card.countryName)) {
+        console.log(`Removing invalid country from database: ${card.countryName}`)
+        await deleteCard(card.countryName)
+      }
+    }
   }
 
   const selectRandomCountry = async () => {
@@ -35,13 +49,16 @@ export function useGeographyLearning(): GeographyLearning {
     // First check for due cards
     const dueCards = await getDueCards()
     
-    // Filter out the last played country from due cards
-    const availableDueCards = dueCards.filter(card => card.countryName !== lastPlayedCountry.value)
+    // Filter out invalid countries and the last played country from due cards
+    const validDueCards = dueCards.filter(card => 
+      availableCountries.value.includes(card.countryName) && 
+      card.countryName !== lastPlayedCountry.value
+    )
     
-    if (availableDueCards.length > 0) {
+    if (validDueCards.length > 0) {
       // Select from available due cards using seeded random
       const seed = getCurrentSeed()
-      const randomDueCard = seededRandomElement(seed, availableDueCards)
+      const randomDueCard = seededRandomElement(seed, validDueCards)
       targetCountryToClick.value = randomDueCard.countryName
       lastPlayedCountry.value = randomDueCard.countryName
       return
