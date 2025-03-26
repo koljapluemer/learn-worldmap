@@ -24,60 +24,33 @@ const countryStartTime = ref<number | null>(null)
 
 // End the challenge and save completion status
 const endChallenge = () => {
-  console.log('endChallenge - Before:', {
-    resultsLength: results.value.length,
-    state: state.value
-  })
+
   
   const today = new Date().toISOString().split('T')[0]
   localStorage.setItem(`challenge_completed_${today}`, 'true')
   state.value = ChallengeState.COMPLETED
   
-  console.log('endChallenge - After:', {
-    resultsLength: results.value.length,
-    state: state.value
-  })
 }
 
 onMounted(() => {
-  console.log('ChallengeView mounted:', {
-    hasCompletedToday: hasCompletedToday(),
-    state: state.value,
-    resultsLength: results.value.length
-  })
-  
+
   if (hasCompletedToday()) {
     state.value = ChallengeState.COMPLETED
-    console.log('Challenge already completed:', {
-      state: state.value,
-      resultsLength: results.value.length
-    })
+
   } else {
     showRules()
   }
 })
 
 const handleStart = () => {
-  console.log('handleStart - Before:', {
-    state: state.value,
-    resultsLength: results.value.length
-  })
-  
+
   startChallenge()
   countryStartTime.value = Date.now()
-  
-  console.log('handleStart - After:', {
-    state: state.value,
-    resultsLength: results.value.length
-  })
+
 }
 
 const handleGameComplete = (result: { country: string, attempts: number }) => {
-  console.log('handleGameComplete - Before:', {
-    currentCountryIndex: currentCountryIndex.value,
-    resultsLength: results.value.length,
-    state: state.value
-  })
+
   
   if (!countryStartTime.value) return
   
@@ -91,11 +64,7 @@ const handleGameComplete = (result: { country: string, attempts: number }) => {
     countryStartTime.value = Date.now()
   }
   
-  console.log('handleGameComplete - After:', {
-    currentCountryIndex: currentCountryIndex.value,
-    resultsLength: results.value.length,
-    state: state.value
-  })
+
 }
 </script>
 
