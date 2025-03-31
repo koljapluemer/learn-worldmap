@@ -7,6 +7,7 @@
             <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'play' }">Play</router-link></li>
             <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'challenge' }">Challenge</router-link></li>
             <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
+            <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'settings' }">Settings</router-link></li>
           </ul>
       </div>
     </header>

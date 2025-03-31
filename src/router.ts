@@ -3,6 +3,7 @@ import PlayStandardView from './modules/play/play-modes/standard-play/PlayStanda
 import StatsView from './modules/misc-views/stats-view/main-stats/StatsView.vue';
 import CountryStatsView from './modules/misc-views/stats-view/per-country-stats/CountryStatsView.vue';
 import PlayChallengeView from './modules/play/play-modes/challenge-play/PlayChallengeView.vue';
+import SettingsView from './modules/misc-views/settings-view/SettingsView.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -31,6 +32,11 @@ const router = createRouter({
       path: '/challenge',
       name: 'challenge',
       component: PlayChallengeView
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: SettingsView
     }
   ]
 });
