@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
-import { useCustomCursor } from '../composables/useCustomCursor'
-import { getMapData } from '../modules/map-data/mapData'
+import { useCustomCursor } from './useCustomCursor';
+import { getMapData } from '@/modules/map-data/mapData';
 
 const props = defineProps<{
   countryToHighlight?: string
@@ -16,7 +16,7 @@ const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
 }>()
 
-const { containerRef, cursor, isCursorOverlappingElement, findTouchedCountries } = useCustomCursor(76)
+const { containerRef, findTouchedCountries } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)

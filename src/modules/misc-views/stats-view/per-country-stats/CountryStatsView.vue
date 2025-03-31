@@ -16,7 +16,7 @@
         class="card bg-base-100 shadow-xl p-4"
       />
       
-      <DistanceProgressChart 
+      <DistanceProgressChart
         :learning-events="learningEvents"
         class="card bg-base-100 shadow-xl p-4"
       />
@@ -26,9 +26,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useDexie, type LearningEvent } from '../composables/useDexie'
-import TimeProgressChart from '../components/stats/TimeProgressChart.vue'
-import DistanceProgressChart from '../components/stats/DistanceProgressChart.vue'
+import TimeProgressChart from './TimeProgressChart.vue';
+import DistanceProgressChart from './DistanceProgressChart.vue';
+import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie';
+import type { LearningEvent } from '@/modules/shared-types/types';
 
 const props = defineProps<{
   country: string

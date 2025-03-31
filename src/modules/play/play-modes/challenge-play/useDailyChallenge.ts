@@ -1,6 +1,6 @@
+import { availableCountries } from '@/modules/map-data/mapData'
+import { getDailySeed, seededRandomInt } from '@/modules/randomness/random'
 import { ref, computed } from 'vue'
-import { availableCountries } from '../modules/map-data/mapData'
-import { seededRandom, getDailySeed, seededRandomInt } from '../modules/randomness/random'
 
 enum ChallengeState {
   NOT_STARTED = 'NOT_STARTED',

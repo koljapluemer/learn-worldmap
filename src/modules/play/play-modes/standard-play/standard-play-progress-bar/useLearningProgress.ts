@@ -1,5 +1,5 @@
+import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 import { ref, computed } from 'vue'
-import { useDexie } from '../modules/spaced-repetition-learning/calculate-learning/useDexie'
 
 export interface LearningProgress {
   notDue: number

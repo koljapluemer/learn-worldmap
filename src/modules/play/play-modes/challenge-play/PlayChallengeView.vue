@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import WorldMapGame from '../components/WorldMapGame.vue'
-import ChallengeRulesPopup from '../components/ChallengeRulesPopup.vue'
-import ChallengeResults from '../components/ChallengeResults.vue'
-import ChallengeCompletedCard from '../components/ChallengeCompletedCard.vue'
-import { useDailyChallenge } from '../composables/useDailyChallenge'
+import { useDailyChallenge } from './useDailyChallenge'
+import WorldMapGame from '../../map-renderer/WorldMapGame.vue'
+import ChallengeResults from './ChallengeResults.vue'
+import ChallengeRulesPopup from './ChallengeRulesPopup.vue'
+import ChallengeCompletedCard from './ChallengeCompletedCard.vue'
+
 
 const {
   state,
@@ -129,7 +130,7 @@ const handleGameComplete = (result: { country: string, attempts: number }) => {
       :total-score="currentScore"
       :total-time-ms="totalTimeMs"
       :average-time-ms="Math.round(totalTimeMs / 10)"
-      @share="(platform) => console.log('Shared on:', platform)"
+      @share="(platform: string) => console.log('Shared on:', platform)"
     />
 
     <!-- Already Completed Card -->

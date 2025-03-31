@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import * as d3 from 'd3'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

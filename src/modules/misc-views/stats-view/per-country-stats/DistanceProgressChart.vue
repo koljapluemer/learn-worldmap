@@ -7,8 +7,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import type { LearningEvent } from '../../composables/useDexie'
 import * as echarts from 'echarts'
+import type { LearningEvent } from '@/modules/shared-types/types';
 
 const props = defineProps<{
   learningEvents: LearningEvent[]

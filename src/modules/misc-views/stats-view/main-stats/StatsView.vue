@@ -33,9 +33,10 @@
 </template>
 
 <script setup lang="ts">
+import type { CountryCard } from '@/modules/shared-types/types'
+import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDexie, type CountryCard } from '../composables/useDexie'
 
 const router = useRouter()
 const { getAllCards } = useDexie()

@@ -1,40 +1,10 @@
 import Dexie, { type Table } from 'dexie'
-import { createEmptyCard, type Card } from 'ts-fsrs'
 import { v4 as uuidv4 } from 'uuid'
 import { logLearningEventToFirebase } from '../log-learning/firebase'
+import type { CountryCard, LearningEvent } from '@/modules/shared-types/types';
 
-export interface CountryCard extends Card {
-  countryName: string;
-  winStreak: number;
-  failStreak: number;
-  level: number;
-}
 
-export interface LearningEvent {
-  id?: number;  // Auto-incremented primary key
-  deviceId: string;
-  timestamp: Date;
-  country: string;
-  msFromExerciseToFirstClick: number;
-  msFromExerciseToFinishClick: number;
-  numberOfClicksNeeded: number;
-  distanceOfFirstClickToCenterOfCountry: number;
-}
-
-export interface DailyChallenge {
-  date: string;
-  totalScore: number;
-  totalTimeMs: number;
-  averageTimeMs: number;
-  results: {
-    country: string;
-    correct: boolean;
-    timeMs: number;
-    zoomLevel: number;
-  }[];
-}
-
-export interface DeviceInfo {
+interface DeviceInfo {
   id: string;
   deviceId: string;
 }
@@ -42,7 +12,6 @@ export interface DeviceInfo {
 export class GeographyDatabase extends Dexie {
   countryCards!: Table<CountryCard>;
   learningEvents!: Table<LearningEvent>;
-  dailyChallenges!: Table<DailyChallenge>;
   deviceInfo!: Table<DeviceInfo>;
 
   constructor() {
@@ -123,14 +92,6 @@ export function useDexie() {
       .toArray();
   }
 
-  const getDailyChallenge = async (date: string): Promise<DailyChallenge | undefined> => {
-    return await db.dailyChallenges.get(date);
-  }
-
-  const saveDailyChallenge = async (date: string, challenge: DailyChallenge): Promise<void> => {
-    await db.dailyChallenges.put(challenge);
-  }
-
   const resetDatabase = async (): Promise<void> => {
     await db.delete();
     await db.open();
@@ -144,8 +105,6 @@ export function useDexie() {
     getDueCards,
     saveLearningEvent,
     getLearningEventsForCountry,
-    getDailyChallenge,
-    saveDailyChallenge,
     resetDatabase
   }
 } 

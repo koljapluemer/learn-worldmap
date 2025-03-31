@@ -1,7 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import PlayView from '../views/PlayView.vue';
-import StatsView from '../views/StatsView.vue';
-import ChallengeView from '../views/ChallengeView.vue';
+import PlayStandardView from './modules/play/play-modes/standard-play/PlayStandardView.vue';
+import StatsView from './modules/misc-views/stats-view/main-stats/StatsView.vue';
+import CountryStatsView from './modules/misc-views/stats-view/per-country-stats/CountryStatsView.vue';
+import PlayChallengeView from './modules/play/play-modes/challenge-play/PlayChallengeView.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -13,7 +14,7 @@ const router = createRouter({
     {
       path: '/play',
       name: 'play',
-      component: PlayView
+      component: PlayStandardView
     },
     {
       path: '/stats',
@@ -23,13 +24,13 @@ const router = createRouter({
     {
       path: '/stats/:country',
       name: 'countryStats',
-      component: () => import('../views/CountryStatsView.vue'),
+      component: CountryStatsView,
       props: true
     },
     {
       path: '/challenge',
       name: 'challenge',
-      component: ChallengeView
+      component: PlayChallengeView
     }
   ]
 });
