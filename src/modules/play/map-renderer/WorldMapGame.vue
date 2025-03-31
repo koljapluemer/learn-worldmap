@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onUnmounted } from 'vue'
 import WorldMap from './WorldMap.vue'
-import { useDexie } from '../composables/useDexie'
+import { useDexie } from '../../spaced-repetition-learning/calculate-learning/useDexie'
 
 const props = defineProps<{
   targetCountryToClick: string

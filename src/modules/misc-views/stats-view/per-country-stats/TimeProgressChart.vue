@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import type { LearningEvent } from '../../composables/useDexie'
+import type { LearningEvent } from '../../../spaced-repetition-learning/calculate-learning/useDexie'
 import * as echarts from 'echarts'
 
 const props = defineProps<{

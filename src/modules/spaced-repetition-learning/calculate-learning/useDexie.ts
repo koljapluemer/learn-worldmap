@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie'
 import { createEmptyCard, type Card } from 'ts-fsrs'
 import { v4 as uuidv4 } from 'uuid'
-import { logLearningEventToFirebase } from '../services/firebase'
+import { logLearningEventToFirebase } from '../log-learning/firebase'
 
 export interface CountryCard extends Card {
   countryName: string;

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-import type { LearningEvent } from "@/composables/useDexie";
+import type { LearningEvent } from "@/modules/spaced-repetition-learning/calculate-learning/useDexie";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

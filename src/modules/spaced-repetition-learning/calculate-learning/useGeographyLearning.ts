@@ -1,8 +1,8 @@
 import { ref, computed } from 'vue'
 import type { ComputedRef } from 'vue'
 import { createEmptyCard, fsrs, Rating } from 'ts-fsrs'
-import { useDexie, type CountryCard } from './useDexie'
-import { seededRandomElement, getCurrentSeed } from '../utils/random'
+import { useDexie, type CountryCard } from '../modules/spaced-repetition-learning/useDexie'
+import { seededRandomElement, getCurrentSeed } from '../modules/randomness/random'
 
 export interface GeographyLearning {
   targetCountryToClick: ComputedRef<string | null>

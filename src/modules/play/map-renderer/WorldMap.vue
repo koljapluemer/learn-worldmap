@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from '../composables/useCustomCursor'
-import { getMapData } from '../services/mapData'
+import { getMapData } from '../modules/map-data/mapData'
 
 const props = defineProps<{
   countryToHighlight?: string

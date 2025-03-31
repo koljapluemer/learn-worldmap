@@ -53,7 +53,7 @@
 import { RouterView } from 'vue-router';
 import { onMounted, watch, onUnmounted } from 'vue';
 import { useLearningProgress } from './composables/useLearningProgress';
-import { availableCountries } from './services/mapData';
+import { availableCountries } from './modules/map-data/mapData';
 
 const { progressPercentages, setAvailableCountries, updateProgress } = useLearningProgress();
 

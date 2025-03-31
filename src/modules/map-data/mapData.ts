@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import worldGeoJson from '../assets/woldmap.geo.json'
-import type { GeoJSONData } from '../types'
+import worldGeoJson from './woldmap.geo.json'
+import { GeoJSONData } from './types'
 
 // Shared state for available countries
 export const availableCountries = ref<string[]>([])
