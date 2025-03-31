@@ -22,6 +22,23 @@ const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)
 const projection = ref<d3.GeoProjection>()
 
+// Add settings from localStorage with defaults
+const waterColor = ref(localStorage.getItem('waterColor') || '#dcefff')
+const landColor = ref(localStorage.getItem('landColor') || '#e6e6e6')
+const borderColor = ref(localStorage.getItem('borderColor') || '#333333')
+const borderThickness = ref(Number(localStorage.getItem('borderThickness')) || 8)
+
+// Watch for settings changes
+watch([waterColor, landColor, borderColor, borderThickness], () => {
+  if (!svg.value) return
+  
+  // Update all countries with new settings
+  svg.value.selectAll('path')
+    .attr('fill', landColor.value)
+    .attr('stroke', borderColor.value)
+    .attr('stroke-width', borderThickness.value)
+})
+
 const calculateDistanceToCountryCenter = (clickX: number, clickY: number): number => {
   if (!props.targetCountry || !projection.value || !mapData.value) return 0
 
@@ -87,7 +104,7 @@ const handleMapClick = (event: Event) => {
   const distance = calculateDistanceToCountryCenter(cursorX, cursorY)
 
   // Find all countries that the cursor overlaps with using the precise detection
-  const touchedCountries = findTouchedCountries(containerRef.value, cursorX, cursorY, 76)
+  const touchedCountries = findTouchedCountries(containerRef.value, cursorX, cursorY)
 
   emit('mapClicked', touchedCountries, distance)
 }
@@ -185,7 +202,9 @@ watch(() => props.countryToHighlight, (newCountry) => {
   // Reset all countries
   d3.select(containerRef.value)
     .selectAll('path')
-    .attr('fill', '#ccc')
+    .attr('fill', landColor.value)
+    .attr('stroke', borderColor.value)
+    .attr('stroke-width', borderThickness.value)
     .attr('class', 'country')
 
   // Remove previous highlight circles
@@ -201,6 +220,8 @@ watch(() => props.countryToHighlight, (newCountry) => {
     // Highlight the country
     countryPath
       .attr('fill', props.highlightColor || '#3b82f6')
+      .attr('stroke', borderColor.value)
+      .attr('stroke-width', borderThickness.value)
       .attr('class', 'country highlighted')
 
     // Add circle around the country if requested
@@ -220,7 +241,7 @@ watch(() => props.countryToHighlight, (newCountry) => {
           .attr('class', 'highlight-circle')
           .style('stroke', props.highlightColor || '#3b82f6')
           .style('fill', 'none')
-          .style('stroke-width', '3')
+          .style('stroke-width', borderThickness.value)
         highlightCircles.value.push(circle.node() as SVGCircleElement)
       }
     }
@@ -288,16 +309,16 @@ onMounted(async () => {
   // Initial map setup
   updateMapTransform()
 
-  // Draw the map
+  // Draw the map with settings from localStorage
   const path = d3.geoPath().projection(d3.geoMercator().fitSize([width, height], mapData.value))
   svg.value.selectAll('path')
     .data(mapData.value.features)
     .enter()
     .append('path')
     .attr('d', path as any)
-    .attr('fill', '#e0f2fe')  // Washed out blue
-    .attr('stroke', '#38bdf8')  // Splashy blue
-    .attr('stroke-width', 0.5)
+    .attr('fill', landColor.value)
+    .attr('stroke', borderColor.value)
+    .attr('stroke-width', borderThickness.value)
     .attr('class', 'country')
     .attr('data-country', (d: any) => d.properties.name)
 
@@ -330,6 +351,7 @@ onUnmounted(() => {
   <div 
     ref="containerRef" 
     class="w-full h-full"
+    :style="{ backgroundColor: waterColor }"
   >
     <slot></slot>
   </div>
@@ -377,11 +399,9 @@ body.hovering-map .custom-cursor {
 </style>
 
 <style scoped>
-
 .country.highlighted {
   fill: #3b82f6; /* Tailwind blue-500 */
   stroke: #2563eb; /* Tailwind blue-600 */
-  stroke-width: 1;
 }
 
 .highlight-circle {
@@ -389,6 +409,4 @@ body.hovering-map .custom-cursor {
   stroke-dasharray: 4;
   animation: rotate 20s linear infinite;
 }
-
-
 </style> 

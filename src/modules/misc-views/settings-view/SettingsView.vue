@@ -92,7 +92,7 @@ import { ref, watch } from 'vue'
 const DEFAULT_WATER_COLOR = '#dcefff'
 const DEFAULT_LAND_COLOR = '#e6e6e6'
 const DEFAULT_BORDER_COLOR = '#333333'
-const DEFAULT_BORDER_THICKNESS = 8
+const DEFAULT_BORDER_THICKNESS = 2
 
 // Reactive state
 const waterColor = ref(localStorage.getItem('waterColor') || DEFAULT_WATER_COLOR)
