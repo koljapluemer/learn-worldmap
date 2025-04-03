@@ -4,7 +4,21 @@
 
 _do you know where the countries are?_
 
+## Features
+
+1. Spaced-Repetition based selection of which country should be learned
+2. As the learner gets better, they have to find a given country with more precision
+3. Detailed statistics about how learning a country is going
+4. *WIP:* Daily Challenge Mode
+5. *Planned:* Custom Playlist Mode to practice exactly what you want to practice
+
+
+![screenshots](doc/more_screenshots.png)
+
+
 ## Development
+
+First of all: Feedback is welcome, bug reports are welcome, contributions are welcome. If anything's unclear, head over to issues and write what's on your mind.
 
 ### Running It
 
