@@ -79,6 +79,10 @@ Below, you can find an overview of core folders and files:
 ├── tests                                         #
 ```
 
+### Module Documentation
+
+- [map-data](src/modules/map-data/.doc.md)
+
 
 ### Testing
 
