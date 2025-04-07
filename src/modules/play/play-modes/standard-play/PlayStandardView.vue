@@ -31,6 +31,7 @@ onMounted(async () => {
       v-if="targetCountryToClick"
       :target-country-to-click="targetCountryToClick"
       @game-complete="handleGameComplete"
+      :allow-more-than-one-attempt=true
     />
   </div>
 </template> 

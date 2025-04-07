@@ -112,6 +112,7 @@ const handleGameComplete = (result: { country: string, attempts: number }) => {
         v-if="state === ChallengeState.IN_PROGRESS && dailyChallenge[currentCountryIndex]"
         :target-country-to-click="dailyChallenge[currentCountryIndex].country"
         :zoom-level="dailyChallenge[currentCountryIndex].zoomLevel"
+        :allow-more-than-one-attempt="false"
         @game-complete="handleGameComplete"
       />
     </div>

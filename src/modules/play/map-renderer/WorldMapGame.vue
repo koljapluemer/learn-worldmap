@@ -6,6 +6,7 @@ import { useDexie } from '../../spaced-repetition-learning/calculate-learning/us
 const props = defineProps<{
   targetCountryToClick: string
   zoomLevel?: number // Optional prop for challenge mode
+  allowMoreThanOneAttempt: boolean
 }>()
 
 const emit = defineEmits<{
@@ -30,9 +31,9 @@ const dynamicMessage = ref<string | null>(null)
 
 const feedbackMessage = computed(() => {
   if (dynamicMessage.value) return dynamicMessage.value
-  
+
   const countryName = `<strong>${props.targetCountryToClick}</strong>`
-  return isTouchDevice.value 
+  return isTouchDevice.value
     ? `Drag the red circle onto ${countryName}`
     : `Place the red circle so that it touches ${countryName}`
 })
@@ -40,7 +41,7 @@ const feedbackMessage = computed(() => {
 // Initialize level-based settings when target country changes
 const initializeCountryLevel = async () => {
   if (!props.targetCountryToClick) return
-  
+
   // If zoomLevel prop is provided (challenge mode), use it directly
   if (props.zoomLevel !== undefined) {
     zoomLevel.value = props.zoomLevel
@@ -57,7 +58,7 @@ const initializeCountryLevel = async () => {
     // Standard play mode - use database-based zoom levels
     const card = await getCard(props.targetCountryToClick)
     const level = card?.level || 0
-    
+
     // Handle negative levels - show highlight immediately
     if (level < 0) {
       countryToHighlight.value = props.targetCountryToClick
@@ -69,69 +70,102 @@ const initializeCountryLevel = async () => {
     }
 
     // Set zoom level based on level linear
-    zoomLevel.value = level > 0 
+    zoomLevel.value = level > 0
       ? 100 + 5 * level
       : 100
   }
-  
+
   // Reset dynamic message
   dynamicMessage.value = null
-  
+
   // Start tracking time for this exercise
   exerciseStartTime.value = Date.now()
   firstClickTime.value = null
   firstClickDistance.value = null
 }
 
+const handleCorrectCountryFound = async () => {
+  countryToHighlight.value = props.targetCountryToClick
+  highlightColor.value = '#22c55e' // Green
+  useCircleAroundHighlight.value = true
+  isLoading.value = true // Set loading state
+
+  if (attempts.value === 1) {
+    dynamicMessage.value = `That's <strong>${props.targetCountryToClick}</strong>. First try!`
+  } else {
+    dynamicMessage.value = `You found <strong>${props.targetCountryToClick}</strong> after ${attempts.value} tries.`
+  }
+}
+
+
 const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: number) => {
   // Prevent clicks during loading state
   if (isLoading.value) return
-  
+
   attempts.value++
-  
+
   // Track first click timing and distance
   if (attempts.value === 1) {
     firstClickTime.value = Date.now()
     firstClickDistance.value = distanceToTarget || 0
   }
-  
-  if (touchedCountries.includes(props.targetCountryToClick)) {
-    // Correct country found
-    countryToHighlight.value = props.targetCountryToClick
-    highlightColor.value = '#22c55e' // Green
-    useCircleAroundHighlight.value = true
-    isLoading.value = true // Set loading state
 
-    if (attempts.value === 1) {
-      dynamicMessage.value = `That's <strong>${props.targetCountryToClick}</strong>. First try!`
+  if (props.allowMoreThanOneAttempt) {
+    if (touchedCountries.includes(props.targetCountryToClick)) {
+      // Correct country found
+      handleCorrectCountryFound()
+
+      // Save learning event
+      await saveLearningEvent({
+        timestamp: new Date(),
+        country: props.targetCountryToClick,
+        msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
+        msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
+        numberOfClicksNeeded: attempts.value,
+        distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
+      })
+
+      emit('gameComplete', {
+        country: props.targetCountryToClick,
+        attempts: attempts.value
+      })
     } else {
-      dynamicMessage.value = `You found <strong>${props.targetCountryToClick}</strong> after ${attempts.value} tries.`
+      // Wrong country - highlight target after first miss
+      dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
+      if (attempts.value === 1) {
+        countryToHighlight.value = props.targetCountryToClick
+        highlightColor.value = '#3b82f6' // Blue
+        useCircleAroundHighlight.value = true
+      }
     }
-    
-    // Save learning event
-    await saveLearningEvent({
-      timestamp: new Date(),
-      country: props.targetCountryToClick,
-      msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
-      msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
-      numberOfClicksNeeded: attempts.value,
-      distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
-    })
-    
-    emit('gameComplete', { 
-      country: props.targetCountryToClick, 
-      attempts: attempts.value 
-    })
   } else {
-    // Wrong country - highlight target after first miss
-    dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
-    if (attempts.value === 1) {
+    if (touchedCountries.includes(props.targetCountryToClick)) {
+      handleCorrectCountryFound()
+      // go next after 0.5 seconds  
+      setTimeout(() => {
+        emit('gameComplete', {
+          country: props.targetCountryToClick,
+          attempts: attempts.value
+        })
+      }, 500)
+    } else {
+      dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
       countryToHighlight.value = props.targetCountryToClick
-      highlightColor.value = '#3b82f6' // Blue
+      highlightColor.value = '#eb4034'
       useCircleAroundHighlight.value = true
+
+      // emit after 0.5 seconds
+      setTimeout(() => {
+        emit('gameComplete', {
+          country: props.targetCountryToClick,
+          attempts: attempts.value
+        })
+      }, 500)
     }
   }
 }
+
+
 
 // Reset game state when target country changes
 watch(() => props.targetCountryToClick, () => {
@@ -159,19 +193,14 @@ onUnmounted(() => {
 <template>
   <div class="flex flex-col">
     <!-- Game Messages -->
-      <div class="text-lg font-semibold text-center" v-html="feedbackMessage">
-      </div>
+    <div class="text-lg font-semibold text-center" v-html="feedbackMessage">
+    </div>
 
     <!-- Map Container -->
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden">
-      <WorldMap
-        :country-to-highlight="countryToHighlight"
-        :highlight-color="highlightColor"
-        :use-circle-around-highlight="useCircleAroundHighlight"
-        :zoom-level="zoomLevel"
-        :target-country="targetCountryToClick"
-        @map-clicked="handleMapClicked"
-      />
+      <WorldMap :country-to-highlight="countryToHighlight" :highlight-color="highlightColor"
+        :use-circle-around-highlight="useCircleAroundHighlight" :zoom-level="zoomLevel"
+        :target-country="targetCountryToClick" @map-clicked="handleMapClicked" />
     </div>
   </div>
-</template> 
+</template>
