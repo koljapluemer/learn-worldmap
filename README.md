@@ -39,49 +39,12 @@ You will not find folders such as `composables/` or `components/` here, as is cu
 Instead, code is separated across features, with the intent that changes to feature X or use case Y can be done in the 
 folder dedicated for it, instead of all across the codebase.
 
-Below, you can find an overview of core folders and files:
+You can find per-folder documentation for important directories in the `.doc.md` of the given folder. Alternatively, use the list below to directly jump to the relevant documentation:
 
 
-```shell
-├── App.vue                                       # wrapper rendering header, footer & router view
-├── main.ts                                       # boilerplate/setup
-├── modules                                       # everything is a module!
-│   ├── map-data                                  #
-│   │   ├── mapData.ts                            # handling/exposing the map data 
-│   │   └── woldmap.geo.json                      # the JSON file with the map data
-│   ├── misc-views                                #
-│   │   └── stats-view                            # everything you see in "stats"
-│   │       ├── main-stats                        #
-│   │       │   └── StatsView.vue                 #
-│   │       └── per-country-stats                 # 
-│   │           ├── CountryStatsView.vue          #
-│   │           ├── DistanceProgressChart.vue     #
-│   │           └── TimeProgressChart.vue         #
-│   ├── play                                      # everything related to core gameplay
-│   │   ├── map-renderer                          #
-│   │   │   ├── useCustomCursor.ts                # relating to the cursor-circle
-│   │   │   ├── WorldMapGame.vue                  # a gameplay-wrapper around the world map, calling the cursor 
-│   │   │   └── WorldMap.vue                      # the world map itself
-│   │   └── play-modes                            #
-│   │       ├── challenge-play                    #
-│   │       │   ├── PlayChallengeView.vue         # Renders the challenge view via 3 sub-components
-│   │       └── standard-play                     #
-│   │           ├── PlayStandardView.vue          #
-│   │           └── standard-play-progress-bar    # unused stump to render a progress bar 
-│   ├── randomness                                # helper functions for seeded randomness
-│   ├── shared-types                              #
-│   │   └── types.ts                              # if a type is needed across the app, put it here
-│   └── spaced-repetition-learning                #
-│       ├── calculate-learning                    # using ts-fsrs and dexie to calculate and persist learning data
-│       └── log-learning                          # storing anonymous learning data on a firebase server
-├── router.ts                                     # all the routes (game modes, stats, home...)
-├── style.css                                     # this should stay empty, since we're using Tailwind/Daisy
-├── tests                                         #
-```
-
-### Module Documentation
-
-- [map-data](src/modules/map-data/.doc.md)
+- [map-data](src/modules/map-data/.doc.md) 
+- [play](src/modules/play/.doc.md)
+- [misc-views](src/modules/.doc.md)
 
 
 ### Testing
