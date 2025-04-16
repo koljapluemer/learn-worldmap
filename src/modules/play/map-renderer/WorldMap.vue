@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from './useCustomCursor';
 import { getMapData } from '@/modules/map-data/mapData';
+import { getMapSettings } from '@/modules/misc-views/settings-view/defaultSettings';
 
 const props = defineProps<{
   countryToHighlight?: string
@@ -22,11 +23,12 @@ const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<any>(null)
 const projection = ref<d3.GeoProjection>()
 
-// Add settings from localStorage with defaults
-const waterColor = ref(localStorage.getItem('waterColor') || '#dcefff')
-const landColor = ref(localStorage.getItem('landColor') || '#e6e6e6')
-const borderColor = ref(localStorage.getItem('borderColor') || '#333333')
-const borderThickness = ref(Number(localStorage.getItem('borderThickness')) || 8)
+// Get settings from centralized settings
+const settings = ref(getMapSettings())
+const waterColor = ref(settings.value.waterColor)
+const landColor = ref(settings.value.landColor)
+const borderColor = ref(settings.value.borderColor)
+const borderThickness = ref(settings.value.borderThickness)
 
 // Watch for settings changes
 watch([waterColor, landColor, borderColor, borderThickness], () => {

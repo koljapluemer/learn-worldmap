@@ -87,25 +87,23 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { DEFAULT_MAP_SETTINGS, getMapSettings } from '@/modules/misc-views/settings-view/defaultSettings'
 
-// Default values
-const DEFAULT_WATER_COLOR = '#dcefff'
-const DEFAULT_LAND_COLOR = '#e6e6e6'
-const DEFAULT_BORDER_COLOR = '#333333'
-const DEFAULT_BORDER_THICKNESS = 1
+// Get initial settings
+const settings = ref(getMapSettings())
 
 // Reactive state
-const waterColor = ref(localStorage.getItem('waterColor') || DEFAULT_WATER_COLOR)
-const landColor = ref(localStorage.getItem('landColor') || DEFAULT_LAND_COLOR)
-const borderColor = ref(localStorage.getItem('borderColor') || DEFAULT_BORDER_COLOR)
-const borderThickness = ref(Number(localStorage.getItem('borderThickness')) || DEFAULT_BORDER_THICKNESS)
+const waterColor = ref(settings.value.waterColor)
+const landColor = ref(settings.value.landColor)
+const borderColor = ref(settings.value.borderColor)
+const borderThickness = ref(settings.value.borderThickness)
 
 // Reset function
 const resetToDefaults = () => {
-  waterColor.value = DEFAULT_WATER_COLOR
-  landColor.value = DEFAULT_LAND_COLOR
-  borderColor.value = DEFAULT_BORDER_COLOR
-  borderThickness.value = DEFAULT_BORDER_THICKNESS
+  waterColor.value = DEFAULT_MAP_SETTINGS.waterColor
+  landColor.value = DEFAULT_MAP_SETTINGS.landColor
+  borderColor.value = DEFAULT_MAP_SETTINGS.borderColor
+  borderThickness.value = DEFAULT_MAP_SETTINGS.borderThickness
 }
 
 // Watch for changes and persist to localStorage
