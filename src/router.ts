@@ -21,7 +21,10 @@ const router = createRouter({
     {
       path: '/play-custom',
       name: 'playCustom',
-      component: CustomPlay
+      component: CustomPlay,
+      props: (route) => ({
+        initialContinents: route.query.continents?.toString().toLowerCase().split(',') || []
+      })
     },
     {
       path: '/stats',

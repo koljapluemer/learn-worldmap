@@ -10,15 +10,35 @@ import WorldMapGame from '@/modules/play/map-renderer/WorldMapGame.vue'
 import ContinentFilter from './ContinentFilter.vue'
 import { useContinentSelection } from './useContinentSelection'
 
+const props = defineProps<{
+  initialContinents?: string[]
+}>()
+
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
 
 // Get continent selection from composable
-const { selectedContinents, availableContinents, toggleContinent, isSelected } = useContinentSelection()
+const { selectedContinents, availableContinents, toggleContinent, isSelected, setContinents } = useContinentSelection()
 
 // Initialize continents from GeoJSON
 onMounted(async () => {
   await loadMapData()
+  
+  // If initial continents are provided, try to match them with available continents
+  if (props.initialContinents?.length) {
+    const normalizedInitial = props.initialContinents.map(c => 
+      c.toLowerCase().replace(/[^a-z]/g, '')
+    )
+    
+    const matchedContinents = availableContinents.filter(continent => {
+      const normalizedContinent = continent.toLowerCase().replace(/[^a-z]/g, '')
+      return normalizedInitial.some(initial => normalizedContinent.includes(initial))
+    })
+    
+    if (matchedContinents.length > 0) {
+      setContinents(matchedContinents)
+    }
+  }
 })
 
 // Filtered countries based on selected continents
