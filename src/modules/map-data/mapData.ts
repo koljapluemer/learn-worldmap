@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import worldGeoJson from './woldmap.geo.json'
-import type { GeoJSONData } from './types'
+import type { GeoJSONData, GeoJSONFeature } from './types'
 
 // Shared state for available countries
 export const availableCountries = ref<string[]>([])
@@ -15,6 +15,19 @@ export async function loadMapData(): Promise<GeoJSONData> {
     console.error('Failed to load map data:', error)
     throw error
   }
+}
+
+// Function to get all available continents
+export function getAvailableContinents(): string[] {
+  const continents = new Set((worldGeoJson as GeoJSONData).features.map((f: GeoJSONFeature) => f.properties.continent))
+  return Array.from(continents)
+}
+
+// Function to get countries for a continent
+export function getCountriesForContinent(continent: string): string[] {
+  return (worldGeoJson as GeoJSONData).features
+    .filter((f: GeoJSONFeature) => f.properties.continent === continent)
+    .map((f: GeoJSONFeature) => f.properties.name)
 }
 
 // Function to get GeoJSON data for map rendering
