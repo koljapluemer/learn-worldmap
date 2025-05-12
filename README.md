@@ -16,7 +16,6 @@ _do you know where the countries are?_
 4. *WIP:* Daily Challenge Mode
 5. *Planned:* Custom Playlist Mode to practice exactly what you want to practice
 
-
 ![screenshots](doc/more_screenshots.png)
 
 
