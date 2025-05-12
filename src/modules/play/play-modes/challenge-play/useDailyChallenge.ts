@@ -1,4 +1,4 @@
-import { availableCountries } from '@/modules/map-data/mapData'
+import allCountries from '@/modules/map-data/country-lists/all-countries.json'
 import { getDailySeed, seededRandomInt } from '@/modules/randomness/random'
 import { ref, computed } from 'vue'
 
@@ -44,7 +44,7 @@ export function useDailyChallenge() {
   // Generate 10 random countries and zoom levels for the day
   const dailyChallenge = computed(() => {
     const seed = getDailySeed()
-    const countries = [...availableCountries.value]
+    const countries = [...allCountries]
     const challengeCountries: { country: string; zoomLevel: number }[] = []
     
     for (let i = 0; i < 10; i++) {

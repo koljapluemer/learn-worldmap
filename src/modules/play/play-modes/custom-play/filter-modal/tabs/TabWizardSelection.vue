@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCountrySelection } from './useCountrySelection'
-import { getAfricaCountries } from '@/modules/map-data/mapData'
+import africaCountries from '@/modules/map-data/country-lists/africa.json'
 
 const { countrySelection } = useCountrySelection()
 const showSuccess = ref(false)
@@ -16,8 +16,7 @@ const practiceOnlyAfrica = () => {
   })
   
   // Select only African countries
-  const africanCountries = getAfricaCountries()
-  africanCountries.forEach(country => {
+  africaCountries.forEach(country => {
     countrySelection.value[country] = true
   })
 

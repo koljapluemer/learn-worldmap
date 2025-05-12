@@ -4,7 +4,8 @@ import os
 def extract_african_countries():
     # Get the path to the GeoJSON file
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    geo_json_path = os.path.join(current_dir, 'worldmap.geo.json')
+    geo_json_path = 'generate/worldmap.geo.json'
+    
     
     try:
         # Read the GeoJSON file
@@ -24,7 +25,7 @@ def extract_african_countries():
         african_countries.sort()
         
         # Save to africa.json
-        output_path = os.path.join(current_dir, 'country-lists', 'africa.json')
+        output_path = 'src/modules/map-data/country-lists/africa.json'
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(african_countries, f, indent=2)
         

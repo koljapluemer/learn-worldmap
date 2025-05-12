@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
 import { useLearningProgress } from './standard-play-progress-bar/useLearningProgress'
-import { availableCountries, loadMapData } from '@/modules/map-data/mapData'
+import allCountries from '@/modules/map-data/country-lists/all-countries.json'
 import WorldMapGame from '../../map-renderer/WorldMapGame.vue'
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
@@ -13,12 +13,10 @@ const handleGameComplete = async ({ country, attempts }: { country: string, atte
   await updateProgress()
 }
 
-
 // Load map data and initialize game
 onMounted(async () => {
-  await loadMapData()
-  setAvailableCountries(availableCountries.value)
-  setProgressCountries(availableCountries.value)
+  setAvailableCountries(allCountries)
+  setProgressCountries(allCountries)
   await updateProgress()
   selectRandomCountry()
 })

@@ -2,8 +2,9 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from './useCustomCursor';
-import { getMapData } from '@/modules/map-data/mapData';
+import rawMapData from '@/modules/map-data/map.geo.json'
 import { getMapSettings } from '@/modules/misc-views/settings-view/defaultSettings';
+import type { FeatureCollection } from 'geojson'
 
 const props = defineProps<{
   countryToHighlight?: string
@@ -20,7 +21,7 @@ const emit = defineEmits<{
 const { containerRef, findTouchedCountries } = useCustomCursor(76)
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
-const mapData = ref<any>(null)
+const mapData = ref<FeatureCollection>(rawMapData as FeatureCollection)
 const projection = ref<d3.GeoProjection>()
 
 // Get settings from centralized settings
@@ -291,15 +292,20 @@ const handleResize = () => {
 onMounted(async () => {
   if (!containerRef.value) return
 
+  // Debug: Log map data
+  console.log('Loaded mapData:', mapData.value);
+  if (!mapData.value || !Array.isArray(mapData.value.features) || mapData.value.features.length === 0) {
+    console.error('mapData.value.features is empty or not an array!', mapData.value.features);
+  }
+
   // Initialize cursor immediately
   document.body.classList.add('hovering-map')
   
-  // Load world map data
-  mapData.value = await getMapData()
-
   // Set up the SVG
   const width = containerRef.value.clientWidth
   const height = containerRef.value.clientHeight
+  console.log('SVG size:', width, height);
+
   svg.value = d3.select(containerRef.value)
     .append('svg')
     .attr('width', width)
@@ -311,18 +317,34 @@ onMounted(async () => {
   // Initial map setup
   updateMapTransform()
 
-  // Draw the map with settings from localStorage
+  // Debug: Log projection
   const path = d3.geoPath().projection(d3.geoMercator().fitSize([width, height], mapData.value))
-  svg.value.selectAll('path')
+  console.log('Projection:', path.projection());
+
+  // Debug: Log first feature
+  if (mapData.value.features && mapData.value.features.length > 0) {
+    console.log('First feature:', mapData.value.features[0]);
+  }
+
+  const selection = svg.value.selectAll('path')
     .data(mapData.value.features)
     .enter()
     .append('path')
-    .attr('d', path as any)
+    .attr('d', (d: any) => {
+      const dVal = path(d);
+      if (!dVal) {
+        console.error('Path generation failed for feature:', d);
+      }
+      return dVal;
+    })
     .attr('fill', landColor.value)
     .attr('stroke', borderColor.value)
     .attr('stroke-width', borderThickness.value)
     .attr('class', 'country')
-    .attr('data-country', (d: any) => d.properties.name)
+    .attr('data-country', (d: any) => d.properties.name);
+
+  // Debug: Log number of paths created
+  console.log('Number of paths created:', svg.value.selectAll('path').size());
 
   // Add click and touch handlers
   containerRef.value.addEventListener('click', handleMapClick)

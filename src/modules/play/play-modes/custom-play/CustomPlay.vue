@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { onMounted } from 'vue'
 import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
 import { useLearningProgress } from '@/modules/play/play-modes/standard-play/standard-play-progress-bar/useLearningProgress'
-import { availableCountries, loadMapData } from '@/modules/map-data/mapData'
 import WorldMapGame from '@/modules/play/map-renderer/WorldMapGame.vue'
 import FilterModal from './filter-modal/FilterModal.vue'
 import { useCountrySelection } from './filter-modal/tabs/useCountrySelection'
 
-
+import allCountries from '@/modules/map-data/country-lists/all-countries.json'
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
@@ -20,16 +18,9 @@ const { selectedCountries } = useCountrySelection()
 // Modal state
 const isModalOpen = ref(false)
 
-// Initialize continents from GeoJSON
-onMounted(async () => {
-  await loadMapData()
-  
-
-})
-
 // Filtered countries based on selected countries
 const filteredCountries = computed(() => {
-  return availableCountries.value.filter(country => selectedCountries.value.includes(country))
+  return allCountries.filter(country => selectedCountries.value.includes(country))
 })
 
 const handleGameComplete = async ({ country, attempts }: { country: string, attempts: number }) => {

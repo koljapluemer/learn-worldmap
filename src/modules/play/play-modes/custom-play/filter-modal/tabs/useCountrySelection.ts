@@ -1,5 +1,5 @@
 import { ref, computed, watch } from 'vue'
-import { availableCountries } from '@/modules/map-data/mapData'
+import allCountries from '@/modules/map-data/country-lists/all-countries.json'
 
 const STORAGE_KEY = 'customPlayCountries'
 
@@ -11,7 +11,7 @@ const initializeCountrySelection = () => {
   }
   // Default: all countries selected
   const defaultSelection = Object.fromEntries(
-    availableCountries.value.map(country => [country, true])
+    allCountries.map(country => [country, true])
   )
   localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultSelection))
   return defaultSelection
