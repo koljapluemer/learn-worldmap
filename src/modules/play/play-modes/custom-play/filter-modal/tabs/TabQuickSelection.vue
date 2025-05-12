@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCountrySelection } from './useCountrySelection'
 
-const { countrySelection, selectedCount, toggleCountry } = useCountrySelection()
+const { countrySelection, selectedCount } = useCountrySelection()
 
 // Batch selection functions
 const selectAll = () => {
