@@ -9,6 +9,7 @@ import type { GeoJSONFeature } from '@/modules/map-data/types'
 import WorldMapGame from '@/modules/play/map-renderer/WorldMapGame.vue'
 import { useContinentSelection } from './useContinentSelection'
 import FilterModal from './filter-modal/FilterModal.vue'
+import { useCountrySelection } from './filter-modal/tabs/useCountrySelection'
 
 const props = defineProps<{
   initialContinents?: string[]
@@ -19,6 +20,9 @@ const { setAvailableCountries: setProgressCountries, updateProgress } = useLearn
 
 // Get continent selection from composable
 const { selectedContinents, availableContinents, toggleContinent, isSelected, setContinents } = useContinentSelection()
+
+// Get country selection from composable
+const { selectedCountries } = useCountrySelection()
 
 // Modal state
 const isModalOpen = ref(false)
@@ -44,13 +48,9 @@ onMounted(async () => {
   }
 })
 
-// Filtered countries based on selected continents
+// Filtered countries based on selected countries
 const filteredCountries = computed(() => {
-  if (selectedContinents.value.length === 0) return availableCountries.value
-  return availableCountries.value.filter(country => {
-    const countryData = (worldGeoJson as { features: GeoJSONFeature[] }).features.find(f => f.properties.name === country)
-    return countryData && selectedContinents.value.includes(countryData.properties.continent)
-  })
+  return availableCountries.value.filter(country => selectedCountries.value.includes(country))
 })
 
 const handleGameComplete = async ({ country, attempts }: { country: string, attempts: number }) => {
@@ -88,7 +88,7 @@ const handleContinentToggle = (continent: string) => {
 
     <!-- Game Component -->
     <WorldMapGame
-      v-if="targetCountryToClick"
+      v-if="targetCountryToClick && selectedCountries.length > 0"
       :target-country-to-click="targetCountryToClick"
       @game-complete="handleGameComplete"
       :allow-more-than-one-attempt="true"

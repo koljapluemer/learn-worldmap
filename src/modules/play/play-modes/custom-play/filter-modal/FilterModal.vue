@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import TabA from './tabs/TabA.vue'
-import TabB from './tabs/TabB.vue'
-import TabC from './tabs/TabC.vue'
+import TabWizardSelection from './tabs/TabWizardSelection.vue'
+import TabQuickSelection from './tabs/TabQuickSelection.vue'
+import TabCountrySelection from './tabs/TabCountrySelection.vue'
 
 const props = defineProps<{
   isOpen: boolean
@@ -31,28 +31,28 @@ const activeTab = ref('tab-a')
           :class="{ 'tab-active': activeTab === 'tab-a' }"
           @click="activeTab = 'tab-a'"
         >
-          Tab A
+          Wizards
         </a>
         <a 
           class="tab" 
           :class="{ 'tab-active': activeTab === 'tab-b' }"
           @click="activeTab = 'tab-b'"
         >
-          Tab B
+          Quick Select
         </a>
         <a 
           class="tab" 
           :class="{ 'tab-active': activeTab === 'tab-c' }"
           @click="activeTab = 'tab-c'"
         >
-          Tab C
+          Countries
         </a>
       </div>
 
       <div class="modal-content">
-        <TabA v-if="activeTab === 'tab-a'" />
-        <TabB v-if="activeTab === 'tab-b'" />
-        <TabC v-if="activeTab === 'tab-c'" />
+        <TabWizardSelection v-if="activeTab === 'tab-a'" />
+        <TabQuickSelection v-if="activeTab === 'tab-b'" />
+        <TabCountrySelection v-if="activeTab === 'tab-c'" />
       </div>
     </div>
     <form method="dialog" class="modal-backdrop bg-black bg-opacity-50">
