@@ -74,7 +74,7 @@ const handleContinentToggle = (continent: string) => {
 <template>
   <div class="container mx-auto">
     <!-- Filter Button -->
-    <div class="my-4 w-full">
+    <div class="p-4 w-full">
       <button 
         class="btn btn-primary gap-2 w-full"
         @click="isModalOpen = true"
@@ -93,6 +93,15 @@ const handleContinentToggle = (continent: string) => {
       @game-complete="handleGameComplete"
       :allow-more-than-one-attempt="true"
     />
+
+    <!-- show simple! warning if no countries are selected -->
+    <div v-if="selectedCountries.length === 0" class="p-4 w-full">
+      <div class="alert alert-warning">
+        <div class="flex-1">
+          Please select at least one country
+        </div>
+      </div>
+    </div>
 
     <!-- Filter Modal -->
     <FilterModal
