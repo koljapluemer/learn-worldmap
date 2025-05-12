@@ -53,6 +53,7 @@ You can find per-folder documentation for important directories in the `.doc.md`
 
 A small collection of scripts generating and transforming some data for convenience. These are ran during development to support features such as exposing all countries in a certain continent. The resulting data is committed to source and contained within `src/`. There should be no reason to re-run these.
 
+I recommend using `venv` when running python scripts. Always run python scripts from source, otherwise filepaths in the scripts will get confused.
 
 ### Testing
 
