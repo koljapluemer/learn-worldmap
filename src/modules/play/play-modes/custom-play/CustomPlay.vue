@@ -4,22 +4,15 @@ import { onMounted } from 'vue'
 import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
 import { useLearningProgress } from '@/modules/play/play-modes/standard-play/standard-play-progress-bar/useLearningProgress'
 import { availableCountries, loadMapData } from '@/modules/map-data/mapData'
-import worldGeoJson from '@/modules/map-data/woldmap.geo.json'
-import type { GeoJSONFeature } from '@/modules/map-data/types'
 import WorldMapGame from '@/modules/play/map-renderer/WorldMapGame.vue'
-import { useContinentSelection } from './useContinentSelection'
 import FilterModal from './filter-modal/FilterModal.vue'
 import { useCountrySelection } from './filter-modal/tabs/useCountrySelection'
 
-const props = defineProps<{
-  initialContinents?: string[]
-}>()
+
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
 
-// Get continent selection from composable
-const { selectedContinents, availableContinents, toggleContinent, isSelected, setContinents } = useContinentSelection()
 
 // Get country selection from composable
 const { selectedCountries } = useCountrySelection()
@@ -31,21 +24,7 @@ const isModalOpen = ref(false)
 onMounted(async () => {
   await loadMapData()
   
-  // If initial continents are provided, try to match them with available continents
-  if (props.initialContinents?.length) {
-    const normalizedInitial = props.initialContinents.map(c => 
-      c.toLowerCase().replace(/[^a-z]/g, '')
-    )
-    
-    const matchedContinents = availableContinents.filter(continent => {
-      const normalizedContinent = continent.toLowerCase().replace(/[^a-z]/g, '')
-      return normalizedInitial.some(initial => normalizedContinent.includes(initial))
-    })
-    
-    if (matchedContinents.length > 0) {
-      setContinents(matchedContinents)
-    }
-  }
+
 })
 
 // Filtered countries based on selected countries
@@ -65,10 +44,7 @@ watch(filteredCountries, (newVal) => {
   selectRandomCountry()
 }, { immediate: true })
 
-// Handle continent toggle
-const handleContinentToggle = (continent: string) => {
-  toggleContinent(continent)
-}
+
 </script>
 
 <template>

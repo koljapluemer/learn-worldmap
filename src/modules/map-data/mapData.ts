@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import worldGeoJson from './woldmap.geo.json'
+import worldGeoJson from './worldmap.geo.json'
+import africaCountries from './country-lists/africa.json'
 import type { GeoJSONData, GeoJSONFeature } from './types'
 
 // Shared state for available countries
@@ -34,3 +35,8 @@ export function getCountriesForContinent(continent: string): string[] {
 export async function getMapData(): Promise<GeoJSONData> {
   return await loadMapData()
 } 
+
+export function getAfricaCountries(): string[] {
+  return africaCountries as string[]
+}
+
