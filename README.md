@@ -32,6 +32,10 @@ First of all: Feedback is welcome, bug reports are welcome, contributions are we
 
 ### Folder Structure
 
+#### `src/`
+
+The actual app, a frontend-only web app using Vue.js
+
 This project follows a module-based approach, similar to the one explained in [this video](https://www.youtube.com/watch?v=iuyzO2QkY7A).
 
 You will not find folders such as `composables/` or `components/` here, as is custom in many vue projects.
@@ -44,6 +48,10 @@ You can find per-folder documentation for important directories in the `.doc.md`
 - [map-data](src/modules/map-data/.doc.md) 
 - [play](src/modules/play/.doc.md)
 - [misc-views](src/modules/.doc.md)
+
+#### `generate/`
+
+A small collection of scripts generating and transforming some data for convenience. These are ran during development to support features such as exposing all countries in a certain continent. The resulting data is committed to source and contained within `src/`. There should be no reason to re-run these.
 
 
 ### Testing

@@ -326,7 +326,7 @@ onMounted(async () => {
     console.log('First feature:', mapData.value.features[0]);
   }
 
-  const selection = svg.value.selectAll('path')
+  svg.value.selectAll('path')
     .data(mapData.value.features)
     .enter()
     .append('path')
