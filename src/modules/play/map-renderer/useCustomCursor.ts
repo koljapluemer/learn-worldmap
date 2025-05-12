@@ -163,7 +163,10 @@ const dispatchMapClickEvent = (
   container.dispatchEvent(clickEvent)
 }
 
-export function useCustomCursor(size: number = 76) {
+export function useCustomCursor(
+  size: number = 76,
+  emit?: (event: 'mapClicked', touchedCountries: string[], distanceToTarget?: number) => void
+) {
   const state = ref<CursorState>({
     element: null,
     isTouchDevice: false,
@@ -180,7 +183,7 @@ export function useCustomCursor(size: number = 76) {
     if (!state.value.element || !containerRef.value) return
 
     const rect = containerRef.value.getBoundingClientRect()
-    const cursorRadius = 38 // Half of the cursor size (76/2)
+    const cursorRadius = size / 2
 
     // Constrain the cursor position within the map boundaries
     const constrainedX = Math.max(rect.left + cursorRadius, Math.min(position.clientX, rect.right - cursorRadius))
@@ -213,13 +216,17 @@ export function useCustomCursor(size: number = 76) {
   }
 
   const handleContainerEnter = () => {
-    state.value.isVisible = true
-    updateCursorVisibility(true)
+    if (!state.value.isTouchDevice) {
+      state.value.isVisible = true
+      updateCursorVisibility(true)
+    }
   }
 
   const handleContainerLeave = () => {
-    state.value.isVisible = false
-    updateCursorVisibility(false)
+    if (!state.value.isTouchDevice) {
+      state.value.isVisible = false
+      updateCursorVisibility(false)
+    }
   }
 
   const handleTouchStart = (e: Event) => {
@@ -227,14 +234,12 @@ export function useCustomCursor(size: number = 76) {
     if (!touch || !state.value.element || !containerRef.value) return
 
     const rect = containerRef.value.getBoundingClientRect()
-    const cursorRadius = 38 // Half of the cursor size (76/2)
+    const cursorRadius = size / 2
 
     // Only handle touch events that start within the map boundaries
     if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
         touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-      // On mobile, always show and position the cursor at the touch point
       state.value.isDragging = true
-      state.value.isTouchDevice = true
       state.value.isVisible = true
       updateCursorVisibility(true)
       updateCursorPosition(state.value.element, {
@@ -262,6 +267,7 @@ export function useCustomCursor(size: number = 76) {
 
     const { x: cursorX, y: cursorY } = getElementCenter(state.value.element)
 
+    // Only check for correctness when the user finishes dragging
     const touchedCountries = findTouchedCountries(
       containerRef.value,
       cursorX,
@@ -270,7 +276,13 @@ export function useCustomCursor(size: number = 76) {
     )
 
     if (touchedCountries.length > 0) {
-      dispatchMapClickEvent(containerRef.value, cursorX, cursorY)
+      if (emit) {
+        // Directly emit the event instead of dispatching a click
+        emit('mapClicked', touchedCountries)
+      } else {
+        // Fallback to click event for backward compatibility
+        dispatchMapClickEvent(containerRef.value, cursorX, cursorY)
+      }
     }
 
     state.value.isDragging = false
@@ -281,7 +293,11 @@ export function useCustomCursor(size: number = 76) {
   onMounted(() => {
     if (!containerRef.value) return
 
-    state.value.isTouchDevice = 'ontouchstart' in window
+    // Detect touch device once on mount
+    state.value.isTouchDevice = 'ontouchstart' in window || 
+                               navigator.maxTouchPoints > 0 || 
+                               (navigator as any).msMaxTouchPoints > 0
+
     state.value.element = createCursorElement(size)
     applyCursorStyles(size)
 
@@ -289,14 +305,16 @@ export function useCustomCursor(size: number = 76) {
     initializeCursorPosition()
 
     if (!state.value.isTouchDevice) {
+      // Mouse device event listeners
       document.addEventListener('mousemove', handleMouseMove)
       containerRef.value.addEventListener('mouseenter', handleContainerEnter)
       containerRef.value.addEventListener('mouseleave', handleContainerLeave)
+    } else {
+      // Touch device event listeners - only for drag and drop
+      document.addEventListener('touchstart', handleTouchStart, { passive: false })
+      document.addEventListener('touchmove', handleTouchMove)
+      document.addEventListener('touchend', handleTouchEnd)
     }
-
-    document.addEventListener('touchstart', handleTouchStart, { passive: false })
-    document.addEventListener('touchmove', handleTouchMove)
-    document.addEventListener('touchend', handleTouchEnd)
 
     // Add resize handler to reposition cursor if needed
     window.addEventListener('resize', initializeCursorPosition)
@@ -307,11 +325,12 @@ export function useCustomCursor(size: number = 76) {
       document.removeEventListener('mousemove', handleMouseMove)
       containerRef.value.removeEventListener('mouseenter', handleContainerEnter)
       containerRef.value.removeEventListener('mouseleave', handleContainerLeave)
+    } else {
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleTouchEnd)
     }
 
-    document.removeEventListener('touchstart', handleTouchStart)
-    document.removeEventListener('touchmove', handleTouchMove)
-    document.removeEventListener('touchend', handleTouchEnd)
     window.removeEventListener('resize', initializeCursorPosition)
 
     if (state.value.element?.parentNode) {

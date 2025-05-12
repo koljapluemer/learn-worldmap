@@ -18,7 +18,7 @@ const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
 }>()
 
-const { containerRef, findTouchedCountries } = useCustomCursor(76)
+const { containerRef, findTouchedCountries } = useCustomCursor(76, emit)
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<FeatureCollection>(rawMapData as FeatureCollection)
@@ -84,6 +84,11 @@ const calculateDistanceToCountryCenter = (clickX: number, clickY: number): numbe
 }
 
 const handleMapClick = (event: Event) => {
+  // If it's a touch device, completely ignore click events
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    return
+  }
+
   event.preventDefault()
   event.stopPropagation()
   
@@ -93,12 +98,6 @@ const handleMapClick = (event: Event) => {
   if (event instanceof MouseEvent) {
     cursorX = event.clientX
     cursorY = event.clientY
-  } else if (typeof TouchEvent !== 'undefined' && event instanceof TouchEvent) {
-    // Handle both touchstart and touchend events
-    const touch = event.type === 'touchend' ? event.changedTouches[0] : event.touches[0]
-    if (!touch) return
-    cursorX = touch.clientX
-    cursorY = touch.clientY
   } else {
     return // Invalid event type
   }
@@ -346,10 +345,10 @@ onMounted(async () => {
   // Debug: Log number of paths created
   console.log('Number of paths created:', svg.value.selectAll('path').size());
 
-  // Add click and touch handlers
-  containerRef.value.addEventListener('click', handleMapClick)
-  containerRef.value.addEventListener('touchstart', handleMapClick, { passive: false })
-  containerRef.value.addEventListener('touchend', handleMapClick)
+  // Only add click handler for non-touch devices
+  if (!('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+    containerRef.value.addEventListener('click', handleMapClick)
+  }
 
   // Enable cursor tracking
   containerRef.value.classList.add('cursor-tracking')
@@ -365,8 +364,6 @@ onUnmounted(() => {
   // Clean up click handlers if containerRef still exists
   if (containerRef.value) {
     containerRef.value.removeEventListener('click', handleMapClick)
-    containerRef.value.removeEventListener('touchstart', handleMapClick)
-    containerRef.value.removeEventListener('touchend', handleMapClick)
   }
 })
 </script>
