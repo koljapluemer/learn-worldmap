@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { DEFAULT_MAP_SETTINGS, getMapSettings } from '@/modules/misc-views/settings-view/defaultSettings'
+import { DEFAULT_MAP_SETTINGS, getMapSettings } from '@/modules/settings-view/defaultSettings'
 
 // Get initial settings
 const settings = ref(getMapSettings())

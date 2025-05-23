@@ -3,13 +3,6 @@
     <header class="bg-base-100 shadow-sm p-1 ">
       <div class="flex items-center justify-between">
         <h1 class="text-xs md:text-base font-medium">Learn the World Map</h1>
-        <ul class="flex gap-0.5 md:gap-1">
-          <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'play' }">Play</router-link></li>
-          <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'playCustom' }">Custom</router-link></li>
-          <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'challenge' }">Challenge</router-link></li>
-          <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'stats' }">Stats</router-link></li>
-          <li><router-link class="btn btn-xs md:btn-sm" :to="{ name: 'settings' }">Settings</router-link></li>
-        </ul>
       </div>
     </header>
 
@@ -19,7 +12,7 @@
 
     <!-- Main content area - no margins/padding -->
     <div class="relative">
-      <RouterView />
+      <Play />
     </div>
 
     <!-- Footer -->
@@ -45,5 +38,5 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import Play from '@/modules/play/Play.vue';
 </script>

@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted, watch } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from './useCustomCursor';
 import rawMapData from '@/modules/map-data/map.geo.json'
-import { getMapSettings } from '@/modules/misc-views/settings-view/defaultSettings';
+import { getMapSettings } from '@/modules/settings-view/defaultSettings';
 import type { FeatureCollection } from 'geojson'
 
 const props = defineProps<{

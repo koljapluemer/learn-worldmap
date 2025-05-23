@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
-import { useLearningProgress } from '@/modules/play/play-modes/standard-play/standard-play-progress-bar/useLearningProgress'
-import WorldMapGame from '@/modules/play/map-renderer/WorldMapGame.vue'
-import FilterModal from './filter-modal/FilterModal.vue'
-import { useCountrySelection } from './filter-modal/tabs/useCountrySelection'
+import { useLearningProgress } from '@/modules/standard-play-progress-bar/useLearningProgress'
+import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
+import FilterModal from '@/modules/filter-modal/FilterModal.vue'
+import { useCountrySelection } from '@/modules/filter-modal/selections/useCountrySelection'
 
 import allCountries from '@/modules/map-data/country-lists/all-countries.json'
 

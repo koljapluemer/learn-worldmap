@@ -1,12 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
     <div class="flex items-center gap-4 mb-6">
-      <router-link 
-        :to="{ name: 'stats' }" 
-        class="btn btn-ghost"
-      >
-        ← Back to Stats
-      </router-link>
       <h1 class="text-2xl font-bold">Learning Progress for {{ country }}</h1>
     </div>
 

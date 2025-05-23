@@ -1,2 +1,0 @@
-id,deviceId,timestamp,country,msFromExerciseToFirstClick,msFromExerciseToFinishClick,numberOfClicksNeeded,distanceOfFirstClickToCenterOfCountry
-1,550e8400-e29b-41d4-a716-446655440000,2024-03-20T14:30:00.000Z,France,1500,3000,2,156.7 
