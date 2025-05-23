@@ -53,6 +53,8 @@ export function useDailyChallenge() {
       const zoomLevel = seededRandomInt(seed + i + 1000, 100, 176)
       challengeCountries.push({ country, zoomLevel })
     }
+
+    console.log('dailyChallenge countries', challengeCountries)
     
     return challengeCountries
   })
