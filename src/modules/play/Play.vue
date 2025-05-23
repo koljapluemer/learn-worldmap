@@ -39,11 +39,12 @@ watch(filteredCountries, (newVal) => {
 </script>
 
 <template>
-  <div class="container mx-auto">
-    <!-- Filter Button -->
-    <div class="p-4 w-full">
+  <header class="flex flex-row justify-between items-center p-1">
+    <h1 class="font-bold">Learn the World Map</h1>
+
+    <nav>
       <button 
-        class="btn btn-primary gap-2 w-full"
+        class="btn btn-primary gap-2"
         @click="isModalOpen = true"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -51,8 +52,9 @@ watch(filteredCountries, (newVal) => {
         </svg>
         Filter Countries
       </button>
-    </div>
-
+    </nav>
+  </header>
+  <main>
     <!-- Game Component -->
     <WorldMapGame
       v-if="targetCountryToClick && selectedCountries.length > 0"
@@ -75,5 +77,5 @@ watch(filteredCountries, (newVal) => {
       :is-open="isModalOpen"
       @close="isModalOpen = false"
     />
-  </div>
+  </main>
 </template>
