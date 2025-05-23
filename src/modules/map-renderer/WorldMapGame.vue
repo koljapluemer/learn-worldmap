@@ -170,18 +170,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center">
-    <!-- Game Messages -->
-    <div class="card card-border p-2 m-2">
-      <div class="card-title" v-html="feedbackMessage">
-      </div>
-    </div>
-
+  <div class="flex flex-col justify-center items-center relative">
     <!-- Map Container -->
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden card card-border">
       <WorldMap :country-to-highlight="countryToHighlight" :highlight-color="highlightColor"
         :use-circle-around-highlight="useCircleAroundHighlight" :zoom-level="zoomLevel"
         :target-country="targetCountryToClick" @map-clicked="handleMapClicked" />
+    </div>
+
+    <!-- Game Messages -->
+    <div class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center" v-html="feedbackMessage">
     </div>
   </div>
 </template>
