@@ -7,6 +7,9 @@ import FilterModal from '@/modules/filter-modal/FilterModal.vue'
 import { useCountrySelection } from '@/modules/filter-modal/selections/useCountrySelection'
 
 import allCountries from '@/modules/map-data/country-lists/all-countries.json'
+import IconFilter from '../icons/IconFilter.vue'
+import IconSettings from '../icons/IconSettings.vue'
+import IconStats from '../icons/IconStats.vue'
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
@@ -16,8 +19,9 @@ const { setAvailableCountries: setProgressCountries, updateProgress } = useLearn
 const { selectedCountries } = useCountrySelection()
 
 // Modal state
-const isModalOpen = ref(false)
-
+const isFilterModalOpen = ref(false)
+const isSettingsModalOpen = ref(false)
+const isStatsModalOpen = ref(false)
 // Filtered countries based on selected countries
 const filteredCountries = computed(() => {
   return allCountries.filter(country => selectedCountries.value.includes(country))
@@ -42,15 +46,27 @@ watch(filteredCountries, (newVal) => {
   <header class="flex flex-row justify-between items-center p-1">
     <h1 class="font-bold">Learn the World Map</h1>
 
-    <nav>
+    <nav class="flex flex-row gap-2">
       <button 
-        class="btn btn-primary gap-2"
-        @click="isModalOpen = true"
+        class="btn"
+        @click="isFilterModalOpen = true"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-        </svg>
-        Filter Countries
+        <IconFilter />
+        <span class="hidden md:block">Filter Countries</span>
+      </button>
+      <button 
+        class="btn"
+        @click="isSettingsModalOpen = true"
+      >
+        <IconSettings />
+        <span class="hidden md:block">Settings</span>
+      </button>
+      <button 
+        class="btn"
+        @click="isStatsModalOpen = true"
+      >
+        <IconStats />
+        <span class="hidden md:block">Stats</span>
       </button>
     </nav>
   </header>
@@ -74,8 +90,8 @@ watch(filteredCountries, (newVal) => {
 
     <!-- Filter Modal -->
     <FilterModal
-      :is-open="isModalOpen"
-      @close="isModalOpen = false"
+      :is-open="isFilterModalOpen"
+      @close="isFilterModalOpen = false"
     />
   </main>
 </template>
