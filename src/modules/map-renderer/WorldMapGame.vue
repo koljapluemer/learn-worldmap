@@ -175,7 +175,7 @@ onUnmounted(() => {
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden card card-border">
       <WorldMap :country-to-highlight="countryToHighlight" :highlight-color="highlightColor"
         :use-circle-around-highlight="useCircleAroundHighlight" :zoom-level="zoomLevel"
-        :target-country="targetCountryToClick" @map-clicked="handleMapClicked" />
+        :target-country="targetCountryToClick" @map-clicked="handleMapClicked" :is-interactive="true" />
     </div>
 
     <!-- Game Messages -->
