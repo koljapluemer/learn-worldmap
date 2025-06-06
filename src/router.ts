@@ -3,6 +3,7 @@ import Play from './modules/play/Play.vue';
 import StatsView from './modules/stats-view/main-stats/StatsView.vue';
 import CountryStatsView from './modules/stats-view/per-country-stats/CountryStatsView.vue';
 import SettingsView from './modules/settings-view/SettingsView.vue';
+import CreateLearningGoals from './modules/admin/create-learning-goals/CreateLearningGoals.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -31,6 +32,11 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: SettingsView
+    },
+    {
+      path: '/admin/goals',
+      name: 'adminGoals',
+      component: CreateLearningGoals
     }
   ]
 });

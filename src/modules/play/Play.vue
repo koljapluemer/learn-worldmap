@@ -6,7 +6,6 @@ import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
 import { useCountrySelection } from '@/modules/filter-view/selections/useCountrySelection'
 
 import allCountries from '@/modules/map-data/country-lists/all-countries.json'
-import Header from '../header-footer/Header.vue'
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
