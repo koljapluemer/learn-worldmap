@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import WorldMap from '@/modules/map-renderer/WorldMap.vue'
+import countryList from '@/modules/map-data/country-lists/all-countries.json'
 
 // Component state
-const selectedCountry = ref<string>('')
+const selectedCountry = ref('')
 
 // Props and emits
 defineProps<{
@@ -13,6 +14,15 @@ defineProps<{
 defineEmits<{
   // Add emits if needed
 }>()
+
+function pickRandomCountry() {
+  const idx = Math.floor(Math.random() * countryList.length)
+  selectedCountry.value = countryList[idx]
+}
+
+onMounted(() => {
+  pickRandomCountry()
+})
 </script>
 
 <template>
@@ -32,9 +42,9 @@ defineEmits<{
       </div>
 
       <!-- Controls Section -->
-      <div class="bg-base-200 p-4 rounded-lg">
-        <h2 class="text-xl font-semibold mb-4">Learning Goals Configuration</h2>
-        <!-- Add your controls here -->
+      <div class="bg-base-200 p-4 rounded-lg flex flex-col items-start">
+        <button class="btn btn-primary mb-4" @click="pickRandomCountry">Random Country</button>
+        <div class="text-lg">Current: <span class="font-bold">{{ selectedCountry }}</span></div>
       </div>
     </div>
   </div>
