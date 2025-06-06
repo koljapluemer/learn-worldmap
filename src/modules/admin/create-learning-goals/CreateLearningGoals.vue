@@ -12,10 +12,55 @@ const pendingZoomLevel3 = ref(zoomLevel3.value)
 const enabled2 = ref(true)
 const enabled3 = ref(true)
 
+function getLearningGoals() {
+    const raw = localStorage.getItem('learningGoals')
+    return raw ? JSON.parse(raw) : {}
+}
 
-function pickRandomCountry() {
-    const idx = Math.floor(Math.random() * countryList.length)
-    selectedCountry.value = countryList[idx]
+function setLearningGoals(goals: any) {
+    localStorage.setItem('learningGoals', JSON.stringify(goals, null, 2))
+}
+
+function saveAndNext() {
+    const goals = getLearningGoals()
+    const country = selectedCountry.value
+    if (!goals[country]) goals[country] = []
+    // Always add world goal
+    goals[country].push({
+        name: `Find ${country} on the worldmap`,
+        zoom: 100,
+        scope: 'world'
+    })
+    // Add region goal if enabled
+    if (enabled2.value) {
+        goals[country].push({
+            name: `Find ${country} in its region`,
+            zoom: zoomLevel.value,
+            scope: 'region'
+        })
+    }
+    // Add neighborhood goal if enabled
+    if (enabled3.value) {
+        goals[country].push({
+            name: `Find ${country} in its neighborhood`,
+            zoom: zoomLevel3.value,
+            scope: 'neighborhood'
+        })
+    }
+    setLearningGoals(goals)
+    // Pick a new country not yet in goals
+    const remaining = countryList.filter(c => !goals[c])
+    if (remaining.length > 0) {
+        selectedCountry.value = remaining[Math.floor(Math.random() * remaining.length)]
+    } else {
+        selectedCountry.value = ''
+        alert('All countries done!')
+    }
+}
+
+function logLearningGoals() {
+    const goals = getLearningGoals()
+    console.log(goals)
 }
 
 function commitZoomLevel2() {
@@ -26,7 +71,14 @@ function commitZoomLevel3() {
 }
 
 onMounted(() => {
-    pickRandomCountry()
+    // Pick a random country not yet in goals
+    const goals = getLearningGoals()
+    const remaining = countryList.filter(c => !goals[c])
+    if (remaining.length > 0) {
+        selectedCountry.value = remaining[Math.floor(Math.random() * remaining.length)]
+    } else {
+        selectedCountry.value = ''
+    }
     pendingZoomLevel2.value = zoomLevel.value
     pendingZoomLevel3.value = zoomLevel3.value
 })
@@ -36,7 +88,8 @@ onMounted(() => {
 <template>
     <div class="container mx-auto p-4">
         <div class="flex flex-col items-start mb-4 gap-2">
-            <button class="btn btn-primary" @click="pickRandomCountry">Random Country</button>
+            <button class="btn btn-primary" @click="saveAndNext">Save and Next</button>
+            <button class="btn btn-secondary" @click="logLearningGoals">Log Data</button>
             <div class="text-lg">Current: <span class="font-bold">{{ selectedCountry }}</span></div>
         </div>
         <div class="flex flex-row gap-4">
