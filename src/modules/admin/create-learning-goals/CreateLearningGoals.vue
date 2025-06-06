@@ -103,15 +103,25 @@ onMounted(() => {
                 <div class="flex items-center w-full mb-2 gap-2">
                     <input type="checkbox" v-model="enabled2" id="enable2" class="toggle toggle-primary" />
                     <label for="enable2" class="select-none font-semibold">Enable</label>
-                    <input type="range" min="90" max="150" v-model.number="pendingZoomLevel2" class="range range-primary flex-1 mx-2"
+                    <input type="range" min="101" max="150" v-model.number="pendingZoomLevel2" class="range range-primary flex-1 mx-2"
                         @change="commitZoomLevel2" @mouseup="commitZoomLevel2" />
-                    <input type="number" min="90" max="150" v-model.number="pendingZoomLevel2" class="input input-bordered w-16 text-right"
+                    <input type="number" min="101" max="150" v-model.number="pendingZoomLevel2" class="input input-bordered w-16 text-right"
                         @change="commitZoomLevel2" @blur="commitZoomLevel2" />
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div v-for="i in 4" :key="'map2-' + i + '-' + zoomLevel" class="overflow-hidden relative" style="width: 300px; height: 150px;">
+                    <!-- Landscape maps stacked -->
+                    <div v-for="i in 2" :key="'map2-landscape-' + i + '-' + zoomLevel"
+                        class="overflow-hidden relative" style="width: 300px; height: 150px;">
                         <WorldMap :isInteractive="false" :countryToHighlight="selectedCountry" :highlightColor="'#3b82f6'"
                             :zoomLevel="zoomLevel" :targetCountry="selectedCountry" />
+                    </div>
+                    <!-- Mobile maps side by side -->
+                    <div class="flex flex-row gap-2 mt-2">
+                        <div v-for="i in 2" :key="'map2-mobile-' + i + '-' + zoomLevel"
+                            class="overflow-hidden relative" style="width: 180px; height: 320px;">
+                            <WorldMap :isInteractive="false" :countryToHighlight="selectedCountry" :highlightColor="'#3b82f6'"
+                                :zoomLevel="zoomLevel" :targetCountry="selectedCountry" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,9 +136,19 @@ onMounted(() => {
                         @change="commitZoomLevel3" @blur="commitZoomLevel3" />
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div v-for="i in 4" :key="'map3-' + i + '-' + zoomLevel3" class="overflow-hidden relative" style="width: 300px; height: 150px;">
+                    <!-- Landscape maps stacked -->
+                    <div v-for="i in 2" :key="'map3-landscape-' + i + '-' + zoomLevel3"
+                        class="overflow-hidden relative" style="width: 300px; height: 150px;">
                         <WorldMap :isInteractive="false" :countryToHighlight="selectedCountry" :highlightColor="'#3b82f6'"
                             :zoomLevel="zoomLevel3" :targetCountry="selectedCountry" />
+                    </div>
+                    <!-- Mobile maps side by side -->
+                    <div class="flex flex-row gap-2 mt-2">
+                        <div v-for="i in 2" :key="'map3-mobile-' + i + '-' + zoomLevel3"
+                            class="overflow-hidden relative" style="width: 180px; height: 320px;">
+                            <WorldMap :isInteractive="false" :countryToHighlight="selectedCountry" :highlightColor="'#3b82f6'"
+                                :zoomLevel="zoomLevel3" :targetCountry="selectedCountry" />
+                        </div>
                     </div>
                 </div>
             </div>
