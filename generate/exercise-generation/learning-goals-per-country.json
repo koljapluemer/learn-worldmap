@@ -1,0 +1,538 @@
+{
+    "Pitcairn Is.": [
+      {
+        "name": "Find Pitcairn Is. on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      }
+    ],
+    "Barbados": [
+      {
+        "name": "Find Barbados on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Barbados in its region",
+        "zoom": 102,
+        "scope": "region"
+      },
+      {
+        "name": "Find Barbados in its neighborhood",
+        "zoom": 104,
+        "scope": "neighborhood"
+      }
+    ],
+    "Ireland": [
+      {
+        "name": "Find Ireland on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Ireland in its region",
+        "zoom": 114,
+        "scope": "region"
+      },
+      {
+        "name": "Find Ireland in its neighborhood",
+        "zoom": 154,
+        "scope": "neighborhood"
+      }
+    ],
+    "Bosnia and Herz.": [
+      {
+        "name": "Find Bosnia and Herz. on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Bosnia and Herz. in its region",
+        "zoom": 114,
+        "scope": "region"
+      },
+      {
+        "name": "Find Bosnia and Herz. in its neighborhood",
+        "zoom": 154,
+        "scope": "neighborhood"
+      }
+    ],
+    "S. Sudan": [
+      {
+        "name": "Find S. Sudan on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find S. Sudan in its region",
+        "zoom": 114,
+        "scope": "region"
+      },
+      {
+        "name": "Find S. Sudan in its neighborhood",
+        "zoom": 154,
+        "scope": "neighborhood"
+      }
+    ],
+    "Sierra Leone": [
+      {
+        "name": "Find Sierra Leone on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Sierra Leone in its region",
+        "zoom": 112,
+        "scope": "region"
+      },
+      {
+        "name": "Find Sierra Leone in its neighborhood",
+        "zoom": 146,
+        "scope": "neighborhood"
+      }
+    ],
+    "Haiti": [
+      {
+        "name": "Find Haiti on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Haiti in its region",
+        "zoom": 110,
+        "scope": "region"
+      },
+      {
+        "name": "Find Haiti in its neighborhood",
+        "zoom": 137,
+        "scope": "neighborhood"
+      }
+    ],
+    "Canada": [
+      {
+        "name": "Find Canada on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      }
+    ],
+    "Albania": [
+      {
+        "name": "Find Albania on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Albania in its region",
+        "zoom": 113,
+        "scope": "region"
+      },
+      {
+        "name": "Find Albania in its neighborhood",
+        "zoom": 145,
+        "scope": "neighborhood"
+      }
+    ],
+    "Chile": [
+      {
+        "name": "Find Chile on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Chile in its region",
+        "zoom": 150,
+        "scope": "region"
+      }
+    ],
+    "China": [
+      {
+        "name": "Find China on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find China in its region",
+        "zoom": 134,
+        "scope": "region"
+      },
+      {
+        "name": "Find China in its neighborhood",
+        "zoom": 200,
+        "scope": "neighborhood"
+      }
+    ],
+    "Faeroe Is.": [
+      {
+        "name": "Find Faeroe Is. on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Faeroe Is. in its region",
+        "zoom": 103,
+        "scope": "region"
+      },
+      {
+        "name": "Find Faeroe Is. in its neighborhood",
+        "zoom": 106,
+        "scope": "neighborhood"
+      }
+    ],
+    "Cabo Verde": [
+      {
+        "name": "Find Cabo Verde on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Cabo Verde in its region",
+        "zoom": 105,
+        "scope": "region"
+      },
+      {
+        "name": "Find Cabo Verde in its neighborhood",
+        "zoom": 110,
+        "scope": "neighborhood"
+      }
+    ],
+    "Myanmar": [
+      {
+        "name": "Find Myanmar on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Myanmar in its region",
+        "zoom": 122,
+        "scope": "region"
+      },
+      {
+        "name": "Find Myanmar in its neighborhood",
+        "zoom": 170,
+        "scope": "neighborhood"
+      }
+    ],
+    "Eq. Guinea": [
+      {
+        "name": "Find Eq. Guinea on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Eq. Guinea in its region",
+        "zoom": 110,
+        "scope": "region"
+      },
+      {
+        "name": "Find Eq. Guinea in its neighborhood",
+        "zoom": 139,
+        "scope": "neighborhood"
+      }
+    ],
+    "Guinea": [
+      {
+        "name": "Find Guinea on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Guinea in its region",
+        "zoom": 116,
+        "scope": "region"
+      },
+      {
+        "name": "Find Guinea in its neighborhood",
+        "zoom": 159,
+        "scope": "neighborhood"
+      }
+    ],
+    "Niger": [
+      {
+        "name": "Find Niger on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Niger in its region",
+        "zoom": 122,
+        "scope": "region"
+      },
+      {
+        "name": "Find Niger in its neighborhood",
+        "zoom": 182,
+        "scope": "neighborhood"
+      }
+    ],
+    "Belize": [
+      {
+        "name": "Find Belize on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Belize in its region",
+        "zoom": 106,
+        "scope": "region"
+      },
+      {
+        "name": "Find Belize in its neighborhood",
+        "zoom": 147,
+        "scope": "neighborhood"
+      }
+    ],
+    "Macao": [
+      {
+        "name": "Find Macao on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Macao in its region",
+        "zoom": 101,
+        "scope": "region"
+      },
+      {
+        "name": "Find Macao in its neighborhood",
+        "zoom": 104,
+        "scope": "neighborhood"
+      }
+    ],
+    "Afghanistan": [
+      {
+        "name": "Find Afghanistan on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Afghanistan in its region",
+        "zoom": 121,
+        "scope": "region"
+      },
+      {
+        "name": "Find Afghanistan in its neighborhood",
+        "zoom": 169,
+        "scope": "neighborhood"
+      }
+    ],
+    "Kuwait": [
+      {
+        "name": "Find Kuwait on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Kuwait in its region",
+        "zoom": 104,
+        "scope": "region"
+      },
+      {
+        "name": "Find Kuwait in its neighborhood",
+        "zoom": 121,
+        "scope": "neighborhood"
+      }
+    ],
+    "Mali": [
+      {
+        "name": "Find Mali on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Mali in its region",
+        "zoom": 118,
+        "scope": "region"
+      },
+      {
+        "name": "Find Mali in its neighborhood",
+        "zoom": 166,
+        "scope": "neighborhood"
+      }
+    ],
+    "South Korea": [
+      {
+        "name": "Find South Korea on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find South Korea in its region",
+        "zoom": 109,
+        "scope": "region"
+      },
+      {
+        "name": "Find South Korea in its neighborhood",
+        "zoom": 157,
+        "scope": "neighborhood"
+      }
+    ],
+    "Nicaragua": [
+      {
+        "name": "Find Nicaragua on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Nicaragua in its region",
+        "zoom": 109,
+        "scope": "region"
+      },
+      {
+        "name": "Find Nicaragua in its neighborhood",
+        "zoom": 142,
+        "scope": "neighborhood"
+      }
+    ],
+    "Palau": [
+      {
+        "name": "Find Palau on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Palau in its region",
+        "zoom": 113,
+        "scope": "region"
+      },
+      {
+        "name": "Find Palau in its neighborhood",
+        "zoom": 131,
+        "scope": "neighborhood"
+      }
+    ],
+    "Sweden": [
+      {
+        "name": "Find Sweden on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Sweden in its region",
+        "zoom": 129,
+        "scope": "region"
+      },
+      {
+        "name": "Find Sweden in its neighborhood",
+        "zoom": 165,
+        "scope": "neighborhood"
+      }
+    ],
+    "Maldives": [
+      {
+        "name": "Find Maldives on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Maldives in its region",
+        "zoom": 101,
+        "scope": "region"
+      },
+      {
+        "name": "Find Maldives in its neighborhood",
+        "zoom": 102,
+        "scope": "neighborhood"
+      }
+    ],
+    "Venezuela": [
+      {
+        "name": "Find Venezuela on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Venezuela in its region",
+        "zoom": 118,
+        "scope": "region"
+      },
+      {
+        "name": "Find Venezuela in its neighborhood",
+        "zoom": 173,
+        "scope": "neighborhood"
+      }
+    ],
+    "Peru": [
+      {
+        "name": "Find Peru on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Peru in its region",
+        "zoom": 118,
+        "scope": "region"
+      },
+      {
+        "name": "Find Peru in its neighborhood",
+        "zoom": 173,
+        "scope": "neighborhood"
+      }
+    ],
+    "Syria": [
+      {
+        "name": "Find Syria on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Syria in its region",
+        "zoom": 115,
+        "scope": "region"
+      },
+      {
+        "name": "Find Syria in its neighborhood",
+        "zoom": 154,
+        "scope": "neighborhood"
+      }
+    ],
+    "Mozambique": [
+      {
+        "name": "Find Mozambique on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Mozambique in its region",
+        "zoom": 116,
+        "scope": "region"
+      },
+      {
+        "name": "Find Mozambique in its neighborhood",
+        "zoom": 162,
+        "scope": "neighborhood"
+      }
+    ],
+    "Philippines": [
+      {
+        "name": "Find Philippines on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Philippines in its region",
+        "zoom": 116,
+        "scope": "region"
+      },
+      {
+        "name": "Find Philippines in its neighborhood",
+        "zoom": 162,
+        "scope": "neighborhood"
+      }
+    ],
+    "Italy": [
+      {
+        "name": "Find Italy on the worldmap",
+        "zoom": 100,
+        "scope": "world"
+      },
+      {
+        "name": "Find Italy in its region",
+        "zoom": 128,
+        "scope": "region"
+      },
+      {
+        "name": "Find Italy in its neighborhood",
+        "zoom": 200,
+        "scope": "neighborhood"
+      }
+    ]
+  }
