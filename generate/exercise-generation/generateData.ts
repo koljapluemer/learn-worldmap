@@ -12,7 +12,6 @@ interface CountryExercise {
 }
 
 interface LearningGoal {
-  id: string;
   name: string;
   isLesson: boolean;
   associatedLearningGoals?: string[];
@@ -23,7 +22,6 @@ interface LearningGoal {
 }
 
 interface ExerciseTemplate {
-  id: string;
   belongsTo: string;
   instruction: string;
   templateType: {
@@ -59,7 +57,6 @@ function generateLearningGoals(countryExercises: Record<string, CountryExercise[
     const subGoalIds = exercises.map((_, i) => generateId(country, i + 1));
     
     learningGoals[mainGoalId] = {
-      id: mainGoalId,
       name: `Know where ${country} is`,
       isLesson: true,
       associatedLearningGoals: subGoalIds,
@@ -80,7 +77,6 @@ function generateLearningGoals(countryExercises: Record<string, CountryExercise[
       }
       
       learningGoals[goalId] = {
-        id: goalId,
         name: exercise.name,
         isLesson: false,
         blockedBy,
@@ -103,7 +99,6 @@ function generateExerciseTemplates(countryExercises: Record<string, CountryExerc
       const goalId = generateId(country, index + 1);
       
       templates[templateId] = {
-        id: templateId,
         belongsTo: goalId,
         instruction: `$task_pre ${country} $task_post`,
         templateType: {
