@@ -15,6 +15,12 @@ const props = defineProps<{
   targetCountry?: string
 }>()
 
+console.log('[WorldMap] mounted with zoomLevel:', props.zoomLevel)
+
+watch(() => props.zoomLevel, (newVal, oldVal) => {
+  console.log('[WorldMap] zoomLevel prop changed from', oldVal, 'to', newVal)
+})
+
 const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
 }>()
@@ -90,6 +96,7 @@ const handleMapClick = (event: Event) => {
 }
 
 const updateMapTransform = () => {
+  console.log('[WorldMap] updateMapTransform called with zoomLevel:', props.zoomLevel)
   if (!svg.value || !mapData.value || !containerRef.value) return
 
   const width = containerRef.value.clientWidth
@@ -107,7 +114,7 @@ const updateMapTransform = () => {
     if (targetFeature) {
       const countryProjection = d3.geoMercator().fitSize([width, height], targetFeature)
       const countryScale = countryProjection.scale()
-      
+      console.log('zoomLevel', props.zoomLevel)
       const zoomProgress = props.zoomLevel 
         ? Math.min((props.zoomLevel - 100) / 75, 1)
         : 0
