@@ -3,10 +3,10 @@ import { computed, watch } from 'vue'
 import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
 import { useLearningProgress } from '@/modules/standard-play-progress-bar/useLearningProgress'
 import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
-import { useCountrySelection } from '@/modules/filter-modal/selections/useCountrySelection'
+import { useCountrySelection } from '@/modules/filter-view/selections/useCountrySelection'
 
 import allCountries from '@/modules/map-data/country-lists/all-countries.json'
-import Header from './header-and-modals/Header.vue'
+import Header from '../header-footer/Header.vue'
 
 const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
 const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
@@ -38,7 +38,6 @@ watch(filteredCountries, (newVal) => {
 </script>
 
 <template>
-  <Header />
   <main>
     <!-- Game Component -->
     <WorldMapGame

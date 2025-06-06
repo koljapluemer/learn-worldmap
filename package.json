@@ -24,7 +24,8 @@
     "firebase": "^11.8.1",
     "ts-fsrs": "^5.0.0",
     "uuid": "^11.1.0",
-    "vue": "^3.5.14"
+    "vue": "^3.5.14",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@playwright/experimental-ct-vue": "^1.52.0",

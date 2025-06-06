@@ -1,9 +1,10 @@
 <template>
-  <Play />
+  <Header />
+  <router-view />
   <Footer />
 </template>
 
 <script setup lang="ts">
-import Play from '@/modules/play/Play.vue';
-import Footer from '@/modules/footer/Footer.vue';
+import Footer from './modules/header-footer/Footer.vue';
+import Header from './modules/header-footer/Header.vue';
 </script>
