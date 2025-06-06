@@ -1,8 +1,8 @@
 {
-  "pitcairn-is.-1": {
-    "id": "pitcairn-is.-1",
-    "name": "Find Pitcairn Is. on the worldmap",
-    "isLesson": false,
+  "pitcairn-is.-main": {
+    "id": "pitcairn-is.-main",
+    "name": "Know where Pitcairn Is. is",
+    "isLesson": true,
     "associatedLearningGoals": [
       "pitcairn-is.-1"
     ],
@@ -10,13 +10,31 @@
       "country": "Pitcairn Is."
     }
   },
+  "pitcairn-is.-1": {
+    "id": "pitcairn-is.-1",
+    "name": "Find Pitcairn Is. on the worldmap",
+    "isLesson": false,
+    "data": {
+      "country": "Pitcairn Is."
+    }
+  },
+  "barbados-main": {
+    "id": "barbados-main",
+    "name": "Know where Barbados is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "barbados-1",
+      "barbados-2",
+      "barbados-3"
+    ],
+    "data": {
+      "country": "Barbados"
+    }
+  },
   "barbados-1": {
     "id": "barbados-1",
     "name": "Find Barbados on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "barbados-1"
-    ],
     "data": {
       "country": "Barbados"
     }
@@ -25,9 +43,6 @@
     "id": "barbados-2",
     "name": "Find Barbados in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "barbados-1"
-    ],
     "blockedBy": [
       "barbados-1"
     ],
@@ -39,23 +54,31 @@
     "id": "barbados-3",
     "name": "Find Barbados in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "barbados-1"
-    ],
     "blockedBy": [
+      "barbados-1",
       "barbados-2"
     ],
     "data": {
       "country": "Barbados"
     }
   },
+  "ireland-main": {
+    "id": "ireland-main",
+    "name": "Know where Ireland is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "ireland-1",
+      "ireland-2",
+      "ireland-3"
+    ],
+    "data": {
+      "country": "Ireland"
+    }
+  },
   "ireland-1": {
     "id": "ireland-1",
     "name": "Find Ireland on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "ireland-1"
-    ],
     "data": {
       "country": "Ireland"
     }
@@ -64,9 +87,6 @@
     "id": "ireland-2",
     "name": "Find Ireland in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "ireland-1"
-    ],
     "blockedBy": [
       "ireland-1"
     ],
@@ -78,23 +98,31 @@
     "id": "ireland-3",
     "name": "Find Ireland in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "ireland-1"
-    ],
     "blockedBy": [
+      "ireland-1",
       "ireland-2"
     ],
     "data": {
       "country": "Ireland"
     }
   },
+  "bosnia-and-herz.-main": {
+    "id": "bosnia-and-herz.-main",
+    "name": "Know where Bosnia and Herz. is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "bosnia-and-herz.-1",
+      "bosnia-and-herz.-2",
+      "bosnia-and-herz.-3"
+    ],
+    "data": {
+      "country": "Bosnia and Herz."
+    }
+  },
   "bosnia-and-herz.-1": {
     "id": "bosnia-and-herz.-1",
     "name": "Find Bosnia and Herz. on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "bosnia-and-herz.-1"
-    ],
     "data": {
       "country": "Bosnia and Herz."
     }
@@ -103,9 +131,6 @@
     "id": "bosnia-and-herz.-2",
     "name": "Find Bosnia and Herz. in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "bosnia-and-herz.-1"
-    ],
     "blockedBy": [
       "bosnia-and-herz.-1"
     ],
@@ -117,23 +142,31 @@
     "id": "bosnia-and-herz.-3",
     "name": "Find Bosnia and Herz. in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "bosnia-and-herz.-1"
-    ],
     "blockedBy": [
+      "bosnia-and-herz.-1",
       "bosnia-and-herz.-2"
     ],
     "data": {
       "country": "Bosnia and Herz."
     }
   },
+  "s.-sudan-main": {
+    "id": "s.-sudan-main",
+    "name": "Know where S. Sudan is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "s.-sudan-1",
+      "s.-sudan-2",
+      "s.-sudan-3"
+    ],
+    "data": {
+      "country": "S. Sudan"
+    }
+  },
   "s.-sudan-1": {
     "id": "s.-sudan-1",
     "name": "Find S. Sudan on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "s.-sudan-1"
-    ],
     "data": {
       "country": "S. Sudan"
     }
@@ -142,9 +175,6 @@
     "id": "s.-sudan-2",
     "name": "Find S. Sudan in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "s.-sudan-1"
-    ],
     "blockedBy": [
       "s.-sudan-1"
     ],
@@ -156,23 +186,31 @@
     "id": "s.-sudan-3",
     "name": "Find S. Sudan in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "s.-sudan-1"
-    ],
     "blockedBy": [
+      "s.-sudan-1",
       "s.-sudan-2"
     ],
     "data": {
       "country": "S. Sudan"
     }
   },
+  "sierra-leone-main": {
+    "id": "sierra-leone-main",
+    "name": "Know where Sierra Leone is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "sierra-leone-1",
+      "sierra-leone-2",
+      "sierra-leone-3"
+    ],
+    "data": {
+      "country": "Sierra Leone"
+    }
+  },
   "sierra-leone-1": {
     "id": "sierra-leone-1",
     "name": "Find Sierra Leone on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sierra-leone-1"
-    ],
     "data": {
       "country": "Sierra Leone"
     }
@@ -181,9 +219,6 @@
     "id": "sierra-leone-2",
     "name": "Find Sierra Leone in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sierra-leone-1"
-    ],
     "blockedBy": [
       "sierra-leone-1"
     ],
@@ -195,23 +230,31 @@
     "id": "sierra-leone-3",
     "name": "Find Sierra Leone in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sierra-leone-1"
-    ],
     "blockedBy": [
+      "sierra-leone-1",
       "sierra-leone-2"
     ],
     "data": {
       "country": "Sierra Leone"
     }
   },
+  "haiti-main": {
+    "id": "haiti-main",
+    "name": "Know where Haiti is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "haiti-1",
+      "haiti-2",
+      "haiti-3"
+    ],
+    "data": {
+      "country": "Haiti"
+    }
+  },
   "haiti-1": {
     "id": "haiti-1",
     "name": "Find Haiti on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "haiti-1"
-    ],
     "data": {
       "country": "Haiti"
     }
@@ -220,9 +263,6 @@
     "id": "haiti-2",
     "name": "Find Haiti in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "haiti-1"
-    ],
     "blockedBy": [
       "haiti-1"
     ],
@@ -234,20 +274,18 @@
     "id": "haiti-3",
     "name": "Find Haiti in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "haiti-1"
-    ],
     "blockedBy": [
+      "haiti-1",
       "haiti-2"
     ],
     "data": {
       "country": "Haiti"
     }
   },
-  "canada-1": {
-    "id": "canada-1",
-    "name": "Find Canada on the worldmap",
-    "isLesson": false,
+  "canada-main": {
+    "id": "canada-main",
+    "name": "Know where Canada is",
+    "isLesson": true,
     "associatedLearningGoals": [
       "canada-1"
     ],
@@ -255,13 +293,31 @@
       "country": "Canada"
     }
   },
+  "canada-1": {
+    "id": "canada-1",
+    "name": "Find Canada on the worldmap",
+    "isLesson": false,
+    "data": {
+      "country": "Canada"
+    }
+  },
+  "albania-main": {
+    "id": "albania-main",
+    "name": "Know where Albania is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "albania-1",
+      "albania-2",
+      "albania-3"
+    ],
+    "data": {
+      "country": "Albania"
+    }
+  },
   "albania-1": {
     "id": "albania-1",
     "name": "Find Albania on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "albania-1"
-    ],
     "data": {
       "country": "Albania"
     }
@@ -270,9 +326,6 @@
     "id": "albania-2",
     "name": "Find Albania in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "albania-1"
-    ],
     "blockedBy": [
       "albania-1"
     ],
@@ -284,23 +337,30 @@
     "id": "albania-3",
     "name": "Find Albania in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "albania-1"
-    ],
     "blockedBy": [
+      "albania-1",
       "albania-2"
     ],
     "data": {
       "country": "Albania"
     }
   },
+  "chile-main": {
+    "id": "chile-main",
+    "name": "Know where Chile is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "chile-1",
+      "chile-2"
+    ],
+    "data": {
+      "country": "Chile"
+    }
+  },
   "chile-1": {
     "id": "chile-1",
     "name": "Find Chile on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "chile-1"
-    ],
     "data": {
       "country": "Chile"
     }
@@ -309,9 +369,6 @@
     "id": "chile-2",
     "name": "Find Chile in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "chile-1"
-    ],
     "blockedBy": [
       "chile-1"
     ],
@@ -319,13 +376,23 @@
       "country": "Chile"
     }
   },
+  "china-main": {
+    "id": "china-main",
+    "name": "Know where China is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "china-1",
+      "china-2",
+      "china-3"
+    ],
+    "data": {
+      "country": "China"
+    }
+  },
   "china-1": {
     "id": "china-1",
     "name": "Find China on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "china-1"
-    ],
     "data": {
       "country": "China"
     }
@@ -334,9 +401,6 @@
     "id": "china-2",
     "name": "Find China in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "china-1"
-    ],
     "blockedBy": [
       "china-1"
     ],
@@ -348,23 +412,31 @@
     "id": "china-3",
     "name": "Find China in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "china-1"
-    ],
     "blockedBy": [
+      "china-1",
       "china-2"
     ],
     "data": {
       "country": "China"
     }
   },
+  "faeroe-is.-main": {
+    "id": "faeroe-is.-main",
+    "name": "Know where Faeroe Is. is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "faeroe-is.-1",
+      "faeroe-is.-2",
+      "faeroe-is.-3"
+    ],
+    "data": {
+      "country": "Faeroe Is."
+    }
+  },
   "faeroe-is.-1": {
     "id": "faeroe-is.-1",
     "name": "Find Faeroe Is. on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "faeroe-is.-1"
-    ],
     "data": {
       "country": "Faeroe Is."
     }
@@ -373,9 +445,6 @@
     "id": "faeroe-is.-2",
     "name": "Find Faeroe Is. in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "faeroe-is.-1"
-    ],
     "blockedBy": [
       "faeroe-is.-1"
     ],
@@ -387,23 +456,31 @@
     "id": "faeroe-is.-3",
     "name": "Find Faeroe Is. in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "faeroe-is.-1"
-    ],
     "blockedBy": [
+      "faeroe-is.-1",
       "faeroe-is.-2"
     ],
     "data": {
       "country": "Faeroe Is."
     }
   },
+  "cabo-verde-main": {
+    "id": "cabo-verde-main",
+    "name": "Know where Cabo Verde is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "cabo-verde-1",
+      "cabo-verde-2",
+      "cabo-verde-3"
+    ],
+    "data": {
+      "country": "Cabo Verde"
+    }
+  },
   "cabo-verde-1": {
     "id": "cabo-verde-1",
     "name": "Find Cabo Verde on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "cabo-verde-1"
-    ],
     "data": {
       "country": "Cabo Verde"
     }
@@ -412,9 +489,6 @@
     "id": "cabo-verde-2",
     "name": "Find Cabo Verde in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "cabo-verde-1"
-    ],
     "blockedBy": [
       "cabo-verde-1"
     ],
@@ -426,23 +500,31 @@
     "id": "cabo-verde-3",
     "name": "Find Cabo Verde in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "cabo-verde-1"
-    ],
     "blockedBy": [
+      "cabo-verde-1",
       "cabo-verde-2"
     ],
     "data": {
       "country": "Cabo Verde"
     }
   },
+  "myanmar-main": {
+    "id": "myanmar-main",
+    "name": "Know where Myanmar is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "myanmar-1",
+      "myanmar-2",
+      "myanmar-3"
+    ],
+    "data": {
+      "country": "Myanmar"
+    }
+  },
   "myanmar-1": {
     "id": "myanmar-1",
     "name": "Find Myanmar on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "myanmar-1"
-    ],
     "data": {
       "country": "Myanmar"
     }
@@ -451,9 +533,6 @@
     "id": "myanmar-2",
     "name": "Find Myanmar in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "myanmar-1"
-    ],
     "blockedBy": [
       "myanmar-1"
     ],
@@ -465,23 +544,31 @@
     "id": "myanmar-3",
     "name": "Find Myanmar in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "myanmar-1"
-    ],
     "blockedBy": [
+      "myanmar-1",
       "myanmar-2"
     ],
     "data": {
       "country": "Myanmar"
     }
   },
+  "eq.-guinea-main": {
+    "id": "eq.-guinea-main",
+    "name": "Know where Eq. Guinea is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "eq.-guinea-1",
+      "eq.-guinea-2",
+      "eq.-guinea-3"
+    ],
+    "data": {
+      "country": "Eq. Guinea"
+    }
+  },
   "eq.-guinea-1": {
     "id": "eq.-guinea-1",
     "name": "Find Eq. Guinea on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "eq.-guinea-1"
-    ],
     "data": {
       "country": "Eq. Guinea"
     }
@@ -490,9 +577,6 @@
     "id": "eq.-guinea-2",
     "name": "Find Eq. Guinea in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "eq.-guinea-1"
-    ],
     "blockedBy": [
       "eq.-guinea-1"
     ],
@@ -504,23 +588,31 @@
     "id": "eq.-guinea-3",
     "name": "Find Eq. Guinea in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "eq.-guinea-1"
-    ],
     "blockedBy": [
+      "eq.-guinea-1",
       "eq.-guinea-2"
     ],
     "data": {
       "country": "Eq. Guinea"
     }
   },
+  "guinea-main": {
+    "id": "guinea-main",
+    "name": "Know where Guinea is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "guinea-1",
+      "guinea-2",
+      "guinea-3"
+    ],
+    "data": {
+      "country": "Guinea"
+    }
+  },
   "guinea-1": {
     "id": "guinea-1",
     "name": "Find Guinea on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "guinea-1"
-    ],
     "data": {
       "country": "Guinea"
     }
@@ -529,9 +621,6 @@
     "id": "guinea-2",
     "name": "Find Guinea in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "guinea-1"
-    ],
     "blockedBy": [
       "guinea-1"
     ],
@@ -543,23 +632,31 @@
     "id": "guinea-3",
     "name": "Find Guinea in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "guinea-1"
-    ],
     "blockedBy": [
+      "guinea-1",
       "guinea-2"
     ],
     "data": {
       "country": "Guinea"
     }
   },
+  "niger-main": {
+    "id": "niger-main",
+    "name": "Know where Niger is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "niger-1",
+      "niger-2",
+      "niger-3"
+    ],
+    "data": {
+      "country": "Niger"
+    }
+  },
   "niger-1": {
     "id": "niger-1",
     "name": "Find Niger on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "niger-1"
-    ],
     "data": {
       "country": "Niger"
     }
@@ -568,9 +665,6 @@
     "id": "niger-2",
     "name": "Find Niger in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "niger-1"
-    ],
     "blockedBy": [
       "niger-1"
     ],
@@ -582,23 +676,31 @@
     "id": "niger-3",
     "name": "Find Niger in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "niger-1"
-    ],
     "blockedBy": [
+      "niger-1",
       "niger-2"
     ],
     "data": {
       "country": "Niger"
     }
   },
+  "belize-main": {
+    "id": "belize-main",
+    "name": "Know where Belize is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "belize-1",
+      "belize-2",
+      "belize-3"
+    ],
+    "data": {
+      "country": "Belize"
+    }
+  },
   "belize-1": {
     "id": "belize-1",
     "name": "Find Belize on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "belize-1"
-    ],
     "data": {
       "country": "Belize"
     }
@@ -607,9 +709,6 @@
     "id": "belize-2",
     "name": "Find Belize in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "belize-1"
-    ],
     "blockedBy": [
       "belize-1"
     ],
@@ -621,23 +720,31 @@
     "id": "belize-3",
     "name": "Find Belize in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "belize-1"
-    ],
     "blockedBy": [
+      "belize-1",
       "belize-2"
     ],
     "data": {
       "country": "Belize"
     }
   },
+  "macao-main": {
+    "id": "macao-main",
+    "name": "Know where Macao is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "macao-1",
+      "macao-2",
+      "macao-3"
+    ],
+    "data": {
+      "country": "Macao"
+    }
+  },
   "macao-1": {
     "id": "macao-1",
     "name": "Find Macao on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "macao-1"
-    ],
     "data": {
       "country": "Macao"
     }
@@ -646,9 +753,6 @@
     "id": "macao-2",
     "name": "Find Macao in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "macao-1"
-    ],
     "blockedBy": [
       "macao-1"
     ],
@@ -660,23 +764,31 @@
     "id": "macao-3",
     "name": "Find Macao in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "macao-1"
-    ],
     "blockedBy": [
+      "macao-1",
       "macao-2"
     ],
     "data": {
       "country": "Macao"
     }
   },
+  "afghanistan-main": {
+    "id": "afghanistan-main",
+    "name": "Know where Afghanistan is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "afghanistan-1",
+      "afghanistan-2",
+      "afghanistan-3"
+    ],
+    "data": {
+      "country": "Afghanistan"
+    }
+  },
   "afghanistan-1": {
     "id": "afghanistan-1",
     "name": "Find Afghanistan on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "afghanistan-1"
-    ],
     "data": {
       "country": "Afghanistan"
     }
@@ -685,9 +797,6 @@
     "id": "afghanistan-2",
     "name": "Find Afghanistan in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "afghanistan-1"
-    ],
     "blockedBy": [
       "afghanistan-1"
     ],
@@ -699,23 +808,31 @@
     "id": "afghanistan-3",
     "name": "Find Afghanistan in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "afghanistan-1"
-    ],
     "blockedBy": [
+      "afghanistan-1",
       "afghanistan-2"
     ],
     "data": {
       "country": "Afghanistan"
     }
   },
+  "kuwait-main": {
+    "id": "kuwait-main",
+    "name": "Know where Kuwait is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "kuwait-1",
+      "kuwait-2",
+      "kuwait-3"
+    ],
+    "data": {
+      "country": "Kuwait"
+    }
+  },
   "kuwait-1": {
     "id": "kuwait-1",
     "name": "Find Kuwait on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "kuwait-1"
-    ],
     "data": {
       "country": "Kuwait"
     }
@@ -724,9 +841,6 @@
     "id": "kuwait-2",
     "name": "Find Kuwait in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "kuwait-1"
-    ],
     "blockedBy": [
       "kuwait-1"
     ],
@@ -738,23 +852,31 @@
     "id": "kuwait-3",
     "name": "Find Kuwait in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "kuwait-1"
-    ],
     "blockedBy": [
+      "kuwait-1",
       "kuwait-2"
     ],
     "data": {
       "country": "Kuwait"
     }
   },
+  "mali-main": {
+    "id": "mali-main",
+    "name": "Know where Mali is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "mali-1",
+      "mali-2",
+      "mali-3"
+    ],
+    "data": {
+      "country": "Mali"
+    }
+  },
   "mali-1": {
     "id": "mali-1",
     "name": "Find Mali on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mali-1"
-    ],
     "data": {
       "country": "Mali"
     }
@@ -763,9 +885,6 @@
     "id": "mali-2",
     "name": "Find Mali in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mali-1"
-    ],
     "blockedBy": [
       "mali-1"
     ],
@@ -777,23 +896,31 @@
     "id": "mali-3",
     "name": "Find Mali in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mali-1"
-    ],
     "blockedBy": [
+      "mali-1",
       "mali-2"
     ],
     "data": {
       "country": "Mali"
     }
   },
+  "south-korea-main": {
+    "id": "south-korea-main",
+    "name": "Know where South Korea is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "south-korea-1",
+      "south-korea-2",
+      "south-korea-3"
+    ],
+    "data": {
+      "country": "South Korea"
+    }
+  },
   "south-korea-1": {
     "id": "south-korea-1",
     "name": "Find South Korea on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "south-korea-1"
-    ],
     "data": {
       "country": "South Korea"
     }
@@ -802,9 +929,6 @@
     "id": "south-korea-2",
     "name": "Find South Korea in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "south-korea-1"
-    ],
     "blockedBy": [
       "south-korea-1"
     ],
@@ -816,23 +940,31 @@
     "id": "south-korea-3",
     "name": "Find South Korea in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "south-korea-1"
-    ],
     "blockedBy": [
+      "south-korea-1",
       "south-korea-2"
     ],
     "data": {
       "country": "South Korea"
     }
   },
+  "nicaragua-main": {
+    "id": "nicaragua-main",
+    "name": "Know where Nicaragua is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "nicaragua-1",
+      "nicaragua-2",
+      "nicaragua-3"
+    ],
+    "data": {
+      "country": "Nicaragua"
+    }
+  },
   "nicaragua-1": {
     "id": "nicaragua-1",
     "name": "Find Nicaragua on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "nicaragua-1"
-    ],
     "data": {
       "country": "Nicaragua"
     }
@@ -841,9 +973,6 @@
     "id": "nicaragua-2",
     "name": "Find Nicaragua in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "nicaragua-1"
-    ],
     "blockedBy": [
       "nicaragua-1"
     ],
@@ -855,23 +984,31 @@
     "id": "nicaragua-3",
     "name": "Find Nicaragua in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "nicaragua-1"
-    ],
     "blockedBy": [
+      "nicaragua-1",
       "nicaragua-2"
     ],
     "data": {
       "country": "Nicaragua"
     }
   },
+  "palau-main": {
+    "id": "palau-main",
+    "name": "Know where Palau is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "palau-1",
+      "palau-2",
+      "palau-3"
+    ],
+    "data": {
+      "country": "Palau"
+    }
+  },
   "palau-1": {
     "id": "palau-1",
     "name": "Find Palau on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "palau-1"
-    ],
     "data": {
       "country": "Palau"
     }
@@ -880,9 +1017,6 @@
     "id": "palau-2",
     "name": "Find Palau in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "palau-1"
-    ],
     "blockedBy": [
       "palau-1"
     ],
@@ -894,23 +1028,31 @@
     "id": "palau-3",
     "name": "Find Palau in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "palau-1"
-    ],
     "blockedBy": [
+      "palau-1",
       "palau-2"
     ],
     "data": {
       "country": "Palau"
     }
   },
+  "sweden-main": {
+    "id": "sweden-main",
+    "name": "Know where Sweden is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "sweden-1",
+      "sweden-2",
+      "sweden-3"
+    ],
+    "data": {
+      "country": "Sweden"
+    }
+  },
   "sweden-1": {
     "id": "sweden-1",
     "name": "Find Sweden on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sweden-1"
-    ],
     "data": {
       "country": "Sweden"
     }
@@ -919,9 +1061,6 @@
     "id": "sweden-2",
     "name": "Find Sweden in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sweden-1"
-    ],
     "blockedBy": [
       "sweden-1"
     ],
@@ -933,23 +1072,31 @@
     "id": "sweden-3",
     "name": "Find Sweden in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "sweden-1"
-    ],
     "blockedBy": [
+      "sweden-1",
       "sweden-2"
     ],
     "data": {
       "country": "Sweden"
     }
   },
+  "maldives-main": {
+    "id": "maldives-main",
+    "name": "Know where Maldives is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "maldives-1",
+      "maldives-2",
+      "maldives-3"
+    ],
+    "data": {
+      "country": "Maldives"
+    }
+  },
   "maldives-1": {
     "id": "maldives-1",
     "name": "Find Maldives on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "maldives-1"
-    ],
     "data": {
       "country": "Maldives"
     }
@@ -958,9 +1105,6 @@
     "id": "maldives-2",
     "name": "Find Maldives in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "maldives-1"
-    ],
     "blockedBy": [
       "maldives-1"
     ],
@@ -972,23 +1116,31 @@
     "id": "maldives-3",
     "name": "Find Maldives in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "maldives-1"
-    ],
     "blockedBy": [
+      "maldives-1",
       "maldives-2"
     ],
     "data": {
       "country": "Maldives"
     }
   },
+  "venezuela-main": {
+    "id": "venezuela-main",
+    "name": "Know where Venezuela is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "venezuela-1",
+      "venezuela-2",
+      "venezuela-3"
+    ],
+    "data": {
+      "country": "Venezuela"
+    }
+  },
   "venezuela-1": {
     "id": "venezuela-1",
     "name": "Find Venezuela on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "venezuela-1"
-    ],
     "data": {
       "country": "Venezuela"
     }
@@ -997,9 +1149,6 @@
     "id": "venezuela-2",
     "name": "Find Venezuela in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "venezuela-1"
-    ],
     "blockedBy": [
       "venezuela-1"
     ],
@@ -1011,23 +1160,31 @@
     "id": "venezuela-3",
     "name": "Find Venezuela in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "venezuela-1"
-    ],
     "blockedBy": [
+      "venezuela-1",
       "venezuela-2"
     ],
     "data": {
       "country": "Venezuela"
     }
   },
+  "peru-main": {
+    "id": "peru-main",
+    "name": "Know where Peru is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "peru-1",
+      "peru-2",
+      "peru-3"
+    ],
+    "data": {
+      "country": "Peru"
+    }
+  },
   "peru-1": {
     "id": "peru-1",
     "name": "Find Peru on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "peru-1"
-    ],
     "data": {
       "country": "Peru"
     }
@@ -1036,9 +1193,6 @@
     "id": "peru-2",
     "name": "Find Peru in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "peru-1"
-    ],
     "blockedBy": [
       "peru-1"
     ],
@@ -1050,23 +1204,31 @@
     "id": "peru-3",
     "name": "Find Peru in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "peru-1"
-    ],
     "blockedBy": [
+      "peru-1",
       "peru-2"
     ],
     "data": {
       "country": "Peru"
     }
   },
+  "syria-main": {
+    "id": "syria-main",
+    "name": "Know where Syria is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "syria-1",
+      "syria-2",
+      "syria-3"
+    ],
+    "data": {
+      "country": "Syria"
+    }
+  },
   "syria-1": {
     "id": "syria-1",
     "name": "Find Syria on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "syria-1"
-    ],
     "data": {
       "country": "Syria"
     }
@@ -1075,9 +1237,6 @@
     "id": "syria-2",
     "name": "Find Syria in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "syria-1"
-    ],
     "blockedBy": [
       "syria-1"
     ],
@@ -1089,23 +1248,31 @@
     "id": "syria-3",
     "name": "Find Syria in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "syria-1"
-    ],
     "blockedBy": [
+      "syria-1",
       "syria-2"
     ],
     "data": {
       "country": "Syria"
     }
   },
+  "mozambique-main": {
+    "id": "mozambique-main",
+    "name": "Know where Mozambique is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "mozambique-1",
+      "mozambique-2",
+      "mozambique-3"
+    ],
+    "data": {
+      "country": "Mozambique"
+    }
+  },
   "mozambique-1": {
     "id": "mozambique-1",
     "name": "Find Mozambique on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mozambique-1"
-    ],
     "data": {
       "country": "Mozambique"
     }
@@ -1114,9 +1281,6 @@
     "id": "mozambique-2",
     "name": "Find Mozambique in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mozambique-1"
-    ],
     "blockedBy": [
       "mozambique-1"
     ],
@@ -1128,23 +1292,31 @@
     "id": "mozambique-3",
     "name": "Find Mozambique in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "mozambique-1"
-    ],
     "blockedBy": [
+      "mozambique-1",
       "mozambique-2"
     ],
     "data": {
       "country": "Mozambique"
     }
   },
+  "philippines-main": {
+    "id": "philippines-main",
+    "name": "Know where Philippines is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "philippines-1",
+      "philippines-2",
+      "philippines-3"
+    ],
+    "data": {
+      "country": "Philippines"
+    }
+  },
   "philippines-1": {
     "id": "philippines-1",
     "name": "Find Philippines on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "philippines-1"
-    ],
     "data": {
       "country": "Philippines"
     }
@@ -1153,9 +1325,6 @@
     "id": "philippines-2",
     "name": "Find Philippines in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "philippines-1"
-    ],
     "blockedBy": [
       "philippines-1"
     ],
@@ -1167,23 +1336,31 @@
     "id": "philippines-3",
     "name": "Find Philippines in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "philippines-1"
-    ],
     "blockedBy": [
+      "philippines-1",
       "philippines-2"
     ],
     "data": {
       "country": "Philippines"
     }
   },
+  "italy-main": {
+    "id": "italy-main",
+    "name": "Know where Italy is",
+    "isLesson": true,
+    "associatedLearningGoals": [
+      "italy-1",
+      "italy-2",
+      "italy-3"
+    ],
+    "data": {
+      "country": "Italy"
+    }
+  },
   "italy-1": {
     "id": "italy-1",
     "name": "Find Italy on the worldmap",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "italy-1"
-    ],
     "data": {
       "country": "Italy"
     }
@@ -1192,9 +1369,6 @@
     "id": "italy-2",
     "name": "Find Italy in its region",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "italy-1"
-    ],
     "blockedBy": [
       "italy-1"
     ],
@@ -1206,10 +1380,8 @@
     "id": "italy-3",
     "name": "Find Italy in its neighborhood",
     "isLesson": false,
-    "associatedLearningGoals": [
-      "italy-1"
-    ],
     "blockedBy": [
+      "italy-1",
       "italy-2"
     ],
     "data": {

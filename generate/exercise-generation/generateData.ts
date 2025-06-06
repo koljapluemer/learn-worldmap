@@ -15,7 +15,7 @@ interface LearningGoal {
   id: string;
   name: string;
   isLesson: boolean;
-  associatedLearningGoals: string[];
+  associatedLearningGoals?: string[];
   blockedBy?: string[];
   data: {
     country: string;
@@ -42,8 +42,10 @@ interface ExerciseTemplate {
   };
 }
 
-function generateId(country: string, index: number): string {
-  return `${country.toLowerCase().replace(/\s+/g, '-')}-${index}`;
+function generateId(country: string, index: number, isMainLesson: boolean = false): string {
+  return isMainLesson 
+    ? `${country.toLowerCase().replace(/\s+/g, '-')}-main`
+    : `${country.toLowerCase().replace(/\s+/g, '-')}-${index}`;
 }
 
 function generateLearningGoals(countryExercises: Record<string, CountryExercise[]>): Record<string, LearningGoal> {
@@ -53,14 +55,14 @@ function generateLearningGoals(countryExercises: Record<string, CountryExercise[
     if (exercises.length === 0) continue;
     
     // Main lesson goal
-    const mainGoalId = generateId(country, 1);
-    const subGoalIds = exercises.slice(1).map((_, i) => generateId(country, i + 2));
+    const mainGoalId = generateId(country, 1, true);
+    const subGoalIds = exercises.map((_, i) => generateId(country, i + 1));
     
     learningGoals[mainGoalId] = {
       id: mainGoalId,
       name: `Know where ${country} is`,
       isLesson: true,
-      associatedLearningGoals: [mainGoalId, ...subGoalIds],
+      associatedLearningGoals: subGoalIds,
       data: {
         country
       }
@@ -69,13 +71,18 @@ function generateLearningGoals(countryExercises: Record<string, CountryExercise[
     // Sub goals
     exercises.forEach((exercise, index) => {
       const goalId = generateId(country, index + 1);
-      const blockedBy = index > 0 ? [generateId(country, index)] : undefined;
+      let blockedBy: string[] | undefined;
+      
+      if (index === 2) { // Third goal (neighborhood)
+        blockedBy = [generateId(country, 1), generateId(country, 2)];
+      } else if (index === 1) { // Second goal (region)
+        blockedBy = [generateId(country, 1)];
+      }
       
       learningGoals[goalId] = {
         id: goalId,
         name: exercise.name,
         isLesson: false,
-        associatedLearningGoals: [mainGoalId],
         blockedBy,
         data: {
           country
