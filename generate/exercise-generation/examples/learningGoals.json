@@ -1,0 +1,36 @@
+[
+  {
+    "id": "a",
+    "name": "Know where Barbados is",
+    "isLesson": true,
+    "associatedLearningGoals": ["b", "c", "d"],
+
+    "country": "Barbados"
+  },
+  {
+    "id": "b",
+    "name": "Know where Barbados is on the world map",
+    "isLesson": false,
+    "associatedLearningGoals": ["a"],
+
+    "country": "Barbados"
+  },
+  {
+    "id": "c",
+    "name": "Know where Barbados is in its region",
+    "isLesson": false,
+    "associatedLearningGoals": ["a"],
+    "blockedBy": ["b"],
+
+    "country": "Barbados"
+  },
+  {
+    "id": "d",
+    "name": "Know where Barbados is in its neighborhood",
+    "isLesson": false,
+    "associatedLearningGoals": ["a"],
+    "blockedBy": ["b", "c"],
+
+    "country": "Barbados"
+  }
+]
