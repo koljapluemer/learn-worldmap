@@ -91,12 +91,6 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
 
 const handleMapReady = () => {
   isMapReady.value = true
-  if (props.targetCountryToClick) {
-    countryToHighlight.value = undefined
-    nextTick(() => {
-      countryToHighlight.value = props.targetCountryToClick
-    })
-  }
 }
 
 watch(() => props.targetCountryToClick, () => {
