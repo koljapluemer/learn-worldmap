@@ -81,15 +81,10 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#eb4034'
       useCircleAroundHighlight.value = true
-
-      setTimeout(() => {
-        countryToHighlight.value = undefined
-        useCircleAroundHighlight.value = false
-        emit('gameComplete', {
-          country: props.targetCountryToClick,
-          attempts: attempts.value
-        })
-      }, 50)
+      emit('gameComplete', {
+        country: props.targetCountryToClick,
+        attempts: attempts.value
+      })
     }
   }
 }

@@ -11,6 +11,7 @@ const currentLessonId = ref<string | null>(null)
 const currentExercise = ref<Exercise | null>(null)
 const isLoading = ref(true)
 const attempts = ref(0)
+const isSuccess = ref(false)
 
 const { setLessons, handleExerciseCompletion, selectNextLesson, selectNextExercise } = useLessonLearning()
 
@@ -39,14 +40,19 @@ onMounted(async () => {
 
 const handleGameComplete = async (result: { country: string, attempts: number }) => {
   attempts.value = result.attempts
-  if (currentLessonId.value && currentExercise.value) {
-    await handleExerciseCompletion(currentLessonId.value, currentExercise.value, result.attempts)
-    // Select next lesson and exercise
-    currentLessonId.value = await selectNextLesson()
-    if (currentLessonId.value) {
-      currentExercise.value = await selectNextExercise(currentLessonId.value)
+  isSuccess.value = true
+  
+  // Wait a bit before loading next exercise
+  setTimeout(async () => {
+    if (currentLessonId.value && currentExercise.value) {
+      await handleExerciseCompletion(currentLessonId.value, currentExercise.value, result.attempts)
+      currentLessonId.value = await selectNextLesson()
+      if (currentLessonId.value) {
+        currentExercise.value = await selectNextExercise(currentLessonId.value)
+        isSuccess.value = false
+      }
     }
-  }
+  }, 1000)
 }
 </script>
 
@@ -60,7 +66,10 @@ const handleGameComplete = async (result: { country: string, attempts: number })
     <!-- Game Component -->
     <div v-else class="relative">
       <Transition name="flip" mode="out-in">
-        <div v-if="currentExercise" :key="currentExercise.id" class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center">
+        <div v-if="currentExercise" :key="currentExercise.id" 
+          class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center"
+          :class="{ 'bg-success/95': isSuccess }"
+        >
           <ExerciseInstruction :instruction="instruction" />
         </div>
       </Transition>
