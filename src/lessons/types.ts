@@ -17,6 +17,7 @@ export type Exercise = {
   data: {
     zoom: number;
     scope: 'world' | 'region' | 'neighborhood';
+    country: string;
     [key: string]: unknown;
   };
 };

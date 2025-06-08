@@ -11,6 +11,7 @@ export class ExerciseTemplate {
     scope: 'world' | 'region' | 'neighborhood';
   };
   private _blockedBy: ExerciseTemplate[] = [];
+  private _country: string;
 
   constructor(data: ExerciseTemplateData) {
     this.id = data.id;
@@ -18,6 +19,7 @@ export class ExerciseTemplate {
     this.exerciseType = data.exerciseType;
     this.generator = data.generator;
     this.data = data.data;
+    this._country = ''; // Initialize with empty string
   }
 
   get blockedBy(): ExerciseTemplate[] {
@@ -28,12 +30,19 @@ export class ExerciseTemplate {
     this._blockedBy = templates;
   }
 
+  setCountry(country: string): void {
+    this._country = country;
+  }
+
   generateExercises(seed: number): Exercise[] {
     if (this.generator.name === 'SINGLE') {
       return [{
         id: `${this.id}-exercise-1`,
         instruction: this.instruction,
-        data: { ...this.data }
+        data: { 
+          ...this.data,
+          country: this._country
+        }
       }];
     }
 
@@ -48,7 +57,8 @@ export class ExerciseTemplate {
           instruction: this.instruction,
           data: {
             ...this.data,
-            [propertyToVary]: i
+            [propertyToVary]: i,
+            country: this._country
           }
         });
       }

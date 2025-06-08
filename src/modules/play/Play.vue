@@ -1,38 +1,45 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
-import { useGeographyLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useGeographyLearning'
-import { useLearningProgress } from '@/modules/standard-play-progress-bar/useLearningProgress'
+import { computed, watch, onMounted, ref } from 'vue'
+import { Lesson } from '@/lessons/Lesson'
+import type { Exercise } from '@/lessons/types'
+import { loadLessons } from '@/lessons/loadLessons'
 import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
 import { useCountrySelection } from '@/modules/filter-view/selections/useCountrySelection'
 
-import allCountries from '@/modules/map-data/country-lists/all-countries.json'
-
-const { targetCountryToClick, handleGameCompletion, setAvailableCountries, selectRandomCountry } = useGeographyLearning()
-const { setAvailableCountries: setProgressCountries, updateProgress } = useLearningProgress()
-
-
 // Get country selection from composable
 const { selectedCountries } = useCountrySelection()
+const currentExercise = ref<Exercise | null>(null)
+const lessons = ref<Lesson[]>([])
 
-// Modal state
-
-// Filtered countries based on selected countries
-const filteredCountries = computed(() => {
-  return allCountries.filter(country => selectedCountries.value.includes(country))
+// Load lessons on mount
+onMounted(async () => {
+  lessons.value = await loadLessons()
+  selectRandomExercise()
 })
 
-const handleGameComplete = async ({ country, attempts }: { country: string, attempts: number }) => {
-  await handleGameCompletion(country, attempts)
-  await updateProgress()
+const selectRandomExercise = () => {
+  if (lessons.value.length === 0) return
+
+  // Select random lesson
+  const randomLessonIndex = Math.floor(Math.random() * lessons.value.length)
+  const lesson = lessons.value[randomLessonIndex]
+
+  // Select random exercise from the lesson
+  const randomTemplateIndex = Math.floor(Math.random() * lesson.templates.length)
+  const template = lesson.templates[randomTemplateIndex]
+  
+  // Generate exercise with random seed
+  currentExercise.value = template.pickRandomExercise(Math.random())
 }
 
-// Update game state when filtered countries change
-watch(filteredCountries, (newVal) => {
-  setAvailableCountries(newVal)
-  setProgressCountries(newVal)
-  selectRandomCountry()
-}, { immediate: true })
+const handleGameComplete = () => {
+  selectRandomExercise()
+}
 
+const targetCountry = computed(() => {
+  if (!currentExercise.value?.data?.targetCountry) return ''
+  return currentExercise.value.data.targetCountry as string
+})
 
 </script>
 
@@ -40,11 +47,17 @@ watch(filteredCountries, (newVal) => {
   <main>
     <!-- Game Component -->
     <WorldMapGame
-      v-if="targetCountryToClick && selectedCountries.length > 0"
-      :target-country-to-click="targetCountryToClick"
+      v-if="currentExercise && selectedCountries.length > 0 && targetCountry"
+      :target-country-to-click="targetCountry"
+      :zoom-level="currentExercise.data.zoom as number"
+      :pan-field="currentExercise.data.panField as number | undefined"
       @game-complete="handleGameComplete"
       :allow-more-than-one-attempt="true"
-    />
+    >
+      <template #instruction>
+        {{ currentExercise.instruction }}
+      </template>
+    </WorldMapGame>
 
     <!-- show simple! warning if no countries are selected -->
     <div v-if="selectedCountries.length === 0" class="p-4 w-full">
@@ -54,7 +67,5 @@ watch(filteredCountries, (newVal) => {
         </div>
       </div>
     </div>
-
-
   </main>
 </template>

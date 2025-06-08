@@ -2,11 +2,13 @@
 import { ref, computed, watch, onUnmounted } from 'vue'
 import WorldMap from './WorldMap.vue'
 import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
+import * as d3 from 'd3'
 
 const props = defineProps<{
   targetCountryToClick: string
   zoomLevel?: number
   allowMoreThanOneAttempt: boolean
+  panField?: number
 }>()
 
 const emit = defineEmits<{
@@ -179,7 +181,10 @@ onUnmounted(() => {
     </div>
 
     <!-- Game Messages -->
-    <div class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center" v-html="feedbackMessage">
+    <div class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center">
+      <slot name="instruction">
+        {{ feedbackMessage }}
+      </slot>
     </div>
   </div>
 </template>

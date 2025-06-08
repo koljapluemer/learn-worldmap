@@ -1,23 +1,13 @@
-import { defineConfig } from 'vitest/config';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vitest/config'
+import path from 'path'
 
 export default defineConfig({
-  plugins: [vue()],
   test: {
-    globals: true,
     watch: false,
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-    },
   },
   resolve: {
     alias: {
-      '@': '/src',
-    },
-  },
-  json: {
-    stringify: true
-  },
-  assetsInclude: ['**/*.json']
-}); 
+      '@': path.resolve(__dirname, './src')
+    }
+  }
+})

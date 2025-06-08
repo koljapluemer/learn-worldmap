@@ -6,6 +6,7 @@ describe('ExerciseTemplate', () => {
   it('should generate a single exercise for SINGLE generator', async () => {
     const lessons = await loadLessons();
     const template = lessons[0].templates[0]; // First template is SINGLE generator
+    template.setCountry('Malta'); // Set the country before generating exercises
     
     const exercises = template.generateExercises(123);
     
@@ -14,7 +15,8 @@ describe('ExerciseTemplate', () => {
       id: `${template.id}-exercise-1`,
       instruction: template.instruction,
       data: {
-        ...template.data
+        ...template.data,
+        country: 'Malta'
       }
     });
   });
@@ -22,6 +24,7 @@ describe('ExerciseTemplate', () => {
   it('should generate multiple exercises for VARY_PROPERTY_WHOLE_NUMBER_RANGE generator', async () => {
     const lessons = await loadLessons();
     const template = lessons[0].templates[1]; // Second template is VARY_PROPERTY_WHOLE_NUMBER_RANGE generator
+    template.setCountry('Malta'); // Set the country before generating exercises
     
     const exercises = template.generateExercises(123);
     
@@ -36,7 +39,8 @@ describe('ExerciseTemplate', () => {
       expect(exercise.instruction).toBe(template.instruction);
       expect(exercise.data).toEqual({
         ...template.data,
-        [template.generator.data!.propertyToVary]: index + template.generator.data!.lowestVariationNumber
+        [template.generator.data!.propertyToVary]: index + template.generator.data!.lowestVariationNumber,
+        country: 'Malta'
       });
     });
   });
@@ -44,6 +48,7 @@ describe('ExerciseTemplate', () => {
   it('should generate different order with different seeds', async () => {
     const lessons = await loadLessons();
     const template = lessons[0].templates[1]; // Second template is VARY_PROPERTY_WHOLE_NUMBER_RANGE generator
+    template.setCountry('Malta'); // Set the country before generating exercises
     
     const exercises1 = template.generateExercises(123);
     const exercises2 = template.generateExercises(456);
@@ -73,8 +78,20 @@ describe('ExerciseTemplate', () => {
 
   describe('pickRandomExercise', () => {
     it('should always return the same exercise for SINGLE generator', async () => {
-      const lessons = await loadLessons();
-      const template = lessons[0].templates[0]; // First template is SINGLE generator
+      const template = new ExerciseTemplate({
+        id: 'test-template',
+        instruction: 'Test instruction',
+        exerciseType: { name: 'BY_INSTRUCTION' },
+        generator: {
+          name: 'SINGLE',
+          data: undefined
+        },
+        data: {
+          zoom: 1,
+          scope: 'world'
+        }
+      });
+      template.setCountry('Malta');
       
       const exercise1 = template.pickRandomExercise(123);
       const exercise2 = template.pickRandomExercise(456);
@@ -84,14 +101,31 @@ describe('ExerciseTemplate', () => {
         id: `${template.id}-exercise-1`,
         instruction: template.instruction,
         data: {
-          ...template.data
+          ...template.data,
+          country: 'Malta'
         }
       });
     });
 
     it('should return different exercises with different seeds for VARY_PROPERTY_WHOLE_NUMBER_RANGE generator', async () => {
-      const lessons = await loadLessons();
-      const template = lessons[0].templates[1]; // Second template is VARY_PROPERTY_WHOLE_NUMBER_RANGE generator
+      const template = new ExerciseTemplate({
+        id: 'test-template',
+        instruction: 'Test instruction',
+        exerciseType: { name: 'BY_INSTRUCTION' },
+        generator: {
+          name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
+          data: {
+            propertyToVary: 'zoom',
+            lowestVariationNumber: 1,
+            highestVariationNumber: 3
+          }
+        },
+        data: {
+          zoom: 1,
+          scope: 'world'
+        }
+      });
+      template.setCountry('Malta');
       
       const exercise1 = template.pickRandomExercise(123);
       const exercise2 = template.pickRandomExercise(456);
@@ -103,16 +137,29 @@ describe('ExerciseTemplate', () => {
       [exercise1, exercise2].forEach(exercise => {
         expect(exercise.instruction).toBe(template.instruction);
         expect(exercise.data).toHaveProperty(template.generator.data!.propertyToVary);
-        expect(exercise.data.zoom).toBe(template.data.zoom);
+        expect(exercise.data.zoom).toBeGreaterThanOrEqual(template.generator.data!.lowestVariationNumber);
+        expect(exercise.data.zoom).toBeLessThanOrEqual(template.generator.data!.highestVariationNumber);
         expect(exercise.data.scope).toBe(template.data.scope);
+        expect(exercise.data.country).toBe('Malta');
       });
     });
 
     it('should throw error for unsupported generator type', async () => {
-      const lessons = await loadLessons();
-      const template = lessons[0].templates[0];
+      const template = new ExerciseTemplate({
+        id: 'test-template',
+        instruction: 'Test instruction',
+        exerciseType: { name: 'BY_INSTRUCTION' },
+        generator: {
+          name: 'SINGLE',
+          data: undefined
+        },
+        data: {
+          zoom: 1,
+          scope: 'world'
+        }
+      });
       
-      // Modify the generator to an unsupported type
+      // Modify the generator to an unsupported type for testing purposes
       (template as any).generator.name = 'UNSUPPORTED';
       
       expect(() => template.pickRandomExercise(123)).toThrow('Unsupported generator type: UNSUPPORTED');

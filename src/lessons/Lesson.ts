@@ -15,6 +15,7 @@ export class Lesson {
     const templateMap = new Map<string, ExerciseTemplate>();
     this.templates = data.templates.map(templateData => {
       const template = ExerciseTemplate.fromJSON(templateData);
+      template.setCountry(data.data.country);
       templateMap.set(template.id, template);
       return template;
     });

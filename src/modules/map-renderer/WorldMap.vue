@@ -13,6 +13,7 @@ const props = defineProps<{
   useCircleAroundHighlight?: boolean
   zoomLevel?: number
   targetCountry?: string
+  panField?: number
 }>()
 
 console.log('[WorldMap] mounted with zoomLevel:', props.zoomLevel)
@@ -128,8 +129,9 @@ const updateMapTransform = () => {
         const cellWidth = width / gridSize
         const cellHeight = height / gridSize
         
-        const cellX = Math.floor(Math.random() * gridSize)
-        const cellY = Math.floor(Math.random() * gridSize)
+        const cellIndex = props.panField !== undefined ? props.panField : Math.floor(Math.random() * 9)
+        const cellX = cellIndex % gridSize
+        const cellY = Math.floor(cellIndex / gridSize)
         
         const targetX = cellX * cellWidth + cellWidth / 2
         const targetY = cellY * cellHeight + cellHeight / 2
