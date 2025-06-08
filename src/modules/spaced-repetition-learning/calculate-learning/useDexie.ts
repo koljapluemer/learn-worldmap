@@ -9,14 +9,14 @@ interface DeviceInfo {
   deviceId: string;
 }
 
-export class GeographyDatabase extends Dexie {
+export class ExerciseDatabase extends Dexie {
   exerciseCards!: Table<ExerciseCard>;
   learningEvents!: Table<LearningEvent>;
   deviceInfo!: Table<DeviceInfo>;
 
   constructor() {
-    super('GeographyDatabase');
-    this.version(5).stores({
+    super('ExerciseDatabase_v2');
+    this.version(1).stores({
       exerciseCards: 'exerciseId, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, learning_steps',
       learningEvents: '++id, deviceId, timestamp, exerciseId',
       dailyChallenges: 'date',
@@ -25,7 +25,7 @@ export class GeographyDatabase extends Dexie {
   }
 }
 
-const db = new GeographyDatabase();
+const db = new ExerciseDatabase();
 
 // Initialize or get device ID
 async function getOrCreateDeviceId(): Promise<string> {
