@@ -11,6 +11,16 @@ export type Generator = {
   };
 };
 
+export type Exercise = {
+  id: string;
+  instruction: string;
+  data: {
+    zoom: number;
+    scope: 'world' | 'region' | 'neighborhood';
+    [key: string]: unknown;
+  };
+};
+
 export type ExerciseTemplateData = {
   id: string;
   instruction: string;
