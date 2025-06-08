@@ -5,18 +5,18 @@
     </router-link>
 
     <nav class="flex flex-row gap-2">
-      <router-link to="/play" class="btn">
+      <!-- <router-link to="/play" class="btn">
         <IconFilter />
         <span class="hidden md:block">Filter Countries</span>
-      </router-link>
+      </router-link> -->
       <router-link to="/settings" class="btn">
         <IconSettings />
         <span class="hidden md:block">Settings</span>
       </router-link>
-      <router-link to="/stats" class="btn">
+      <!-- <router-link to="/stats" class="btn">
         <IconStats />
         <span class="hidden md:block">Stats</span>
-      </router-link>
+      </router-link> -->
     </nav>
   </header>
 </template>
