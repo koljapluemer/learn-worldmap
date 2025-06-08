@@ -132,5 +132,566 @@
     "data": {
       "country": "Guernsey"
     }
+  },
+  {
+    "id": "lesson-new-zealand",
+    "name": "Know where New Zealand is",
+    "templates": [
+      {
+        "id": "new-zealand-1",
+        "instruction": "$task_pre New Zealand $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      }
+    ],
+    "data": {
+      "country": "New Zealand"
+    }
+  },
+  {
+    "id": "lesson-norway",
+    "name": "Know where Norway is",
+    "templates": [
+      {
+        "id": "norway-1",
+        "instruction": "$task_pre Norway $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "norway-2",
+        "instruction": "$task_pre Norway $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 137,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "norway-1"
+        ]
+      },
+      {
+        "id": "norway-3",
+        "instruction": "$task_pre Norway $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 200,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "norway-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Norway"
+    }
+  },
+  {
+    "id": "lesson-samoa",
+    "name": "Know where Samoa is",
+    "templates": [
+      {
+        "id": "samoa-1",
+        "instruction": "$task_pre Samoa $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "samoa-2",
+        "instruction": "$task_pre Samoa $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 101,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "samoa-1"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Samoa"
+    }
+  },
+  {
+    "id": "lesson-wallis-and-futuna-is.",
+    "name": "Know where Wallis and Futuna Is. is",
+    "templates": [
+      {
+        "id": "wallis-and-futuna-is.-1",
+        "instruction": "$task_pre Wallis and Futuna Is. $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      }
+    ],
+    "data": {
+      "country": "Wallis and Futuna Is."
+    }
+  },
+  {
+    "id": "lesson-syria",
+    "name": "Know where Syria is",
+    "templates": [
+      {
+        "id": "syria-1",
+        "instruction": "$task_pre Syria $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "syria-2",
+        "instruction": "$task_pre Syria $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 113,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "syria-1"
+        ]
+      },
+      {
+        "id": "syria-3",
+        "instruction": "$task_pre Syria $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 179,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "syria-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Syria"
+    }
+  },
+  {
+    "id": "lesson-bermuda",
+    "name": "Know where Bermuda is",
+    "templates": [
+      {
+        "id": "bermuda-1",
+        "instruction": "$task_pre Bermuda $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "bermuda-2",
+        "instruction": "$task_pre Bermuda $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 101,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "bermuda-1"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Bermuda"
+    }
+  },
+  {
+    "id": "lesson-palestine",
+    "name": "Know where Palestine is",
+    "templates": [
+      {
+        "id": "palestine-1",
+        "instruction": "$task_pre Palestine $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "palestine-2",
+        "instruction": "$task_pre Palestine $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 104,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "palestine-1"
+        ]
+      },
+      {
+        "id": "palestine-3",
+        "instruction": "$task_pre Palestine $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 123,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "palestine-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Palestine"
+    }
+  },
+  {
+    "id": "lesson-japan",
+    "name": "Know where Japan is",
+    "templates": [
+      {
+        "id": "japan-1",
+        "instruction": "$task_pre Japan $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "japan-2",
+        "instruction": "$task_pre Japan $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 122,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "japan-1"
+        ]
+      },
+      {
+        "id": "japan-3",
+        "instruction": "$task_pre Japan $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 164,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "japan-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Japan"
+    }
+  },
+  {
+    "id": "lesson-qatar",
+    "name": "Know where Qatar is",
+    "templates": [
+      {
+        "id": "qatar-1",
+        "instruction": "$task_pre Qatar $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "qatar-2",
+        "instruction": "$task_pre Qatar $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 103,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "qatar-1"
+        ]
+      },
+      {
+        "id": "qatar-3",
+        "instruction": "$task_pre Qatar $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 110,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "qatar-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Qatar"
+    }
+  },
+  {
+    "id": "lesson-vatican",
+    "name": "Know where Vatican is",
+    "templates": [
+      {
+        "id": "vatican-1",
+        "instruction": "$task_pre Vatican $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      }
+    ],
+    "data": {
+      "country": "Vatican"
+    }
+  },
+  {
+    "id": "lesson-malaysia",
+    "name": "Know where Malaysia is",
+    "templates": [
+      {
+        "id": "malaysia-1",
+        "instruction": "$task_pre Malaysia $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "SINGLE"
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "id": "malaysia-2",
+        "instruction": "$task_pre Malaysia $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 117,
+          "scope": "region"
+        },
+        "blockedBy": [
+          "malaysia-1"
+        ]
+      },
+      {
+        "id": "malaysia-3",
+        "instruction": "$task_pre Malaysia $task_post",
+        "exerciseType": {
+          "name": "BY_INSTRUCTION"
+        },
+        "generator": {
+          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+          "data": {
+            "propertyToVary": "panField",
+            "lowestVariationNumber": 0,
+            "highestVariationNumber": 8
+          }
+        },
+        "data": {
+          "zoom": 154,
+          "scope": "neighborhood"
+        },
+        "blockedBy": [
+          "malaysia-2"
+        ]
+      }
+    ],
+    "data": {
+      "country": "Malaysia"
+    }
   }
 ]
