@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted, nextTick } from 'vue'
+import { ref, watch, onUnmounted, nextTick } from 'vue'
 import WorldMap from './WorldMap.vue'
 import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 
@@ -23,24 +23,12 @@ const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100)
 const isLoading = ref(false)
 const { saveLearningEvent } = useDexie()
-const isTouchDevice = ref('ontouchstart' in window)
 const isMapReady = ref(false)
 
 // Learning event tracking
 const exerciseStartTime = ref<number>(0)
 const firstClickTime = ref<number | null>(null)
 const firstClickDistance = ref<number | null>(null)
-const dynamicMessage = ref<string | null>(null)
-
-const feedbackMessage = computed(() => {
-  if (dynamicMessage.value) return dynamicMessage.value
-
-  const countryName = `<strong>${props.targetCountryToClick}</strong>`
-  return isTouchDevice.value
-    ? `Drag the red circle onto ${countryName}`
-    : `Place the red circle so that it touches ${countryName}`
-})
-
 
 const handleCorrectCountryFound = async () => {
   countryToHighlight.value = props.targetCountryToClick
@@ -48,11 +36,19 @@ const handleCorrectCountryFound = async () => {
   useCircleAroundHighlight.value = true
   isLoading.value = true
 
-  if (attempts.value === 1) {
-    dynamicMessage.value = `That's <strong>${props.targetCountryToClick}</strong>. First try!`
-  } else {
-    dynamicMessage.value = `You found <strong>${props.targetCountryToClick}</strong> after ${attempts.value} tries.`
-  }
+  await saveLearningEvent({
+    timestamp: new Date(),
+    exerciseId: props.exerciseId,
+    msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
+    msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
+    numberOfClicksNeeded: attempts.value,
+    distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
+  })
+
+  emit('gameComplete', {
+    country: props.targetCountryToClick,
+    attempts: attempts.value
+  })
 }
 
 const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: number) => {
@@ -68,28 +64,12 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
   if (props.allowMoreThanOneAttempt) {
     if (touchedCountries.includes(props.targetCountryToClick)) {
       handleCorrectCountryFound()
-
-      await saveLearningEvent({
-        timestamp: new Date(),
-        exerciseId: props.exerciseId,
-        msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
-        msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
-        numberOfClicksNeeded: attempts.value,
-        distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
-      })
-
-      emit('gameComplete', {
-        country: props.targetCountryToClick,
-        attempts: attempts.value
-      })
     } else {
-      dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
       if (attempts.value === 1) {
         countryToHighlight.value = props.targetCountryToClick
         highlightColor.value = '#3b82f6'
         useCircleAroundHighlight.value = true
       } else {
-        // Clear the highlight after showing it briefly
         countryToHighlight.value = undefined
         useCircleAroundHighlight.value = false
       }
@@ -97,37 +77,25 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
   } else {
     if (touchedCountries.includes(props.targetCountryToClick)) {
       handleCorrectCountryFound()
-      setTimeout(() => {
-        emit('gameComplete', {
-          country: props.targetCountryToClick,
-          attempts: attempts.value
-        })
-      }, 500)
     } else {
-      dynamicMessage.value = `<strong>${props.targetCountryToClick}</strong> is here, try again.`
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#eb4034'
       useCircleAroundHighlight.value = true
 
-      // Clear the highlight after showing it briefly
       setTimeout(() => {
         countryToHighlight.value = undefined
         useCircleAroundHighlight.value = false
-      }, 1000)
-
-      setTimeout(() => {
         emit('gameComplete', {
           country: props.targetCountryToClick,
           attempts: attempts.value
         })
-      }, 500)
+      }, 50)
     }
   }
 }
 
 const handleMapReady = () => {
   isMapReady.value = true
-  // Re-trigger the highlight when map becomes ready
   if (props.targetCountryToClick) {
     countryToHighlight.value = undefined
     nextTick(() => {
@@ -140,10 +108,8 @@ watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
   highlightColor.value = '#3b82f6'
   isLoading.value = false
-  // Clear highlight state when new challenge is loaded
   countryToHighlight.value = undefined
   useCircleAroundHighlight.value = false
-  dynamicMessage.value = null
   exerciseStartTime.value = Date.now()
   firstClickTime.value = null
   firstClickDistance.value = null
@@ -164,7 +130,6 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col justify-center items-center relative">
-    <!-- Map Container -->
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden card card-border">
       <WorldMap 
         :country-to-highlight="countryToHighlight" 
@@ -176,13 +141,6 @@ onUnmounted(() => {
         @map-ready="handleMapReady"
         :is-interactive="true" 
       />
-    </div>
-
-    <!-- Game Messages -->
-    <div class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center">
-      <slot name="instruction">
-        {{ feedbackMessage }}
-      </slot>
     </div>
   </div>
 </template>

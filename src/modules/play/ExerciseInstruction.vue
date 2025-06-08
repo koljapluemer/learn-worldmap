@@ -13,5 +13,28 @@ const formattedInstruction = props.instruction
 </script>
 
 <template>
-  {{ formattedInstruction }}
-</template> 
+  <Transition name="flip" mode="out-in">
+    <div :key="instruction" class="text-center">
+      {{ formattedInstruction }}
+    </div>
+  </Transition>
+</template>
+
+<style scoped>
+.flip-enter-active,
+.flip-leave-active {
+  transition: all 0.2s ease;
+}
+
+.flip-enter-from,
+.flip-leave-to {
+  opacity: 0;
+  transform: perspective(400px) rotateX(90deg);
+}
+
+.flip-enter-to,
+.flip-leave-from {
+  opacity: 1;
+  transform: perspective(400px) rotateX(0);
+}
+</style> 
