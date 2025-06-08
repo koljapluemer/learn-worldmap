@@ -37,9 +37,14 @@ const handleGameComplete = () => {
 }
 
 const targetCountry = computed(() => {
-  if (!currentExercise.value?.data?.targetCountry) return ''
-  return currentExercise.value.data.targetCountry as string
+  if (!currentExercise.value?.data?.country) return ''
+  return currentExercise.value.data.country as string
 })
+
+// Add debug logging after all properties are defined
+console.log('Debug - selectedCountries:', selectedCountries.value)
+console.log('Debug - currentExercise:', currentExercise.value)
+console.log('Debug - targetCountry:', targetCountry.value)
 
 </script>
 
