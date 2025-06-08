@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted, nextTick } from 'vue'
 import WorldMap from './WorldMap.vue'
 import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
-import * as d3 from 'd3'
 
 const props = defineProps<{
   targetCountryToClick: string
@@ -23,8 +22,9 @@ const highlightColor = ref<string>('#3b82f6')
 const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100)
 const isLoading = ref(false)
-const { getCard, saveLearningEvent } = useDexie()
+const { saveLearningEvent } = useDexie()
 const isTouchDevice = ref('ontouchstart' in window)
+const isMapReady = ref(false)
 
 // Learning event tracking
 const exerciseStartTime = ref<number>(0)
@@ -41,43 +41,6 @@ const feedbackMessage = computed(() => {
     : `Place the red circle so that it touches ${countryName}`
 })
 
-// Initialize level-based settings when target country changes
-const initializeCountryLevel = async () => {
-  if (!props.targetCountryToClick) return
-
-  if (props.zoomLevel !== undefined) {
-    zoomLevel.value = props.zoomLevel
-    if (props.zoomLevel < 100) {
-      countryToHighlight.value = props.targetCountryToClick
-      highlightColor.value = '#3b82f6'
-      useCircleAroundHighlight.value = true
-    } else {
-      countryToHighlight.value = undefined
-      useCircleAroundHighlight.value = false
-    }
-  } else {
-    const card = await getCard(props.targetCountryToClick)
-    const level = card?.level || 0
-
-    if (level < 0) {
-      countryToHighlight.value = props.targetCountryToClick
-      highlightColor.value = '#3b82f6'
-      useCircleAroundHighlight.value = true
-    } else {
-      countryToHighlight.value = undefined
-      useCircleAroundHighlight.value = false
-    }
-
-    zoomLevel.value = level > 0
-      ? 100 + 5 * level
-      : 100
-  }
-
-  dynamicMessage.value = null
-  exerciseStartTime.value = Date.now()
-  firstClickTime.value = null
-  firstClickDistance.value = null
-}
 
 const handleCorrectCountryFound = async () => {
   countryToHighlight.value = props.targetCountryToClick
@@ -152,11 +115,21 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
   }
 }
 
+const handleMapReady = () => {
+  isMapReady.value = true
+  // Re-trigger the highlight when map becomes ready
+  if (props.targetCountryToClick) {
+    countryToHighlight.value = undefined
+    nextTick(() => {
+      countryToHighlight.value = props.targetCountryToClick
+    })
+  }
+}
+
 watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
   highlightColor.value = '#3b82f6'
   isLoading.value = false
-  initializeCountryLevel()
 }, { immediate: true })
 
 watch(() => props.targetCountryToClick, (newValue) => {
@@ -176,9 +149,16 @@ onUnmounted(() => {
   <div class="flex flex-col justify-center items-center relative">
     <!-- Map Container -->
     <div class="w-full h-[80vh] bg-base-100 rounded-lg shadow-lg overflow-hidden card card-border">
-      <WorldMap :country-to-highlight="countryToHighlight" :highlight-color="highlightColor"
-        :use-circle-around-highlight="useCircleAroundHighlight" :zoom-level="zoomLevel"
-        :target-country="targetCountryToClick" @map-clicked="handleMapClicked" :is-interactive="true" />
+      <WorldMap 
+        :country-to-highlight="countryToHighlight" 
+        :highlight-color="highlightColor"
+        :use-circle-around-highlight="useCircleAroundHighlight" 
+        :zoom-level="zoomLevel"
+        :target-country="targetCountryToClick" 
+        @map-clicked="handleMapClicked" 
+        @map-ready="handleMapReady"
+        :is-interactive="true" 
+      />
     </div>
 
     <!-- Game Messages -->

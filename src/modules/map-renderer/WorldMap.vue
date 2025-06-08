@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import * as d3 from 'd3'
 import { useCustomCursor } from './useCustomCursor'
 import rawMapData from '@/modules/map-data/map.geo.json'
@@ -24,6 +24,7 @@ watch(() => props.zoomLevel, (newVal, oldVal) => {
 
 const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
+  (e: 'mapReady'): void
 }>()
 
 const { containerRef, findTouchedCountries } = useCustomCursor(76, props.isInteractive ? emit : undefined)
@@ -31,6 +32,7 @@ const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<FeatureCollection>(rawMapData as FeatureCollection)
 const projection = ref<d3.GeoProjection>()
+const isMapReady = ref(false)
 
 // Get settings from centralized settings
 const settings = ref(getMapSettings())
@@ -168,10 +170,13 @@ const updateMapTransform = () => {
       })
     }
   }
+
+  // Set map as ready after first transform
+  isMapReady.value = true
 }
 
 watch(() => props.countryToHighlight, (newCountry) => {
-  if (!containerRef.value || !projection.value || !mapData.value) return
+  if (!containerRef.value || !projection.value || !mapData.value || !isMapReady.value) return
 
   d3.select(containerRef.value)
     .selectAll('path')
@@ -216,6 +221,13 @@ watch(() => props.countryToHighlight, (newCountry) => {
     }
   }
 }, { immediate: true })
+
+// Add a watch for map readiness
+watch(isMapReady, (ready) => {
+  if (ready) {
+    emit('mapReady')
+  }
+})
 
 watch([() => props.zoomLevel, () => props.targetCountry], () => {
   updateMapTransform()
