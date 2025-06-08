@@ -26,10 +26,27 @@ function saveAndNext() {
     const goals = getLearningGoals()
     const country = selectedCountry.value
     if (!goals[country]) {
+        const countryId = country.toLowerCase().replace(/\s+/g, '-')
         goals[country] = {
+            id: `lesson-${countryId}`,
             name: `Know where ${country} is`,
-            templates: [],
-            country
+            templates: [{
+                id: `${countryId}-1`,
+                instruction: `$task_pre ${country} $task_post`,
+                exerciseType: {
+                    name: 'BY_INSTRUCTION'
+                },
+                generator: {
+                    name: 'SINGLE'
+                },
+                data: {
+                    zoom: 100,
+                    scope: 'world'
+                }
+            }],
+            data: {
+                country
+            }
         }
     }
     
@@ -72,7 +89,8 @@ function saveAndNext() {
             data: {
                 zoom: zoomLevel.value,
                 scope: 'region'
-            }
+            },
+            blockedBy: [`${countryId}-1`]
         })
     }
     
@@ -95,15 +113,19 @@ function saveAndNext() {
             data: {
                 zoom: zoomLevel3.value,
                 scope: 'neighborhood'
-            }
+            },
+            blockedBy: [`${countryId}-2`]
         })
     }
     
     // Update the lesson data
     goals[country] = {
+        id: `lesson-${countryId}`,
         name: `Know where ${country} is`,
         templates,
-        country
+        data: {
+            country
+        }
     }
     
     setLearningGoals(goals)

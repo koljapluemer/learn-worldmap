@@ -20,10 +20,14 @@ export type ExerciseTemplateData = {
     zoom: number;
     scope: 'world' | 'region' | 'neighborhood';
   };
+  blockedBy?: string[];
 };
 
 export type LessonData = {
+  id: string;
   name: string;
   templates: ExerciseTemplateData[];
-  country: string;
+  data: {
+    country: string;
+  };
 };

@@ -1,10 +1,11 @@
 [
   {
-    "name": "Know where Bahrain is",
+    "id": "lesson-malta",
+    "name": "Know where Malta is",
     "templates": [
       {
-        "id": "bahrain-1",
-        "instruction": "$task_pre Bahrain $task_post",
+        "id": "malta-1",
+        "instruction": "$task_pre Malta $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -17,8 +18,8 @@
         }
       },
       {
-        "id": "bahrain-2",
-        "instruction": "$task_pre Bahrain $task_post",
+        "id": "malta-2",
+        "instruction": "$task_pre Malta $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -31,13 +32,16 @@
           }
         },
         "data": {
-          "zoom": 101,
+          "zoom": 102,
           "scope": "region"
-        }
+        },
+        "blockedBy": [
+          "malta-1"
+        ]
       },
       {
-        "id": "bahrain-3",
-        "instruction": "$task_pre Bahrain $task_post",
+        "id": "malta-3",
+        "instruction": "$task_pre Malta $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -52,17 +56,23 @@
         "data": {
           "zoom": 105,
           "scope": "neighborhood"
-        }
+        },
+        "blockedBy": [
+          "malta-2"
+        ]
       }
     ],
-    "country": "Bahrain"
+    "data": {
+      "country": "Malta"
+    }
   },
   {
-    "name": "Know where Niger is",
+    "id": "lesson-guernsey",
+    "name": "Know where Guernsey is",
     "templates": [
       {
-        "id": "niger-1",
-        "instruction": "$task_pre Niger $task_post",
+        "id": "guernsey-1",
+        "instruction": "$task_pre Guernsey $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -75,8 +85,8 @@
         }
       },
       {
-        "id": "niger-2",
-        "instruction": "$task_pre Niger $task_post",
+        "id": "guernsey-2",
+        "instruction": "$task_pre Guernsey $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -89,13 +99,16 @@
           }
         },
         "data": {
-          "zoom": 121,
+          "zoom": 101,
           "scope": "region"
-        }
+        },
+        "blockedBy": [
+          "guernsey-1"
+        ]
       },
       {
-        "id": "niger-3",
-        "instruction": "$task_pre Niger $task_post",
+        "id": "guernsey-3",
+        "instruction": "$task_pre Guernsey $task_post",
         "exerciseType": {
           "name": "BY_INSTRUCTION"
         },
@@ -108,147 +121,16 @@
           }
         },
         "data": {
-          "zoom": 164,
+          "zoom": 102,
           "scope": "neighborhood"
-        }
+        },
+        "blockedBy": [
+          "guernsey-2"
+        ]
       }
     ],
-    "country": "Niger"
-  },
-  {
-    "name": "Know where Panama is",
-    "templates": [
-      {
-        "id": "panama-1",
-        "instruction": "$task_pre Panama $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "SINGLE"
-        },
-        "data": {
-          "zoom": 100,
-          "scope": "world"
-        }
-      },
-      {
-        "id": "panama-2",
-        "instruction": "$task_pre Panama $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
-          "data": {
-            "propertyToVary": "panField",
-            "lowestVariationNumber": 0,
-            "highestVariationNumber": 8
-          }
-        },
-        "data": {
-          "zoom": 115,
-          "scope": "region"
-        }
-      },
-      {
-        "id": "panama-3",
-        "instruction": "$task_pre Panama $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
-          "data": {
-            "propertyToVary": "panField",
-            "lowestVariationNumber": 0,
-            "highestVariationNumber": 8
-          }
-        },
-        "data": {
-          "zoom": 142,
-          "scope": "neighborhood"
-        }
-      }
-    ],
-    "country": "Panama"
-  },
-  {
-    "name": "Know where Germany is",
-    "templates": [
-      {
-        "id": "germany-1",
-        "instruction": "$task_pre Germany $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "SINGLE"
-        },
-        "data": {
-          "zoom": 100,
-          "scope": "world"
-        }
-      },
-      {
-        "id": "germany-2",
-        "instruction": "$task_pre Germany $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
-          "data": {
-            "propertyToVary": "panField",
-            "lowestVariationNumber": 0,
-            "highestVariationNumber": 8
-          }
-        },
-        "data": {
-          "zoom": 124,
-          "scope": "region"
-        }
-      },
-      {
-        "id": "germany-3",
-        "instruction": "$task_pre Germany $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
-          "data": {
-            "propertyToVary": "panField",
-            "lowestVariationNumber": 0,
-            "highestVariationNumber": 8
-          }
-        },
-        "data": {
-          "zoom": 155,
-          "scope": "neighborhood"
-        }
-      }
-    ],
-    "country": "Germany"
-  },
-  {
-    "name": "Know where Heard I. and McDonald Is. is",
-    "templates": [
-      {
-        "id": "heard-i.-and-mcdonald-is.-1",
-        "instruction": "$task_pre Heard I. and McDonald Is. $task_post",
-        "exerciseType": {
-          "name": "BY_INSTRUCTION"
-        },
-        "generator": {
-          "name": "SINGLE"
-        },
-        "data": {
-          "zoom": 100,
-          "scope": "world"
-        }
-      }
-    ],
-    "country": "Heard I. and McDonald Is."
+    "data": {
+      "country": "Guernsey"
+    }
   }
 ]
