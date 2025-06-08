@@ -53,7 +53,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log('Loaded Exercise Templates:', exerciseTemplates.length);
     console.log('Loaded Learning Goals:', learningGoals.length);
     console.log('Generated Lessons:', lessons.length);
-    console.log('\nFirst Lesson:', JSON.stringify(lessons[1], null, 2));
+
+    const exampleLesson = lessons[1];
+    console.log('\nExample Lesson:', JSON.stringify(exampleLesson, null, 2));
+
+    const exampleExerciseTemplateOfLesson = exampleLesson.templates[0];
+
+
   } catch (error) {
     console.error('Error loading data:', error);
     process.exit(1);

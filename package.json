@@ -25,7 +25,9 @@
     "ts-fsrs": "^5.0.0",
     "uuid": "^11.1.0",
     "vue": "^3.5.14",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "igu-schemas": "git+https://github.com/koljapluemer/igu-schemas.git#v2.0.5"
+
   },
   "devDependencies": {
     "@playwright/experimental-ct-vue": "^1.52.0",

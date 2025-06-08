@@ -3,6 +3,39 @@ import { ref, onMounted } from 'vue'
 import WorldMap from '@/modules/map-renderer/WorldMap.vue'
 import countryList from '@/modules/map-data/country-lists/all-countries.json'
 
+interface ExerciseTemplate {
+    belongsTo: string
+    instruction: string
+    templateType: {
+        method: string
+        generator: {
+            name: string
+            data?: {
+                propertyToVary: string
+                lowestVariationNumber: number
+                highestVariationNumber: number
+            }
+        }
+    }
+    data: {
+        zoom: number
+        scope: string
+    }
+}
+
+interface LessonData {
+    name: string
+    templates: ExerciseTemplate[]
+    country: string
+}
+
+interface LearningGoals {
+    [country: string]: {
+        name: string
+        templates: ExerciseTemplate[]
+    }
+}
+
 // Component state
 const selectedCountry = ref('')
 const zoomLevel = ref(108)
@@ -12,42 +45,98 @@ const pendingZoomLevel3 = ref(zoomLevel3.value)
 const enabled2 = ref(true)
 const enabled3 = ref(true)
 
-function getLearningGoals() {
+function getLearningGoals(): LearningGoals {
     const raw = localStorage.getItem('learningGoals')
     return raw ? JSON.parse(raw) : {}
 }
 
-function setLearningGoals(goals: any) {
+function setLearningGoals(goals: LearningGoals) {
     localStorage.setItem('learningGoals', JSON.stringify(goals, null, 2))
 }
 
 function saveAndNext() {
     const goals = getLearningGoals()
     const country = selectedCountry.value
-    if (!goals[country]) goals[country] = []
+    if (!goals[country]) {
+        goals[country] = {
+            name: `Know where ${country} is`,
+            templates: []
+        }
+    }
+    
+    // Create exercise templates for this country
+    const templates: ExerciseTemplate[] = []
+    
     // Always add world goal
-    goals[country].push({
-        name: `Find ${country} on the worldmap`,
-        zoom: 100,
-        scope: 'world'
+    templates.push({
+        belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-1`,
+        instruction: `$task_pre ${country} $task_post`,
+        templateType: {
+            method: 'BY_INSTRUCTION',
+            generator: {
+                name: 'SINGLE'
+            }
+        },
+        data: {
+            zoom: 100,
+            scope: 'world'
+        }
     })
+    
     // Add region goal if enabled
     if (enabled2.value) {
-        goals[country].push({
-            name: `Find ${country} in its region`,
-            zoom: zoomLevel.value,
-            scope: 'region'
+        templates.push({
+            belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-2`,
+            instruction: `$task_pre ${country} $task_post`,
+            templateType: {
+                method: 'BY_INSTRUCTION',
+                generator: {
+                    name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
+                    data: {
+                        propertyToVary: 'panField',
+                        lowestVariationNumber: 0,
+                        highestVariationNumber: 8
+                    }
+                }
+            },
+            data: {
+                zoom: zoomLevel.value,
+                scope: 'region'
+            }
         })
     }
+    
     // Add neighborhood goal if enabled
     if (enabled3.value) {
-        goals[country].push({
-            name: `Find ${country} in its neighborhood`,
-            zoom: zoomLevel3.value,
-            scope: 'neighborhood'
+        templates.push({
+            belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-3`,
+            instruction: `$task_pre ${country} $task_post`,
+            templateType: {
+                method: 'BY_INSTRUCTION',
+                generator: {
+                    name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
+                    data: {
+                        propertyToVary: 'panField',
+                        lowestVariationNumber: 0,
+                        highestVariationNumber: 8
+                    }
+                }
+            },
+            data: {
+                zoom: zoomLevel3.value,
+                scope: 'neighborhood'
+            }
         })
     }
+    
+    // Update the lesson data
+    goals[country] = {
+        name: `Know where ${country} is`,
+        templates: templates
+    }
+    
     setLearningGoals(goals)
+    
     // Pick a new country not yet in goals
     const remaining = countryList.filter(c => !goals[c])
     if (remaining.length > 0) {
@@ -60,7 +149,12 @@ function saveAndNext() {
 
 function logLearningGoals() {
     const goals = getLearningGoals()
-    console.log(goals)
+    // Transform the goals object into a LessonData array
+    const lessonDataArray: LessonData[] = Object.entries(goals).map(([country, data]) => ({
+        ...data,
+        country // Add the country to the lesson data
+    }))
+    console.log(lessonDataArray)
 }
 
 function commitZoomLevel2() {
