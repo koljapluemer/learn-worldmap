@@ -1,6 +1,6 @@
-import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
+import { useLessonDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useLessonDexie'
 import { ref, computed } from 'vue'
-import type { Exercise } from '@/lessons/types'
+import type { Lesson } from '@/lessons/Lesson'
 
 export interface LearningProgress {
   notDue: number
@@ -10,8 +10,8 @@ export interface LearningProgress {
 }
 
 export function useLearningProgress() {
-  const { getAllCards, getDueCards } = useDexie()
-  const availableExercises = ref<Exercise[]>([])
+  const { getAllCards, getDueCards } = useLessonDexie()
+  const availableLessons = ref<Lesson[]>([])
   const progress = ref<LearningProgress>({
     notDue: 0,
     due: 0,
@@ -19,17 +19,17 @@ export function useLearningProgress() {
     total: 0
   })
 
-  const setAvailableExercises = (exercises: Exercise[]) => {
-    availableExercises.value = exercises
-    progress.value.total = exercises.length
+  const setAvailableLessons = (lessons: Lesson[]) => {
+    availableLessons.value = lessons
+    progress.value.total = lessons.length
   }
 
   const updateProgress = async () => {
     const allCards = await getAllCards()
     const dueCards = await getDueCards()
     
-    // Create a set of all exercises that have cards
-    const learnedExercises = new Set(allCards.map(card => card.exerciseId))
+    // Create a set of all lessons that have cards
+    const learnedLessons = new Set(allCards.map(card => card.name))
     
     // Count due cards
     const dueCount = dueCards.length
@@ -37,14 +37,14 @@ export function useLearningProgress() {
     // Count not due cards (learned but not due)
     const notDueCount = allCards.length - dueCount
     
-    // Count never learned exercises
-    const neverLearnedCount = availableExercises.value.length - learnedExercises.size
+    // Count never learned lessons
+    const neverLearnedCount = availableLessons.value.length - learnedLessons.size
     
     progress.value = {
       notDue: notDueCount,
       due: dueCount,
       neverLearned: neverLearnedCount,
-      total: availableExercises.value.length
+      total: availableLessons.value.length
     }
   }
 
@@ -60,7 +60,7 @@ export function useLearningProgress() {
   return {
     progress,
     progressPercentages,
-    setAvailableExercises,
+    setAvailableLessons,
     updateProgress,
     progressUpdateEvent
   }
