@@ -2,39 +2,7 @@
 import { ref, onMounted } from 'vue'
 import WorldMap from '@/modules/map-renderer/WorldMap.vue'
 import countryList from '@/modules/map-data/country-lists/all-countries.json'
-
-interface ExerciseTemplate {
-    belongsTo: string
-    instruction: string
-    templateType: {
-        method: string
-        generator: {
-            name: string
-            data?: {
-                propertyToVary: string
-                lowestVariationNumber: number
-                highestVariationNumber: number
-            }
-        }
-    }
-    data: {
-        zoom: number
-        scope: string
-    }
-}
-
-interface LessonData {
-    name: string
-    templates: ExerciseTemplate[]
-    country: string
-}
-
-interface LearningGoals {
-    [country: string]: {
-        name: string
-        templates: ExerciseTemplate[]
-    }
-}
+import type { ExerciseTemplateData, LessonData } from 'igu-schemas'
 
 // Component state
 const selectedCountry = ref('')
@@ -45,12 +13,12 @@ const pendingZoomLevel3 = ref(zoomLevel3.value)
 const enabled2 = ref(true)
 const enabled3 = ref(true)
 
-function getLearningGoals(): LearningGoals {
+function getLearningGoals(): Record<string, LessonData> {
     const raw = localStorage.getItem('learningGoals')
     return raw ? JSON.parse(raw) : {}
 }
 
-function setLearningGoals(goals: LearningGoals) {
+function setLearningGoals(goals: Record<string, LessonData>) {
     localStorage.setItem('learningGoals', JSON.stringify(goals, null, 2))
 }
 
@@ -60,22 +28,24 @@ function saveAndNext() {
     if (!goals[country]) {
         goals[country] = {
             name: `Know where ${country} is`,
-            templates: []
+            templates: [],
+            country
         }
     }
     
     // Create exercise templates for this country
-    const templates: ExerciseTemplate[] = []
+    const templates: ExerciseTemplateData[] = []
+    const countryId = country.toLowerCase().replace(/\s+/g, '-')
     
     // Always add world goal
     templates.push({
-        belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-1`,
+        id: `${countryId}-1`,
         instruction: `$task_pre ${country} $task_post`,
-        templateType: {
-            method: 'BY_INSTRUCTION',
-            generator: {
-                name: 'SINGLE'
-            }
+        exerciseType: {
+            name: 'BY_INSTRUCTION'
+        },
+        generator: {
+            name: 'SINGLE'
         },
         data: {
             zoom: 100,
@@ -86,17 +56,17 @@ function saveAndNext() {
     // Add region goal if enabled
     if (enabled2.value) {
         templates.push({
-            belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-2`,
+            id: `${countryId}-2`,
             instruction: `$task_pre ${country} $task_post`,
-            templateType: {
-                method: 'BY_INSTRUCTION',
-                generator: {
-                    name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
-                    data: {
-                        propertyToVary: 'panField',
-                        lowestVariationNumber: 0,
-                        highestVariationNumber: 8
-                    }
+            exerciseType: {
+                name: 'BY_INSTRUCTION'
+            },
+            generator: {
+                name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
+                data: {
+                    propertyToVary: 'panField',
+                    lowestVariationNumber: 0,
+                    highestVariationNumber: 8
                 }
             },
             data: {
@@ -109,17 +79,17 @@ function saveAndNext() {
     // Add neighborhood goal if enabled
     if (enabled3.value) {
         templates.push({
-            belongsTo: `${country.toLowerCase().replace(/\s+/g, '-')}-3`,
+            id: `${countryId}-3`,
             instruction: `$task_pre ${country} $task_post`,
-            templateType: {
-                method: 'BY_INSTRUCTION',
-                generator: {
-                    name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
-                    data: {
-                        propertyToVary: 'panField',
-                        lowestVariationNumber: 0,
-                        highestVariationNumber: 8
-                    }
+            exerciseType: {
+                name: 'BY_INSTRUCTION'
+            },
+            generator: {
+                name: 'VARY_PROPERTY_WHOLE_NUMBER_RANGE',
+                data: {
+                    propertyToVary: 'panField',
+                    lowestVariationNumber: 0,
+                    highestVariationNumber: 8
                 }
             },
             data: {
@@ -132,7 +102,8 @@ function saveAndNext() {
     // Update the lesson data
     goals[country] = {
         name: `Know where ${country} is`,
-        templates: templates
+        templates,
+        country
     }
     
     setLearningGoals(goals)
@@ -150,10 +121,7 @@ function saveAndNext() {
 function logLearningGoals() {
     const goals = getLearningGoals()
     // Transform the goals object into a LessonData array
-    const lessonDataArray: LessonData[] = Object.entries(goals).map(([country, data]) => ({
-        ...data,
-        country // Add the country to the lesson data
-    }))
+    const lessonDataArray: LessonData[] = Object.values(goals)
     console.log(lessonDataArray)
 }
 
@@ -176,7 +144,6 @@ onMounted(() => {
     pendingZoomLevel2.value = zoomLevel.value
     pendingZoomLevel3.value = zoomLevel3.value
 })
-
 </script>
 
 <template>

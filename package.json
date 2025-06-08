@@ -21,12 +21,12 @@
     "dexie": "^4.0.11",
     "echarts": "^5.6.0",
     "firebase": "^11.8.1",
+    "igu-algos": "^0.0.1",
+    "igu-schemas": "^2.0.5",
     "ts-fsrs": "^5.0.0",
     "uuid": "^11.1.0",
     "vue": "^3.5.14",
-    "vue-router": "^4.5.1",
-    "igu-schemas": "git+https://github.com/koljapluemer/igu-schemas.git#v2.0.5"
-
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@testing-library/vue": "^8.1.0",
