@@ -60,6 +60,12 @@ export class ExerciseTemplate {
     throw new Error(`Unsupported generator type: ${this.generator.name}`);
   }
 
+  pickRandomExercise(seed: number): Exercise {
+    const exercises = this.generateExercises(seed);
+    const randomIndex = seededRandomInt(seed, 0, exercises.length);
+    return exercises[randomIndex];
+  }
+
   static fromJSON(data: ExerciseTemplateData): ExerciseTemplate {
     return new ExerciseTemplate(data);
   }

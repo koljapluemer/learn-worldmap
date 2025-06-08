@@ -70,4 +70,52 @@ describe('ExerciseTemplate', () => {
     
     expect(() => template.generateExercises(123)).toThrow('Unsupported generator type: UNSUPPORTED');
   });
+
+  describe('pickRandomExercise', () => {
+    it('should always return the same exercise for SINGLE generator', async () => {
+      const lessons = await loadLessons();
+      const template = lessons[0].templates[0]; // First template is SINGLE generator
+      
+      const exercise1 = template.pickRandomExercise(123);
+      const exercise2 = template.pickRandomExercise(456);
+      
+      expect(exercise1).toEqual(exercise2);
+      expect(exercise1).toEqual({
+        id: `${template.id}-exercise-1`,
+        instruction: template.instruction,
+        data: {
+          ...template.data
+        }
+      });
+    });
+
+    it('should return different exercises with different seeds for VARY_PROPERTY_WHOLE_NUMBER_RANGE generator', async () => {
+      const lessons = await loadLessons();
+      const template = lessons[0].templates[1]; // Second template is VARY_PROPERTY_WHOLE_NUMBER_RANGE generator
+      
+      const exercise1 = template.pickRandomExercise(123);
+      const exercise2 = template.pickRandomExercise(456);
+      
+      // The exercises should be different (this might occasionally fail if random selection picks same exercise)
+      expect(exercise1.id).not.toBe(exercise2.id);
+      
+      // Both exercises should have the correct structure
+      [exercise1, exercise2].forEach(exercise => {
+        expect(exercise.instruction).toBe(template.instruction);
+        expect(exercise.data).toHaveProperty(template.generator.data!.propertyToVary);
+        expect(exercise.data.zoom).toBe(template.data.zoom);
+        expect(exercise.data.scope).toBe(template.data.scope);
+      });
+    });
+
+    it('should throw error for unsupported generator type', async () => {
+      const lessons = await loadLessons();
+      const template = lessons[0].templates[0];
+      
+      // Modify the generator to an unsupported type
+      (template as any).generator.name = 'UNSUPPORTED';
+      
+      expect(() => template.pickRandomExercise(123)).toThrow('Unsupported generator type: UNSUPPORTED');
+    });
+  });
 }); 
