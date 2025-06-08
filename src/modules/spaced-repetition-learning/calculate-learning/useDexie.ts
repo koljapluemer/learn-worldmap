@@ -1,7 +1,7 @@
 import Dexie, { type Table } from 'dexie'
 import { v4 as uuidv4 } from 'uuid'
 import { logLearningEventToFirebase } from '../log-learning/firebase'
-import type { CountryCard, LearningEvent } from '@/modules/shared-types/types';
+import type { ExerciseCard, LearningEvent } from '@/modules/shared-types/types';
 
 
 interface DeviceInfo {
@@ -10,15 +10,15 @@ interface DeviceInfo {
 }
 
 export class GeographyDatabase extends Dexie {
-  countryCards!: Table<CountryCard>;
+  exerciseCards!: Table<ExerciseCard>;
   learningEvents!: Table<LearningEvent>;
   deviceInfo!: Table<DeviceInfo>;
 
   constructor() {
     super('GeographyDatabase');
-    this.version(3).stores({
-      countryCards: 'countryName, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, winStreak, failStreak, level',
-      learningEvents: '++id, deviceId, timestamp, country',
+    this.version(5).stores({
+      exerciseCards: 'exerciseId, due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, learning_steps',
+      learningEvents: '++id, deviceId, timestamp, exerciseId',
       dailyChallenges: 'date',
       deviceInfo: 'id'
     });
@@ -44,26 +44,26 @@ async function getOrCreateDeviceId(): Promise<string> {
 }
 
 export function useDexie() {
-  const getCard = async (countryName: string): Promise<CountryCard | undefined> => {
-    return await db.countryCards.get(countryName);
+  const getCard = async (exerciseId: string): Promise<ExerciseCard | undefined> => {
+    return await db.exerciseCards.get(exerciseId);
   }
 
-  const saveCard = async (card: CountryCard): Promise<void> => {
-    await db.countryCards.put(card);
+  const saveCard = async (card: ExerciseCard): Promise<void> => {
+    await db.exerciseCards.put(card);
   }
 
-  const deleteCard = async (countryName: string): Promise<void> => {
-    await db.countryCards.delete(countryName);
+  const deleteCard = async (exerciseId: string): Promise<void> => {
+    await db.exerciseCards.delete(exerciseId);
   }
 
-  const getAllCards = async (): Promise<CountryCard[]> => {
-    return await db.countryCards.toArray();
+  const getAllCards = async (): Promise<ExerciseCard[]> => {
+    return await db.exerciseCards.toArray();
   }
 
-  const getDueCards = async (): Promise<CountryCard[]> => {
+  const getDueCards = async (): Promise<ExerciseCard[]> => {
     const now = new Date();
     console.log('Checking for due cards at:', now.toISOString());
-    return await db.countryCards
+    return await db.exerciseCards
       .where('due')
       .below(now)
       .toArray();
@@ -85,10 +85,10 @@ export function useDexie() {
     });
   }
 
-  const getLearningEventsForCountry = async (country: string): Promise<LearningEvent[]> => {
+  const getLearningEventsForExercise = async (exerciseId: string): Promise<LearningEvent[]> => {
     return await db.learningEvents
-      .where('country')
-      .equals(country)
+      .where('exerciseId')
+      .equals(exerciseId)
       .toArray();
   }
 
@@ -104,7 +104,7 @@ export function useDexie() {
     getAllCards,
     getDueCards,
     saveLearningEvent,
-    getLearningEventsForCountry,
+    getLearningEventsForExercise,
     resetDatabase
   }
 } 

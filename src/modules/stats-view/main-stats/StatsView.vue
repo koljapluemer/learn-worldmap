@@ -6,24 +6,22 @@
       <table class="table w-full">
         <thead>
           <tr>
-            <th>Country</th>
+            <th>Exercise ID</th>
             <th>Due Date</th>
             <th>Stability</th>
             <th>Difficulty</th>
-            <th>Level</th>
           </tr>
         </thead>
         <tbody>
           <tr 
             v-for="card in cards" 
-            :key="card.countryName"
+            :key="card.exerciseId"
             class="hover:bg-base-200 cursor-pointer"
           >
-            <td class="text-primary hover:underline">{{ card.countryName }}</td>
+            <td class="text-primary hover:underline">{{ card.exerciseId }}</td>
             <td>{{ formatDate(card.due) }}</td>
             <td>{{ card.stability.toFixed(2) }}</td>
             <td>{{ card.difficulty.toFixed(2) }}</td>
-            <td>{{ card.level || 0 }}</td>
           </tr>
         </tbody>
       </table>
@@ -32,18 +30,17 @@
 </template>
 
 <script setup lang="ts">
-import type { CountryCard } from '@/modules/shared-types/types'
+import type { ExerciseCard } from '@/modules/shared-types/types'
 import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 import { ref, onMounted } from 'vue'
 
 const { getAllCards } = useDexie()
-const cards = ref<CountryCard[]>([])
+const cards = ref<ExerciseCard[]>([])
 
 const formatDate = (date: Date) => {
   // show human readable date and time  
   return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 }
-
 
 onMounted(async () => {
   cards.value = await getAllCards()

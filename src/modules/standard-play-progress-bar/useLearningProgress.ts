@@ -1,5 +1,6 @@
 import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 import { ref, computed } from 'vue'
+import type { Exercise } from '@/lessons/types'
 
 export interface LearningProgress {
   notDue: number
@@ -10,7 +11,7 @@ export interface LearningProgress {
 
 export function useLearningProgress() {
   const { getAllCards, getDueCards } = useDexie()
-  const availableCountries = ref<string[]>([])
+  const availableExercises = ref<Exercise[]>([])
   const progress = ref<LearningProgress>({
     notDue: 0,
     due: 0,
@@ -18,17 +19,17 @@ export function useLearningProgress() {
     total: 0
   })
 
-  const setAvailableCountries = (countries: string[]) => {
-    availableCountries.value = countries
-    progress.value.total = countries.length
+  const setAvailableExercises = (exercises: Exercise[]) => {
+    availableExercises.value = exercises
+    progress.value.total = exercises.length
   }
 
   const updateProgress = async () => {
     const allCards = await getAllCards()
     const dueCards = await getDueCards()
     
-    // Create a set of all countries that have cards
-    const learnedCountries = new Set(allCards.map(card => card.countryName))
+    // Create a set of all exercises that have cards
+    const learnedExercises = new Set(allCards.map(card => card.exerciseId))
     
     // Count due cards
     const dueCount = dueCards.length
@@ -36,14 +37,14 @@ export function useLearningProgress() {
     // Count not due cards (learned but not due)
     const notDueCount = allCards.length - dueCount
     
-    // Count never learned countries
-    const neverLearnedCount = availableCountries.value.length - learnedCountries.size
+    // Count never learned exercises
+    const neverLearnedCount = availableExercises.value.length - learnedExercises.size
     
     progress.value = {
       notDue: notDueCount,
       due: dueCount,
       neverLearned: neverLearnedCount,
-      total: availableCountries.value.length
+      total: availableExercises.value.length
     }
   }
 
@@ -59,7 +60,7 @@ export function useLearningProgress() {
   return {
     progress,
     progressPercentages,
-    setAvailableCountries,
+    setAvailableExercises,
     updateProgress,
     progressUpdateEvent
   }

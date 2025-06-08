@@ -9,6 +9,7 @@ const props = defineProps<{
   zoomLevel?: number
   allowMoreThanOneAttempt: boolean
   panField?: number
+  exerciseId: string
 }>()
 
 const emit = defineEmits<{
@@ -107,7 +108,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
 
       await saveLearningEvent({
         timestamp: new Date(),
-        country: props.targetCountryToClick,
+        exerciseId: props.exerciseId,
         msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
         msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
         numberOfClicksNeeded: attempts.value,
