@@ -4,7 +4,7 @@ import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
 import { useLessonLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useLessonLearning'
 import { LessonManager } from '@/lessons/LessonManager'
 import type { Exercise } from '@/lessons/types'
-import { getCurrentSeed } from '@/modules/randomness/random'
+import ExerciseInstruction from './ExerciseInstruction.vue'
 
 const lessonManager = LessonManager.getInstance()
 const currentLessonId = ref<string | null>(null)
@@ -13,8 +13,11 @@ const isLoading = ref(true)
 
 const { setLessons, handleExerciseCompletion, selectNextLesson, selectNextExercise } = useLessonLearning()
 
+// Detect touch device properly
 onMounted(async () => {
   try {
+    // Check for touch capability
+
     await lessonManager.loadLessons()
     setLessons(lessonManager.getAllLessonIds())
     currentLessonId.value = await selectNextLesson()
@@ -27,6 +30,8 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+
 
 const handleGameComplete = async (result: { country: string, attempts: number }) => {
   if (currentLessonId.value && currentExercise.value) {
@@ -58,7 +63,7 @@ const handleGameComplete = async (result: { country: string, attempts: number })
       :allow-more-than-one-attempt="true"
     >
       <template #instruction>
-        {{ currentExercise.instruction }}
+        <ExerciseInstruction :instruction="currentExercise.instruction" :key="currentExercise.id" />
       </template>
     </WorldMapGame>
 
