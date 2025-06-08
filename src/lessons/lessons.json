@@ -1,0 +1,777 @@
+[
+  {
+    "name": "Know where Norfolk Island is",
+    "templates": [
+      {
+        "belongsTo": "norfolk-island-1",
+        "instruction": "$task_pre Norfolk Island $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      }
+    ],
+    "country": "Norfolk Island"
+  },
+  {
+    "name": "Know where Yemen is",
+    "templates": [
+      {
+        "belongsTo": "yemen-1",
+        "instruction": "$task_pre Yemen $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "yemen-2",
+        "instruction": "$task_pre Yemen $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 115,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "yemen-3",
+        "instruction": "$task_pre Yemen $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 163,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Yemen"
+  },
+  {
+    "name": "Know where Palestine is",
+    "templates": [
+      {
+        "belongsTo": "palestine-1",
+        "instruction": "$task_pre Palestine $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "palestine-2",
+        "instruction": "$task_pre Palestine $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 110,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "palestine-3",
+        "instruction": "$task_pre Palestine $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 135,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Palestine"
+  },
+  {
+    "name": "Know where Chad is",
+    "templates": [
+      {
+        "belongsTo": "chad-1",
+        "instruction": "$task_pre Chad $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "chad-2",
+        "instruction": "$task_pre Chad $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 123,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "chad-3",
+        "instruction": "$task_pre Chad $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 172,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Chad"
+  },
+  {
+    "name": "Know where Hungary is",
+    "templates": [
+      {
+        "belongsTo": "hungary-1",
+        "instruction": "$task_pre Hungary $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "hungary-2",
+        "instruction": "$task_pre Hungary $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 123,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "hungary-3",
+        "instruction": "$task_pre Hungary $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 172,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Hungary"
+  },
+  {
+    "name": "Know where Liechtenstein is",
+    "templates": [
+      {
+        "belongsTo": "liechtenstein-1",
+        "instruction": "$task_pre Liechtenstein $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "liechtenstein-2",
+        "instruction": "$task_pre Liechtenstein $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 102,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "liechtenstein-3",
+        "instruction": "$task_pre Liechtenstein $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 103,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Liechtenstein"
+  },
+  {
+    "name": "Know where Timor-Leste is",
+    "templates": [
+      {
+        "belongsTo": "timor-leste-1",
+        "instruction": "$task_pre Timor-Leste $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "timor-leste-2",
+        "instruction": "$task_pre Timor-Leste $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 104,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "timor-leste-3",
+        "instruction": "$task_pre Timor-Leste $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 108,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Timor-Leste"
+  },
+  {
+    "name": "Know where Ireland is",
+    "templates": [
+      {
+        "belongsTo": "ireland-1",
+        "instruction": "$task_pre Ireland $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "ireland-2",
+        "instruction": "$task_pre Ireland $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 109,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "ireland-3",
+        "instruction": "$task_pre Ireland $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 132,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Ireland"
+  },
+  {
+    "name": "Know where Malaysia is",
+    "templates": [
+      {
+        "belongsTo": "malaysia-1",
+        "instruction": "$task_pre Malaysia $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "malaysia-2",
+        "instruction": "$task_pre Malaysia $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 110,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "malaysia-3",
+        "instruction": "$task_pre Malaysia $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 161,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Malaysia"
+  },
+  {
+    "name": "Know where Bosnia and Herz. is",
+    "templates": [
+      {
+        "belongsTo": "bosnia-and-herz.-1",
+        "instruction": "$task_pre Bosnia and Herz. $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "bosnia-and-herz.-2",
+        "instruction": "$task_pre Bosnia and Herz. $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 110,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "bosnia-and-herz.-3",
+        "instruction": "$task_pre Bosnia and Herz. $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 161,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Bosnia and Herz."
+  },
+  {
+    "name": "Know where Azerbaijan is",
+    "templates": [
+      {
+        "belongsTo": "azerbaijan-1",
+        "instruction": "$task_pre Azerbaijan $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "azerbaijan-2",
+        "instruction": "$task_pre Azerbaijan $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 110,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "azerbaijan-3",
+        "instruction": "$task_pre Azerbaijan $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 161,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Azerbaijan"
+  },
+  {
+    "name": "Know where Cabo Verde is",
+    "templates": [
+      {
+        "belongsTo": "cabo-verde-1",
+        "instruction": "$task_pre Cabo Verde $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "cabo-verde-2",
+        "instruction": "$task_pre Cabo Verde $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 107,
+          "scope": "region"
+        }
+      }
+    ],
+    "country": "Cabo Verde"
+  },
+  {
+    "name": "Know where Curaçao is",
+    "templates": [
+      {
+        "belongsTo": "curaçao-1",
+        "instruction": "$task_pre Curaçao $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "curaçao-2",
+        "instruction": "$task_pre Curaçao $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 102,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "curaçao-3",
+        "instruction": "$task_pre Curaçao $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 105,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Curaçao"
+  },
+  {
+    "name": "Know where Eritrea is",
+    "templates": [
+      {
+        "belongsTo": "eritrea-1",
+        "instruction": "$task_pre Eritrea $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      },
+      {
+        "belongsTo": "eritrea-2",
+        "instruction": "$task_pre Eritrea $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 118,
+          "scope": "region"
+        }
+      },
+      {
+        "belongsTo": "eritrea-3",
+        "instruction": "$task_pre Eritrea $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "VARY_PROPERTY_WHOLE_NUMBER_RANGE",
+            "data": {
+              "propertyToVary": "panField",
+              "lowestVariationNumber": 0,
+              "highestVariationNumber": 8
+            }
+          }
+        },
+        "data": {
+          "zoom": 168,
+          "scope": "neighborhood"
+        }
+      }
+    ],
+    "country": "Eritrea"
+  },
+  {
+    "name": "Know where Fr. Polynesia is",
+    "templates": [
+      {
+        "belongsTo": "fr.-polynesia-1",
+        "instruction": "$task_pre Fr. Polynesia $task_post",
+        "templateType": {
+          "method": "BY_INSTRUCTION",
+          "generator": {
+            "name": "SINGLE"
+          }
+        },
+        "data": {
+          "zoom": 100,
+          "scope": "world"
+        }
+      }
+    ],
+    "country": "Fr. Polynesia"
+  }
+]

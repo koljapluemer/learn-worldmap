@@ -7,10 +7,9 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test": "NODE_NO_WARNINGS=1 playwright test",
-    "test:ui": "NODE_NO_WARNINGS=1 vitest --ui",
-    "test:coverage": "NODE_NO_WARNINGS=1 vitest run --coverage",
-    "test:e2e": "NODE_NO_WARNINGS=1 playwright test",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "testdev": "npm run dev -- --mode test"
   },
   "dependencies": {
@@ -30,7 +29,6 @@
 
   },
   "devDependencies": {
-    "@playwright/experimental-ct-vue": "^1.52.0",
     "@testing-library/vue": "^8.1.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/d3": "^7.4.3",
