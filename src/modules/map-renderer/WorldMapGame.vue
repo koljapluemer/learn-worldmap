@@ -88,6 +88,10 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
         countryToHighlight.value = props.targetCountryToClick
         highlightColor.value = '#3b82f6'
         useCircleAroundHighlight.value = true
+      } else {
+        // Clear the highlight after showing it briefly
+        countryToHighlight.value = undefined
+        useCircleAroundHighlight.value = false
       }
     }
   } else {
@@ -104,6 +108,12 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#eb4034'
       useCircleAroundHighlight.value = true
+
+      // Clear the highlight after showing it briefly
+      setTimeout(() => {
+        countryToHighlight.value = undefined
+        useCircleAroundHighlight.value = false
+      }, 1000)
 
       setTimeout(() => {
         emit('gameComplete', {
@@ -130,6 +140,13 @@ watch(() => props.targetCountryToClick, () => {
   attempts.value = 0
   highlightColor.value = '#3b82f6'
   isLoading.value = false
+  // Clear highlight state when new challenge is loaded
+  countryToHighlight.value = undefined
+  useCircleAroundHighlight.value = false
+  dynamicMessage.value = null
+  exerciseStartTime.value = Date.now()
+  firstClickTime.value = null
+  firstClickDistance.value = null
 }, { immediate: true })
 
 watch(() => props.targetCountryToClick, (newValue) => {
