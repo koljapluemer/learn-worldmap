@@ -40,8 +40,10 @@ Object.entries(learningGoalsData).forEach(([name, data]) => {
   if (data.parents) {
     goal.parents = data.parents.map((p) => learningGoalMap[p]).filter(Boolean);
   }
-  // Children (reverse lookup)
-  goal.children = Object.values(learningGoalMap).filter((g) => g.parents.includes(goal));
+  // Children (by name, not by object reference)
+  goal.children = Object.entries(learningGoalsData)
+    .filter(([_childName, childData]) => (childData.parents || []).includes(name))
+    .map(([childName]) => learningGoalMap[childName]);
   // BlockedBy
   if (data.blockedBy) {
     goal.blockedBy = data.blockedBy.map((b) => learningGoalMap[b]).filter(Boolean);
@@ -62,9 +64,30 @@ function getRootLearningGoals(): LearningGoal[] {
   return allLearningGoals.value.filter((g) => !g.parents.length);
 }
 
+function getDirectChildrenCount(goal: LearningGoal): number {
+  return goal.children.length;
+}
+
+function getAllDescendantsCount(goal: LearningGoal): number {
+  const visited = new Set<LearningGoal>();
+  function countDescendants(g: LearningGoal): number {
+    let count = 0;
+    for (const child of g.children) {
+      if (!visited.has(child)) {
+        visited.add(child);
+        count += 1 + countDescendants(child);
+      }
+    }
+    return count;
+  }
+  return countDescendants(goal);
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
     getRootLearningGoals,
+    getDirectChildrenCount,
+    getAllDescendantsCount,
   };
 }
