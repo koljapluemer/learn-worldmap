@@ -3,8 +3,11 @@ import { ref, computed } from 'vue'
 import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
 import ExerciseInstruction from './ExerciseInstruction.vue'
 import { useLearningData } from '@/modules/learning-content/data/useLearningData'
+import { useLearningEventStore } from '@/modules/learning-content/tracking/learning-event/learningEventStore'
+import type { LearningEvent } from '@/modules/learning-content/tracking/learning-event/LearningEvent'
 
 const { getRandomExercise } = useLearningData()
+const eventStore = useLearningEventStore()
 
 const currentExercise = ref<ReturnType<typeof getRandomExercise> | undefined>(getRandomExercise())
 const attempts = ref(0)
@@ -15,9 +18,10 @@ const instruction = computed(() => {
   return currentExercise.value.instruction
 })
 
-const handleGameComplete = (result: { country: string, attempts: number }) => {
-  attempts.value = result.attempts
+const handleGameComplete = (result: LearningEvent) => {
+  attempts.value = result.numberOfClicksNeeded
   isSuccess.value = true
+  eventStore.addEvent(result)
 
   setTimeout(() => {
     currentExercise.value = getRandomExercise()

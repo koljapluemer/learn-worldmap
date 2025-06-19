@@ -11,7 +11,14 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'gameComplete', result: { country: string, attempts: number }): void
+  (e: 'gameComplete', result: {
+    timestamp: Date,
+    exerciseId: string,
+    msFromExerciseToFirstClick: number,
+    msFromExerciseToFinishClick: number,
+    numberOfClicksNeeded: number,
+    distanceOfFirstClickToCenterOfCountry: number
+  }): void
 }>()
 
 // Game state
@@ -34,10 +41,14 @@ const handleCorrectCountryFound = async () => {
   useCircleAroundHighlight.value = true
   isLoading.value = true
 
-
+  const now = Date.now()
   emit('gameComplete', {
-    country: props.targetCountryToClick,
-    attempts: attempts.value
+    timestamp: new Date(),
+    exerciseId: props.exerciseId,
+    msFromExerciseToFirstClick: firstClickTime.value ? firstClickTime.value - exerciseStartTime.value : 0,
+    msFromExerciseToFinishClick: now - exerciseStartTime.value,
+    numberOfClicksNeeded: attempts.value,
+    distanceOfFirstClickToCenterOfCountry: firstClickDistance.value ?? 0
   })
 }
 
@@ -71,9 +82,15 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
       countryToHighlight.value = props.targetCountryToClick
       highlightColor.value = '#eb4034'
       useCircleAroundHighlight.value = true
+      // Also emit a learning event for a failed attempt (if needed)
+      const now = Date.now()
       emit('gameComplete', {
-        country: props.targetCountryToClick,
-        attempts: attempts.value
+        timestamp: new Date(),
+        exerciseId: props.exerciseId,
+        msFromExerciseToFirstClick: firstClickTime.value ? firstClickTime.value - exerciseStartTime.value : 0,
+        msFromExerciseToFinishClick: now - exerciseStartTime.value,
+        numberOfClicksNeeded: attempts.value,
+        distanceOfFirstClickToCenterOfCountry: firstClickDistance.value ?? 0
       })
     }
   }
