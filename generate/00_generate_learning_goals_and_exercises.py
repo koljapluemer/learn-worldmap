@@ -60,17 +60,86 @@ def main():
     countries = load_geojson_countries(GEOJSON_PATH)
     zoom_data = load_zoom_data(ZOOM_PATH)
     error_rates = load_error_rates(ERROR_RATES_PATH)
+    # Load islands
+    with open('islands.json', 'r', encoding='utf-8') as f:
+        islands = json.load(f)
+    # Load geojson for pop_est, pop_rank, region_un, subregion
+    with open(GEOJSON_PATH, 'r', encoding='utf-8') as f:
+        geojson = json.load(f)
+    country_props = {feat['properties']['name']: feat['properties'] for feat in geojson['features']}
 
     learning_goals = {}
     exercises = {}
 
+    # --- Collect region/subregion structure ---
+    region_to_subregions = {}
+    subregion_to_region = {}
+    for props in country_props.values():
+        region = props.get('region_un')
+        subregion = props.get('subregion')
+        if region and subregion:
+            region_to_subregions.setdefault(region, set()).add(subregion)
+            subregion_to_region[subregion] = region
+
+    # --- Add World goal ---
+    learning_goals['World'] = {
+        'name': 'World',
+        'description': 'Know where all the countries in the world are.'
+    }
+    # --- Add Islands goal ---
+    learning_goals['Islands'] = {
+        'name': 'Islands',
+        'description': 'Know the islands of the world.',
+        'inherentInterest': -2
+    }
+    # --- Add Small goal ---
+    learning_goals['Small'] = {
+        'name': 'Small',
+        'description': 'Know where the countries with less than 1 million inhabitants are.',
+        'inherentInterest': -2
+    }
+    # --- Add Biggest goal ---
+    learning_goals['Biggest'] = {
+        'name': 'Biggest',
+        'description': 'Know where the biggest countries in the world are.',
+        'inherentInterest': -1
+    }
+    # --- Add region and subregion goals ---
+    for region, subregions in region_to_subregions.items():
+        learning_goals[region] = {
+            'name': region,
+            'description': f'Know where the countries are in {region}.'
+        }
+        for subregion in subregions:
+            learning_goals[subregion] = {
+                'name': subregion,
+                'description': f'Know where the countries are in {subregion}.',
+                'parents': [region]
+            }
+
     for country in countries:
+        props = country_props[country]
         # --- Base per-country learning goal ---
         err = error_rates.get(country, 0)
         inherent_difficulty = error_rate_to_difficulty(err)
+        parents = ['World']
+        # Add Islands parent if island
+        if islands.get(country):
+            parents.append('Islands')
+        # Add Small parent if pop_est < 1_000_000
+        if props.get('pop_est') is not None and props['pop_est'] < 1_000_000:
+            parents.append('Small')
+        # Add Biggest parent if pop_rank >= 16
+        if props.get('pop_rank') is not None and props['pop_rank'] >= 16:
+            parents.append('Biggest')
+        # Add subregion parent if available
+        subregion = props.get('subregion')
+        if subregion and subregion in learning_goals:
+            parents.append(subregion)
         base_goal = {
             'name': country,
             'description': f"Know where {country} is.",
+            'parents': parents,
             'inherentDifficulty': inherent_difficulty,
             'data': {
                 'typeOfGeopoliticalUnit': 'Country',

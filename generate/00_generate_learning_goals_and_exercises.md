@@ -87,6 +87,17 @@ We want to generate two files: `exercises.json` and `learningGoals.json`.
 
 ### Learning Goals to Generate
 
+### Ultimate Learning Goal
+
+First, make one learning goal:
+
+```ts
+{
+    name: "World"
+    description: "Know where all the countries in the world are."
+}
+```
+
 #### Base Per-Country
 
 This is the core. Start by making one learning goal per country. Should look like this:
@@ -95,7 +106,7 @@ This is the core. Start by making one learning goal per country. Should look lik
 {
     name: "Ghana"
     description: "Know where Ghana is."
-    parents: []
+    parents: ["World"]
     inherentDifficulty: -2
     data: {
         typeOfGeopoliticalUnit: "Country";
@@ -223,4 +234,73 @@ At last, *if* a "Neighborhood" learning goal was generated, generate another 9 e
 
 ### Other Goals
 
-*We will worry about those later*.
+#### Islands
+
+Use `islands.json` to make the following goal:
+
+```ts
+{
+    name: "Islands"
+    description: "Know the islands of the world."
+    inherentInterest: -2
+}
+```
+
+Then, find all the goals for countries that are an island according to the data structure (only the base goal, not the country subgoals for region, neighborhood and so on). 
+
+Append `"Islands"` to their `parents` array.
+
+#### Small Countries
+
+Make the following goal:
+
+```ts
+{
+    name: "Small"
+    description: "Know where the countries with less than 1 million inhabitants are."
+    inherentInterest: -2
+}
+```
+
+As before, make this a parent of all relevant base country goals.
+Use the `pop_est` property in the geojson file.
+
+
+#### Biggest Countries
+
+Make the following goal:
+
+```ts
+{
+    name: "Biggest"
+    description: "Know where the biggest countries in the world are."
+    inherentInterest: -1
+}
+```
+
+This works like the one above, only now check for the `pop_rank` property in the geojson and make sure it's 16 or larger.
+
+#### By Region
+
+Looping the geojson, keep track of the values that occur for  `region_un` and `subregion`.
+
+These should be strictly nested. Each `subregion` should belong to exactly one `region_un`.
+
+Then, reflect this structure as goals.
+
+For example, based on the geojson data for Costa Rica, we want the following learning goals:
+
+```ts
+{
+    name: "Americas"
+    description: "Know where the countries are in Americas."
+}
+
+{
+    name: "Central America"
+    description: "Know where the countries are in Central America."
+    parents: ["Americas"]
+}
+```
+
+The base goal for Costa Rica should also include "Central America" as a parent (but not "Americas", that would be redundant)

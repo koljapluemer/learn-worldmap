@@ -1,7 +1,219 @@
 {
+  "World": {
+    "name": "World",
+    "description": "Know where all the countries in the world are."
+  },
+  "Islands": {
+    "name": "Islands",
+    "description": "Know the islands of the world.",
+    "inherentInterest": -2
+  },
+  "Small": {
+    "name": "Small",
+    "description": "Know where the countries with less than 1 million inhabitants are.",
+    "inherentInterest": -2
+  },
+  "Biggest": {
+    "name": "Biggest",
+    "description": "Know where the biggest countries in the world are.",
+    "inherentInterest": -1
+  },
+  "Americas": {
+    "name": "Americas",
+    "description": "Know where the countries are in Americas."
+  },
+  "Northern America": {
+    "name": "Northern America",
+    "description": "Know where the countries are in Northern America.",
+    "parents": [
+      "Americas"
+    ]
+  },
+  "Central America": {
+    "name": "Central America",
+    "description": "Know where the countries are in Central America.",
+    "parents": [
+      "Americas"
+    ]
+  },
+  "Seven seas (open ocean)": {
+    "name": "Seven seas (open ocean)",
+    "description": "Know where the countries are in Seven seas (open ocean).",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Caribbean": {
+    "name": "Caribbean",
+    "description": "Know where the countries are in Caribbean.",
+    "parents": [
+      "Americas"
+    ]
+  },
+  "South America": {
+    "name": "South America",
+    "description": "Know where the countries are in South America.",
+    "parents": [
+      "Americas"
+    ]
+  },
+  "Asia": {
+    "name": "Asia",
+    "description": "Know where the countries are in Asia."
+  },
+  "Western Asia": {
+    "name": "Western Asia",
+    "description": "Know where the countries are in Western Asia.",
+    "parents": [
+      "Asia"
+    ]
+  },
+  "South-Eastern Asia": {
+    "name": "South-Eastern Asia",
+    "description": "Know where the countries are in South-Eastern Asia.",
+    "parents": [
+      "Asia"
+    ]
+  },
+  "Southern Asia": {
+    "name": "Southern Asia",
+    "description": "Know where the countries are in Southern Asia.",
+    "parents": [
+      "Asia"
+    ]
+  },
+  "Eastern Asia": {
+    "name": "Eastern Asia",
+    "description": "Know where the countries are in Eastern Asia.",
+    "parents": [
+      "Asia"
+    ]
+  },
+  "Central Asia": {
+    "name": "Central Asia",
+    "description": "Know where the countries are in Central Asia.",
+    "parents": [
+      "Asia"
+    ]
+  },
+  "Africa": {
+    "name": "Africa",
+    "description": "Know where the countries are in Africa."
+  },
+  "Eastern Africa": {
+    "name": "Eastern Africa",
+    "description": "Know where the countries are in Eastern Africa.",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Southern Africa": {
+    "name": "Southern Africa",
+    "description": "Know where the countries are in Southern Africa.",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Western Africa": {
+    "name": "Western Africa",
+    "description": "Know where the countries are in Western Africa.",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Northern Africa": {
+    "name": "Northern Africa",
+    "description": "Know where the countries are in Northern Africa.",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Middle Africa": {
+    "name": "Middle Africa",
+    "description": "Know where the countries are in Middle Africa.",
+    "parents": [
+      "Africa"
+    ]
+  },
+  "Europe": {
+    "name": "Europe",
+    "description": "Know where the countries are in Europe."
+  },
+  "Southern Europe": {
+    "name": "Southern Europe",
+    "description": "Know where the countries are in Southern Europe.",
+    "parents": [
+      "Europe"
+    ]
+  },
+  "Northern Europe": {
+    "name": "Northern Europe",
+    "description": "Know where the countries are in Northern Europe.",
+    "parents": [
+      "Europe"
+    ]
+  },
+  "Western Europe": {
+    "name": "Western Europe",
+    "description": "Know where the countries are in Western Europe.",
+    "parents": [
+      "Europe"
+    ]
+  },
+  "Eastern Europe": {
+    "name": "Eastern Europe",
+    "description": "Know where the countries are in Eastern Europe.",
+    "parents": [
+      "Europe"
+    ]
+  },
+  "Oceania": {
+    "name": "Oceania",
+    "description": "Know where the countries are in Oceania."
+  },
+  "Micronesia": {
+    "name": "Micronesia",
+    "description": "Know where Micronesia is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
+    "inherentDifficulty": -10,
+    "data": {
+      "typeOfGeopoliticalUnit": "Country",
+      "geopoliticalUnit": "Micronesia"
+    }
+  },
+  "Polynesia": {
+    "name": "Polynesia",
+    "description": "Know where the countries are in Polynesia.",
+    "parents": [
+      "Oceania"
+    ]
+  },
+  "Australia and New Zealand": {
+    "name": "Australia and New Zealand",
+    "description": "Know where the countries are in Australia and New Zealand.",
+    "parents": [
+      "Oceania"
+    ]
+  },
+  "Melanesia": {
+    "name": "Melanesia",
+    "description": "Know where the countries are in Melanesia.",
+    "parents": [
+      "Oceania"
+    ]
+  },
   "Costa Rica": {
     "name": "Costa Rica",
     "description": "Know where Costa Rica is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -76,6 +288,10 @@
   "Nicaragua": {
     "name": "Nicaragua",
     "description": "Know where Nicaragua is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -150,6 +366,11 @@
   "St-Martin": {
     "name": "St-Martin",
     "description": "Know where St-Martin is.",
+    "parents": [
+      "World",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -224,6 +445,11 @@
   "Sint Maarten": {
     "name": "Sint Maarten",
     "description": "Know where Sint Maarten is.",
+    "parents": [
+      "World",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -298,6 +524,10 @@
   "Haiti": {
     "name": "Haiti",
     "description": "Know where Haiti is.",
+    "parents": [
+      "World",
+      "Caribbean"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -372,6 +602,10 @@
   "Dominican Rep.": {
     "name": "Dominican Rep.",
     "description": "Know where Dominican Rep. is.",
+    "parents": [
+      "World",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -446,6 +680,10 @@
   "El Salvador": {
     "name": "El Salvador",
     "description": "Know where El Salvador is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -520,6 +758,10 @@
   "Guatemala": {
     "name": "Guatemala",
     "description": "Know where Guatemala is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -594,6 +836,11 @@
   "Cuba": {
     "name": "Cuba",
     "description": "Know where Cuba is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Caribbean"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -668,6 +915,10 @@
   "Honduras": {
     "name": "Honduras",
     "description": "Know where Honduras is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -742,6 +993,11 @@
   "United States of America": {
     "name": "United States of America",
     "description": "Know where United States of America is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Northern America"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -765,6 +1021,10 @@
   "Canada": {
     "name": "Canada",
     "description": "Know where Canada is.",
+    "parents": [
+      "World",
+      "Northern America"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -788,6 +1048,11 @@
   "Mexico": {
     "name": "Mexico",
     "description": "Know where Mexico is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Central America"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -862,6 +1127,11 @@
   "Belize": {
     "name": "Belize",
     "description": "Know where Belize is.",
+    "parents": [
+      "World",
+      "Small",
+      "Central America"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -936,6 +1206,10 @@
   "Panama": {
     "name": "Panama",
     "description": "Know where Panama is.",
+    "parents": [
+      "World",
+      "Central America"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1010,6 +1284,12 @@
   "Greenland": {
     "name": "Greenland",
     "description": "Know where Greenland is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern America"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1033,6 +1313,12 @@
   "Curaçao": {
     "name": "Curaçao",
     "description": "Know where Curaçao is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1107,6 +1393,12 @@
   "Aruba": {
     "name": "Aruba",
     "description": "Know where Aruba is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1181,6 +1473,12 @@
   "Bahamas": {
     "name": "Bahamas",
     "description": "Know where Bahamas is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1255,6 +1553,12 @@
   "Turks and Caicos Is.": {
     "name": "Turks and Caicos Is.",
     "description": "Know where Turks and Caicos Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1329,6 +1633,12 @@
   "St. Pierre and Miquelon": {
     "name": "St. Pierre and Miquelon",
     "description": "Know where St. Pierre and Miquelon is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern America"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1403,6 +1713,11 @@
   "Trinidad and Tobago": {
     "name": "Trinidad and Tobago",
     "description": "Know where Trinidad and Tobago is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Caribbean"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1477,6 +1792,12 @@
   "Grenada": {
     "name": "Grenada",
     "description": "Know where Grenada is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1551,6 +1872,12 @@
   "St. Vin. and Gren.": {
     "name": "St. Vin. and Gren.",
     "description": "Know where St. Vin. and Gren. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1625,6 +1952,12 @@
   "Barbados": {
     "name": "Barbados",
     "description": "Know where Barbados is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1699,6 +2032,12 @@
   "Saint Lucia": {
     "name": "Saint Lucia",
     "description": "Know where Saint Lucia is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1773,6 +2112,12 @@
   "Dominica": {
     "name": "Dominica",
     "description": "Know where Dominica is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1847,6 +2192,12 @@
   "Montserrat": {
     "name": "Montserrat",
     "description": "Know where Montserrat is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": 3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1921,6 +2272,12 @@
   "Antigua and Barb.": {
     "name": "Antigua and Barb.",
     "description": "Know where Antigua and Barb. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -1995,6 +2352,12 @@
   "St. Kitts and Nevis": {
     "name": "St. Kitts and Nevis",
     "description": "Know where St. Kitts and Nevis is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2069,6 +2432,12 @@
   "U.S. Virgin Is.": {
     "name": "U.S. Virgin Is.",
     "description": "Know where U.S. Virgin Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2143,6 +2512,12 @@
   "St-Barthélemy": {
     "name": "St-Barthélemy",
     "description": "Know where St-Barthélemy is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2217,6 +2592,11 @@
   "Puerto Rico": {
     "name": "Puerto Rico",
     "description": "Know where Puerto Rico is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Caribbean"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2291,6 +2671,12 @@
   "Anguilla": {
     "name": "Anguilla",
     "description": "Know where Anguilla is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2365,6 +2751,12 @@
   "British Virgin Is.": {
     "name": "British Virgin Is.",
     "description": "Know where British Virgin Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2439,6 +2831,11 @@
   "Jamaica": {
     "name": "Jamaica",
     "description": "Know where Jamaica is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Caribbean"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2513,6 +2910,12 @@
   "Cayman Is.": {
     "name": "Cayman Is.",
     "description": "Know where Cayman Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Caribbean"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2587,6 +2990,12 @@
   "Bermuda": {
     "name": "Bermuda",
     "description": "Know where Bermuda is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern America"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2635,6 +3044,11 @@
   "Indonesia": {
     "name": "Indonesia",
     "description": "Know where Indonesia is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2709,6 +3123,10 @@
   "Malaysia": {
     "name": "Malaysia",
     "description": "Know where Malaysia is.",
+    "parents": [
+      "World",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2783,6 +3201,11 @@
   "Cyprus": {
     "name": "Cyprus",
     "description": "Know where Cyprus is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Western Asia"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2857,6 +3280,11 @@
   "India": {
     "name": "India",
     "description": "Know where India is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2931,6 +3359,11 @@
   "China": {
     "name": "China",
     "description": "Know where China is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -2979,6 +3412,10 @@
   "Israel": {
     "name": "Israel",
     "description": "Know where Israel is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3053,6 +3490,10 @@
   "Palestine": {
     "name": "Palestine",
     "description": "Know where Palestine is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3127,6 +3568,10 @@
   "Lebanon": {
     "name": "Lebanon",
     "description": "Know where Lebanon is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3201,6 +3646,10 @@
   "Syria": {
     "name": "Syria",
     "description": "Know where Syria is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3275,6 +3724,11 @@
   "South Korea": {
     "name": "South Korea",
     "description": "Know where South Korea is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3349,6 +3803,10 @@
   "North Korea": {
     "name": "North Korea",
     "description": "Know where North Korea is.",
+    "parents": [
+      "World",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3423,6 +3881,11 @@
   "Bhutan": {
     "name": "Bhutan",
     "description": "Know where Bhutan is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3497,6 +3960,10 @@
   "Oman": {
     "name": "Oman",
     "description": "Know where Oman is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3571,6 +4038,10 @@
   "Uzbekistan": {
     "name": "Uzbekistan",
     "description": "Know where Uzbekistan is.",
+    "parents": [
+      "World",
+      "Central Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3645,6 +4116,10 @@
   "Kazakhstan": {
     "name": "Kazakhstan",
     "description": "Know where Kazakhstan is.",
+    "parents": [
+      "World",
+      "Central Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3719,6 +4194,10 @@
   "Tajikistan": {
     "name": "Tajikistan",
     "description": "Know where Tajikistan is.",
+    "parents": [
+      "World",
+      "Central Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3793,6 +4272,10 @@
   "Mongolia": {
     "name": "Mongolia",
     "description": "Know where Mongolia is.",
+    "parents": [
+      "World",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3867,6 +4350,11 @@
   "Vietnam": {
     "name": "Vietnam",
     "description": "Know where Vietnam is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -3941,6 +4429,10 @@
   "Cambodia": {
     "name": "Cambodia",
     "description": "Know where Cambodia is.",
+    "parents": [
+      "World",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4015,6 +4507,10 @@
   "United Arab Emirates": {
     "name": "United Arab Emirates",
     "description": "Know where United Arab Emirates is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4089,6 +4585,10 @@
   "Georgia": {
     "name": "Georgia",
     "description": "Know where Georgia is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4163,6 +4663,10 @@
   "Azerbaijan": {
     "name": "Azerbaijan",
     "description": "Know where Azerbaijan is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4237,6 +4741,11 @@
   "Turkey": {
     "name": "Turkey",
     "description": "Know where Turkey is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Western Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4311,6 +4820,10 @@
   "Laos": {
     "name": "Laos",
     "description": "Know where Laos is.",
+    "parents": [
+      "World",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4385,6 +4898,10 @@
   "Kyrgyzstan": {
     "name": "Kyrgyzstan",
     "description": "Know where Kyrgyzstan is.",
+    "parents": [
+      "World",
+      "Central Asia"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4459,6 +4976,10 @@
   "Armenia": {
     "name": "Armenia",
     "description": "Know where Armenia is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4533,6 +5054,10 @@
   "Iraq": {
     "name": "Iraq",
     "description": "Know where Iraq is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4607,6 +5132,11 @@
   "Iran": {
     "name": "Iran",
     "description": "Know where Iran is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4681,6 +5211,10 @@
   "Qatar": {
     "name": "Qatar",
     "description": "Know where Qatar is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4755,6 +5289,10 @@
   "Saudi Arabia": {
     "name": "Saudi Arabia",
     "description": "Know where Saudi Arabia is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4829,6 +5367,11 @@
   "Pakistan": {
     "name": "Pakistan",
     "description": "Know where Pakistan is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4903,6 +5446,11 @@
   "Thailand": {
     "name": "Thailand",
     "description": "Know where Thailand is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -4977,6 +5525,10 @@
   "Kuwait": {
     "name": "Kuwait",
     "description": "Know where Kuwait is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5051,6 +5603,10 @@
   "Timor-Leste": {
     "name": "Timor-Leste",
     "description": "Know where Timor-Leste is.",
+    "parents": [
+      "World",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5125,6 +5681,11 @@
   "Brunei": {
     "name": "Brunei",
     "description": "Know where Brunei is.",
+    "parents": [
+      "World",
+      "Small",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": 1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5199,6 +5760,11 @@
   "Myanmar": {
     "name": "Myanmar",
     "description": "Know where Myanmar is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5273,6 +5839,11 @@
   "Bangladesh": {
     "name": "Bangladesh",
     "description": "Know where Bangladesh is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5347,6 +5918,10 @@
   "Afghanistan": {
     "name": "Afghanistan",
     "description": "Know where Afghanistan is.",
+    "parents": [
+      "World",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5421,6 +5996,10 @@
   "Turkmenistan": {
     "name": "Turkmenistan",
     "description": "Know where Turkmenistan is.",
+    "parents": [
+      "World",
+      "Central Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5495,6 +6074,10 @@
   "Jordan": {
     "name": "Jordan",
     "description": "Know where Jordan is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5569,6 +6152,10 @@
   "Nepal": {
     "name": "Nepal",
     "description": "Know where Nepal is.",
+    "parents": [
+      "World",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5643,6 +6230,10 @@
   "Yemen": {
     "name": "Yemen",
     "description": "Know where Yemen is.",
+    "parents": [
+      "World",
+      "Western Asia"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5717,6 +6308,10 @@
   "Hong Kong": {
     "name": "Hong Kong",
     "description": "Know where Hong Kong is.",
+    "parents": [
+      "World",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5791,6 +6386,12 @@
   "N. Cyprus": {
     "name": "N. Cyprus",
     "description": "Know where N. Cyprus is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Western Asia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5865,6 +6466,11 @@
   "Siachen Glacier": {
     "name": "Siachen Glacier",
     "description": "Know where Siachen Glacier is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Asia"
+    ],
     "inherentDifficulty": 4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -5939,6 +6545,12 @@
   "Philippines": {
     "name": "Philippines",
     "description": "Know where Philippines is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Biggest",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6013,6 +6625,11 @@
   "Sri Lanka": {
     "name": "Sri Lanka",
     "description": "Know where Sri Lanka is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Southern Asia"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6087,6 +6704,11 @@
   "Taiwan": {
     "name": "Taiwan",
     "description": "Know where Taiwan is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6161,6 +6783,12 @@
   "Japan": {
     "name": "Japan",
     "description": "Know where Japan is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Biggest",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6235,6 +6863,12 @@
   "Indian Ocean Ter.": {
     "name": "Indian Ocean Ter.",
     "description": "Know where Indian Ocean Ter. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Seven seas (open ocean)"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6309,6 +6943,11 @@
   "Singapore": {
     "name": "Singapore",
     "description": "Know where Singapore is.",
+    "parents": [
+      "World",
+      "Islands",
+      "South-Eastern Asia"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6383,6 +7022,11 @@
   "Bahrain": {
     "name": "Bahrain",
     "description": "Know where Bahrain is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Western Asia"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6457,6 +7101,11 @@
   "Macao": {
     "name": "Macao",
     "description": "Know where Macao is.",
+    "parents": [
+      "World",
+      "Small",
+      "Eastern Asia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6531,6 +7180,10 @@
   "Chile": {
     "name": "Chile",
     "description": "Know where Chile is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6579,6 +7232,10 @@
   "Bolivia": {
     "name": "Bolivia",
     "description": "Know where Bolivia is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6653,6 +7310,10 @@
   "Peru": {
     "name": "Peru",
     "description": "Know where Peru is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6727,6 +7388,10 @@
   "Argentina": {
     "name": "Argentina",
     "description": "Know where Argentina is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6775,6 +7440,11 @@
   "Suriname": {
     "name": "Suriname",
     "description": "Know where Suriname is.",
+    "parents": [
+      "World",
+      "Small",
+      "South America"
+    ],
     "inherentDifficulty": 1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6849,6 +7519,11 @@
   "Guyana": {
     "name": "Guyana",
     "description": "Know where Guyana is.",
+    "parents": [
+      "World",
+      "Small",
+      "South America"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6923,6 +7598,11 @@
   "Brazil": {
     "name": "Brazil",
     "description": "Know where Brazil is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South America"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -6971,6 +7651,10 @@
   "Uruguay": {
     "name": "Uruguay",
     "description": "Know where Uruguay is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7045,6 +7729,10 @@
   "Ecuador": {
     "name": "Ecuador",
     "description": "Know where Ecuador is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7119,6 +7807,11 @@
   "Colombia": {
     "name": "Colombia",
     "description": "Know where Colombia is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "South America"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7193,6 +7886,10 @@
   "Paraguay": {
     "name": "Paraguay",
     "description": "Know where Paraguay is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7267,6 +7964,10 @@
   "Venezuela": {
     "name": "Venezuela",
     "description": "Know where Venezuela is.",
+    "parents": [
+      "World",
+      "South America"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7341,6 +8042,12 @@
   "Falkland Is.": {
     "name": "Falkland Is.",
     "description": "Know where Falkland Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "South America"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7415,6 +8122,11 @@
   "Ethiopia": {
     "name": "Ethiopia",
     "description": "Know where Ethiopia is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7489,6 +8201,10 @@
   "S. Sudan": {
     "name": "S. Sudan",
     "description": "Know where S. Sudan is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7563,6 +8279,10 @@
   "Somalia": {
     "name": "Somalia",
     "description": "Know where Somalia is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7637,6 +8357,11 @@
   "Kenya": {
     "name": "Kenya",
     "description": "Know where Kenya is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7711,6 +8436,10 @@
   "Malawi": {
     "name": "Malawi",
     "description": "Know where Malawi is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": 0,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7785,6 +8514,11 @@
   "Tanzania": {
     "name": "Tanzania",
     "description": "Know where Tanzania is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7859,6 +8593,10 @@
   "Somaliland": {
     "name": "Somaliland",
     "description": "Know where Somaliland is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -7933,6 +8671,10 @@
   "Morocco": {
     "name": "Morocco",
     "description": "Know where Morocco is.",
+    "parents": [
+      "World",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8007,6 +8749,11 @@
   "W. Sahara": {
     "name": "W. Sahara",
     "description": "Know where W. Sahara is.",
+    "parents": [
+      "World",
+      "Small",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8081,6 +8828,10 @@
   "Congo": {
     "name": "Congo",
     "description": "Know where Congo is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8155,6 +8906,11 @@
   "Dem. Rep. Congo": {
     "name": "Dem. Rep. Congo",
     "description": "Know where Dem. Rep. Congo is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8229,6 +8985,10 @@
   "Namibia": {
     "name": "Namibia",
     "description": "Know where Namibia is.",
+    "parents": [
+      "World",
+      "Southern Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8303,6 +9063,11 @@
   "South Africa": {
     "name": "South Africa",
     "description": "Know where South Africa is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Africa"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8377,6 +9142,10 @@
   "Libya": {
     "name": "Libya",
     "description": "Know where Libya is.",
+    "parents": [
+      "World",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8451,6 +9220,10 @@
   "Tunisia": {
     "name": "Tunisia",
     "description": "Know where Tunisia is.",
+    "parents": [
+      "World",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8525,6 +9298,10 @@
   "Zambia": {
     "name": "Zambia",
     "description": "Know where Zambia is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8599,6 +9376,10 @@
   "Sierra Leone": {
     "name": "Sierra Leone",
     "description": "Know where Sierra Leone is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8673,6 +9454,10 @@
   "Guinea": {
     "name": "Guinea",
     "description": "Know where Guinea is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8747,6 +9532,10 @@
   "Liberia": {
     "name": "Liberia",
     "description": "Know where Liberia is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 0,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8821,6 +9610,10 @@
   "Central African Rep.": {
     "name": "Central African Rep.",
     "description": "Know where Central African Rep. is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8895,6 +9688,10 @@
   "Sudan": {
     "name": "Sudan",
     "description": "Know where Sudan is.",
+    "parents": [
+      "World",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -8969,6 +9766,11 @@
   "Djibouti": {
     "name": "Djibouti",
     "description": "Know where Djibouti is.",
+    "parents": [
+      "World",
+      "Small",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9043,6 +9845,10 @@
   "Eritrea": {
     "name": "Eritrea",
     "description": "Know where Eritrea is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9117,6 +9923,10 @@
   "Côte d'Ivoire": {
     "name": "Côte d'Ivoire",
     "description": "Know where Côte d'Ivoire is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9191,6 +10001,10 @@
   "Mali": {
     "name": "Mali",
     "description": "Know where Mali is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9265,6 +10079,10 @@
   "Senegal": {
     "name": "Senegal",
     "description": "Know where Senegal is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9339,6 +10157,11 @@
   "Nigeria": {
     "name": "Nigeria",
     "description": "Know where Nigeria is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Western Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9413,6 +10236,10 @@
   "Benin": {
     "name": "Benin",
     "description": "Know where Benin is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 0,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9487,6 +10314,10 @@
   "Angola": {
     "name": "Angola",
     "description": "Know where Angola is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9561,6 +10392,10 @@
   "Botswana": {
     "name": "Botswana",
     "description": "Know where Botswana is.",
+    "parents": [
+      "World",
+      "Southern Africa"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9635,6 +10470,10 @@
   "Zimbabwe": {
     "name": "Zimbabwe",
     "description": "Know where Zimbabwe is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9709,6 +10548,10 @@
   "Chad": {
     "name": "Chad",
     "description": "Know where Chad is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9783,6 +10626,10 @@
   "Algeria": {
     "name": "Algeria",
     "description": "Know where Algeria is.",
+    "parents": [
+      "World",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9857,6 +10704,10 @@
   "Mozambique": {
     "name": "Mozambique",
     "description": "Know where Mozambique is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -9931,6 +10782,10 @@
   "eSwatini": {
     "name": "eSwatini",
     "description": "Know where eSwatini is.",
+    "parents": [
+      "World",
+      "Southern Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10005,6 +10860,10 @@
   "Burundi": {
     "name": "Burundi",
     "description": "Know where Burundi is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10079,6 +10938,10 @@
   "Rwanda": {
     "name": "Rwanda",
     "description": "Know where Rwanda is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10153,6 +11016,10 @@
   "Uganda": {
     "name": "Uganda",
     "description": "Know where Uganda is.",
+    "parents": [
+      "World",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10227,6 +11094,10 @@
   "Lesotho": {
     "name": "Lesotho",
     "description": "Know where Lesotho is.",
+    "parents": [
+      "World",
+      "Southern Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10301,6 +11172,10 @@
   "Cameroon": {
     "name": "Cameroon",
     "description": "Know where Cameroon is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10375,6 +11250,10 @@
   "Gabon": {
     "name": "Gabon",
     "description": "Know where Gabon is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10449,6 +11328,10 @@
   "Niger": {
     "name": "Niger",
     "description": "Know where Niger is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10523,6 +11406,10 @@
   "Burkina Faso": {
     "name": "Burkina Faso",
     "description": "Know where Burkina Faso is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10597,6 +11484,10 @@
   "Togo": {
     "name": "Togo",
     "description": "Know where Togo is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10671,6 +11562,10 @@
   "Ghana": {
     "name": "Ghana",
     "description": "Know where Ghana is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10745,6 +11640,10 @@
   "Guinea-Bissau": {
     "name": "Guinea-Bissau",
     "description": "Know where Guinea-Bissau is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10819,6 +11718,11 @@
   "Egypt": {
     "name": "Egypt",
     "description": "Know where Egypt is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Northern Africa"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10893,6 +11797,10 @@
   "Mauritania": {
     "name": "Mauritania",
     "description": "Know where Mauritania is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 0,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -10967,6 +11875,10 @@
   "Eq. Guinea": {
     "name": "Eq. Guinea",
     "description": "Know where Eq. Guinea is.",
+    "parents": [
+      "World",
+      "Middle Africa"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11041,6 +11953,10 @@
   "Gambia": {
     "name": "Gambia",
     "description": "Know where Gambia is.",
+    "parents": [
+      "World",
+      "Western Africa"
+    ],
     "inherentDifficulty": 1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11115,6 +12031,11 @@
   "Madagascar": {
     "name": "Madagascar",
     "description": "Know where Madagascar is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11189,6 +12110,12 @@
   "Comoros": {
     "name": "Comoros",
     "description": "Know where Comoros is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": 5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11263,6 +12190,12 @@
   "São Tomé and Principe": {
     "name": "São Tomé and Principe",
     "description": "Know where São Tomé and Principe is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Middle Africa"
+    ],
     "inherentDifficulty": 6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11337,6 +12270,12 @@
   "Cabo Verde": {
     "name": "Cabo Verde",
     "description": "Know where Cabo Verde is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Western Africa"
+    ],
     "inherentDifficulty": 2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11411,6 +12350,11 @@
   "France": {
     "name": "France",
     "description": "Know where France is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Western Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11434,6 +12378,10 @@
   "Ukraine": {
     "name": "Ukraine",
     "description": "Know where Ukraine is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11508,6 +12456,10 @@
   "Belarus": {
     "name": "Belarus",
     "description": "Know where Belarus is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11582,6 +12534,10 @@
   "Lithuania": {
     "name": "Lithuania",
     "description": "Know where Lithuania is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11656,6 +12612,11 @@
   "Russia": {
     "name": "Russia",
     "description": "Know where Russia is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11679,6 +12640,10 @@
   "Czechia": {
     "name": "Czechia",
     "description": "Know where Czechia is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11753,6 +12718,11 @@
   "Germany": {
     "name": "Germany",
     "description": "Know where Germany is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Western Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11827,6 +12797,10 @@
   "Estonia": {
     "name": "Estonia",
     "description": "Know where Estonia is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11901,6 +12875,10 @@
   "Latvia": {
     "name": "Latvia",
     "description": "Know where Latvia is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -11975,6 +12953,10 @@
   "Norway": {
     "name": "Norway",
     "description": "Know where Norway is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12049,6 +13031,10 @@
   "Sweden": {
     "name": "Sweden",
     "description": "Know where Sweden is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12123,6 +13109,10 @@
   "Finland": {
     "name": "Finland",
     "description": "Know where Finland is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12197,6 +13187,11 @@
   "Luxembourg": {
     "name": "Luxembourg",
     "description": "Know where Luxembourg is.",
+    "parents": [
+      "World",
+      "Small",
+      "Western Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12271,6 +13266,10 @@
   "Belgium": {
     "name": "Belgium",
     "description": "Know where Belgium is.",
+    "parents": [
+      "World",
+      "Western Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12345,6 +13344,10 @@
   "North Macedonia": {
     "name": "North Macedonia",
     "description": "Know where North Macedonia is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12419,6 +13422,10 @@
   "Albania": {
     "name": "Albania",
     "description": "Know where Albania is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12493,6 +13500,10 @@
   "Kosovo": {
     "name": "Kosovo",
     "description": "Know where Kosovo is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12567,6 +13578,10 @@
   "Spain": {
     "name": "Spain",
     "description": "Know where Spain is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12641,6 +13656,10 @@
   "Denmark": {
     "name": "Denmark",
     "description": "Know where Denmark is.",
+    "parents": [
+      "World",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12715,6 +13734,10 @@
   "Romania": {
     "name": "Romania",
     "description": "Know where Romania is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12789,6 +13812,10 @@
   "Hungary": {
     "name": "Hungary",
     "description": "Know where Hungary is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12863,6 +13890,10 @@
   "Slovakia": {
     "name": "Slovakia",
     "description": "Know where Slovakia is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -12937,6 +13968,10 @@
   "Poland": {
     "name": "Poland",
     "description": "Know where Poland is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13011,6 +14046,11 @@
   "Ireland": {
     "name": "Ireland",
     "description": "Know where Ireland is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13085,6 +14125,12 @@
   "United Kingdom": {
     "name": "United Kingdom",
     "description": "Know where United Kingdom is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Biggest",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13159,6 +14205,10 @@
   "Greece": {
     "name": "Greece",
     "description": "Know where Greece is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13233,6 +14283,10 @@
   "Austria": {
     "name": "Austria",
     "description": "Know where Austria is.",
+    "parents": [
+      "World",
+      "Western Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13307,6 +14361,11 @@
   "Italy": {
     "name": "Italy",
     "description": "Know where Italy is.",
+    "parents": [
+      "World",
+      "Biggest",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13381,6 +14440,10 @@
   "Switzerland": {
     "name": "Switzerland",
     "description": "Know where Switzerland is.",
+    "parents": [
+      "World",
+      "Western Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13455,6 +14518,10 @@
   "Netherlands": {
     "name": "Netherlands",
     "description": "Know where Netherlands is.",
+    "parents": [
+      "World",
+      "Western Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13529,6 +14596,11 @@
   "Liechtenstein": {
     "name": "Liechtenstein",
     "description": "Know where Liechtenstein is.",
+    "parents": [
+      "World",
+      "Small",
+      "Western Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13603,6 +14675,10 @@
   "Serbia": {
     "name": "Serbia",
     "description": "Know where Serbia is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13677,6 +14753,10 @@
   "Croatia": {
     "name": "Croatia",
     "description": "Know where Croatia is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13751,6 +14831,10 @@
   "Slovenia": {
     "name": "Slovenia",
     "description": "Know where Slovenia is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13825,6 +14909,10 @@
   "Bulgaria": {
     "name": "Bulgaria",
     "description": "Know where Bulgaria is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13899,6 +14987,11 @@
   "San Marino": {
     "name": "San Marino",
     "description": "Know where San Marino is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -13973,6 +15066,11 @@
   "Monaco": {
     "name": "Monaco",
     "description": "Know where Monaco is.",
+    "parents": [
+      "World",
+      "Small",
+      "Western Europe"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14047,6 +15145,11 @@
   "Andorra": {
     "name": "Andorra",
     "description": "Know where Andorra is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14121,6 +15224,11 @@
   "Montenegro": {
     "name": "Montenegro",
     "description": "Know where Montenegro is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14195,6 +15303,10 @@
   "Bosnia and Herz.": {
     "name": "Bosnia and Herz.",
     "description": "Know where Bosnia and Herz. is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14269,6 +15381,10 @@
   "Portugal": {
     "name": "Portugal",
     "description": "Know where Portugal is.",
+    "parents": [
+      "World",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14343,6 +15459,10 @@
   "Moldova": {
     "name": "Moldova",
     "description": "Know where Moldova is.",
+    "parents": [
+      "World",
+      "Eastern Europe"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14417,6 +15537,11 @@
   "Vatican": {
     "name": "Vatican",
     "description": "Know where Vatican is.",
+    "parents": [
+      "World",
+      "Small",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -9,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14440,6 +15565,12 @@
   "Iceland": {
     "name": "Iceland",
     "description": "Know where Iceland is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14488,6 +15619,12 @@
   "Malta": {
     "name": "Malta",
     "description": "Know where Malta is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Southern Europe"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14562,6 +15699,12 @@
   "Jersey": {
     "name": "Jersey",
     "description": "Know where Jersey is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -1,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14636,6 +15779,12 @@
   "Guernsey": {
     "name": "Guernsey",
     "description": "Know where Guernsey is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14710,6 +15859,12 @@
   "Isle of Man": {
     "name": "Isle of Man",
     "description": "Know where Isle of Man is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14784,6 +15939,12 @@
   "Åland": {
     "name": "Åland",
     "description": "Know where Åland is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14858,6 +16019,12 @@
   "Faeroe Is.": {
     "name": "Faeroe Is.",
     "description": "Know where Faeroe Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Northern Europe"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -14932,6 +16099,10 @@
   "Papua New Guinea": {
     "name": "Papua New Guinea",
     "description": "Know where Papua New Guinea is.",
+    "parents": [
+      "World",
+      "Melanesia"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15006,6 +16177,11 @@
   "Australia": {
     "name": "Australia",
     "description": "Know where Australia is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Australia and New Zealand"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15029,6 +16205,12 @@
   "Fiji": {
     "name": "Fiji",
     "description": "Know where Fiji is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Melanesia"
+    ],
     "inherentDifficulty": -4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15052,6 +16234,11 @@
   "New Zealand": {
     "name": "New Zealand",
     "description": "Know where New Zealand is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Australia and New Zealand"
+    ],
     "inherentDifficulty": -8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15075,6 +16262,12 @@
   "New Caledonia": {
     "name": "New Caledonia",
     "description": "Know where New Caledonia is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Melanesia"
+    ],
     "inherentDifficulty": 4,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15149,6 +16342,12 @@
   "Pitcairn Is.": {
     "name": "Pitcairn Is.",
     "description": "Know where Pitcairn Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15172,6 +16371,12 @@
   "Fr. Polynesia": {
     "name": "Fr. Polynesia",
     "description": "Know where Fr. Polynesia is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15220,6 +16425,12 @@
   "Kiribati": {
     "name": "Kiribati",
     "description": "Know where Kiribati is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": -5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15268,6 +16479,12 @@
   "Marshall Is.": {
     "name": "Marshall Is.",
     "description": "Know where Marshall Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15316,6 +16533,12 @@
   "Norfolk Island": {
     "name": "Norfolk Island",
     "description": "Know where Norfolk Island is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Australia and New Zealand"
+    ],
     "inherentDifficulty": 8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15364,6 +16587,12 @@
   "Cook Is.": {
     "name": "Cook Is.",
     "description": "Know where Cook Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15387,6 +16616,12 @@
   "Tonga": {
     "name": "Tonga",
     "description": "Know where Tonga is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": 7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15435,6 +16670,12 @@
   "Wallis and Futuna Is.": {
     "name": "Wallis and Futuna Is.",
     "description": "Know where Wallis and Futuna Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15458,6 +16699,12 @@
   "Samoa": {
     "name": "Samoa",
     "description": "Know where Samoa is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": 3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15506,6 +16753,12 @@
   "Solomon Is.": {
     "name": "Solomon Is.",
     "description": "Know where Solomon Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Melanesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15580,6 +16833,12 @@
   "Tuvalu": {
     "name": "Tuvalu",
     "description": "Know where Tuvalu is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": 6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15603,6 +16862,12 @@
   "Nauru": {
     "name": "Nauru",
     "description": "Know where Nauru is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": 5,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15622,15 +16887,6 @@
     "exercises": [
       "Nauru-World-0"
     ]
-  },
-  "Micronesia": {
-    "name": "Micronesia",
-    "description": "Know where Micronesia is.",
-    "inherentDifficulty": -10,
-    "data": {
-      "typeOfGeopoliticalUnit": "Country",
-      "geopoliticalUnit": "Micronesia"
-    }
   },
   "Micronesia-World": {
     "name": "Micronesia-World",
@@ -15674,6 +16930,12 @@
   "Vanuatu": {
     "name": "Vanuatu",
     "description": "Know where Vanuatu is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Melanesia"
+    ],
     "inherentDifficulty": 3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15748,6 +17010,12 @@
   "Niue": {
     "name": "Niue",
     "description": "Know where Niue is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": 7,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15771,6 +17039,12 @@
   "American Samoa": {
     "name": "American Samoa",
     "description": "Know where American Samoa is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Polynesia"
+    ],
     "inherentDifficulty": -3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15845,6 +17119,12 @@
   "Palau": {
     "name": "Palau",
     "description": "Know where Palau is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": 6,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15919,6 +17199,12 @@
   "Guam": {
     "name": "Guam",
     "description": "Know where Guam is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": 8,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -15993,6 +17279,12 @@
   "N. Mariana Is.": {
     "name": "N. Mariana Is.",
     "description": "Know where N. Mariana Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Micronesia"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16067,6 +17359,12 @@
   "Ashmore and Cartier Is.": {
     "name": "Ashmore and Cartier Is.",
     "description": "Know where Ashmore and Cartier Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Australia and New Zealand"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16090,6 +17388,12 @@
   "Seychelles": {
     "name": "Seychelles",
     "description": "Know where Seychelles is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": 2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16138,6 +17442,12 @@
   "Heard I. and McDonald Is.": {
     "name": "Heard I. and McDonald Is.",
     "description": "Know where Heard I. and McDonald Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Seven seas (open ocean)"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16186,6 +17496,12 @@
   "Saint Helena": {
     "name": "Saint Helena",
     "description": "Know where Saint Helena is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Western Africa"
+    ],
     "inherentDifficulty": -2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16260,6 +17576,11 @@
   "Mauritius": {
     "name": "Mauritius",
     "description": "Know where Mauritius is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Eastern Africa"
+    ],
     "inherentDifficulty": 2,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16334,6 +17655,12 @@
   "Br. Indian Ocean Ter.": {
     "name": "Br. Indian Ocean Ter.",
     "description": "Know where Br. Indian Ocean Ter. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Seven seas (open ocean)"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16357,6 +17684,12 @@
   "Maldives": {
     "name": "Maldives",
     "description": "Know where Maldives is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Southern Asia"
+    ],
     "inherentDifficulty": 3,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
@@ -16431,6 +17764,12 @@
   "S. Geo. and the Is.": {
     "name": "S. Geo. and the Is.",
     "description": "Know where S. Geo. and the Is. is.",
+    "parents": [
+      "World",
+      "Islands",
+      "Small",
+      "Seven seas (open ocean)"
+    ],
     "inherentDifficulty": -10,
     "data": {
       "typeOfGeopoliticalUnit": "Country",
