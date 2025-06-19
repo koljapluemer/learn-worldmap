@@ -4,6 +4,7 @@ import type { LearningGoal } from '../learning-goal/LearningGoalType';
 import LearningGoalWidget from './LearningGoalWidget.vue';
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
 import { useLearningData } from '../data/useLearningData';
+import { useExerciseProgressStore } from '../tracking/exercise/exerciseProgressStore';
 
 const props = defineProps<{
   learningGoal: LearningGoal,
@@ -21,7 +22,8 @@ const props = defineProps<{
 
 const expanded = ref(false);
 const progressStore = useLearningGoalProgressStore();
-const { getLearningGoalWithProgress } = useLearningData();
+const exerciseProgressStore = useExerciseProgressStore();
+const { getLearningGoalWithProgress, getExerciseStatisticsForLearningGoal } = useLearningData();
 
 const learningGoalWithProgress = computed(() => 
   getLearningGoalWithProgress(props.learningGoal.name, progressStore)
@@ -30,6 +32,10 @@ const learningGoalWithProgress = computed(() =>
 const progress = computed(() => learningGoalWithProgress.value?.progress);
 const isDirectlyBlacklisted = computed(() => progress.value?.isBlacklisted ?? false);
 const isGreyed = computed(() => props.isEffectivelyBlacklisted(props.learningGoal, props.isBlacklisted));
+
+const exerciseStats = computed(() => 
+  getExerciseStatisticsForLearningGoal(props.learningGoal, exerciseProgressStore)
+);
 
 function toggleBlacklist() {
   progressStore.setProgress({
@@ -59,6 +65,25 @@ function toggleBlacklist() {
           <span v-else>-</span>
         </div>
         <div v-if="progress.priority !== undefined">Priority: {{ progress.priority }}</div>
+      </div>
+      
+      <hr class="my-2 border-base-300">
+      
+      <div class="font-semibold mb-1">Exercise Status:</div>
+      <div class="grid grid-cols-1 gap-1">
+        <div class="text-blue-600">New exercises: {{ exerciseStats.newExercises }} ({{ exerciseStats.percentages.new }}%)</div>
+        <div class="text-orange-600">Due now: {{ exerciseStats.dueExercises }} ({{ exerciseStats.percentages.due }}%)</div>
+        <div class="text-gray-600">Not due: {{ exerciseStats.notDueExercises }} ({{ exerciseStats.percentages.notDue }}%)</div>
+      </div>
+    </div>
+    
+    <!-- Exercise Status Box (when no progress data) -->
+    <div v-else class="mt-2 p-2 bg-base-200 rounded text-xs">
+      <div class="font-semibold mb-1">Exercise Status:</div>
+      <div class="grid grid-cols-1 gap-1">
+        <div class="text-blue-600">New exercises: {{ exerciseStats.newExercises }} ({{ exerciseStats.percentages.new }}%)</div>
+        <div class="text-orange-600">Due now: {{ exerciseStats.dueExercises }} ({{ exerciseStats.percentages.due }}%)</div>
+        <div class="text-gray-600">Not due: {{ exerciseStats.notDueExercises }} ({{ exerciseStats.percentages.notDue }}%)</div>
       </div>
     </div>
     

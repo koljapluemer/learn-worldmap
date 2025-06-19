@@ -6,6 +6,7 @@ import exercisesRaw from './exercises.min.json';
 import type { LearningGoalData, ExerciseData } from '../dataTypes';
 import type { LearningGoalProgress } from '../tracking/learning-goal-progress/LearningGoalProgress';
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
+import type { ExerciseProgress } from '../tracking/exercise/ExerciseProgress';
 
 // Helper to type the imported JSON
 const learningGoalsData: Record<string, LearningGoalData> = learningGoalsRaw as any;
@@ -274,6 +275,145 @@ function getLearningGoalWithProgress(
   };
 }
 
+// Function to get all exercises belonging to a learning goal (recursively)
+function getAllExercisesForLearningGoal(goal: LearningGoal, visited = new Set<string>()): ExerciseType[] {
+  if (visited.has(goal.name)) return [];
+  visited.add(goal.name);
+  
+  let exercises = [...goal.exercises];
+  for (const child of goal.children) {
+    exercises.push(...getAllExercisesForLearningGoal(child, visited));
+  }
+  return exercises;
+}
+
+// Function to calculate exercise statistics for a learning goal
+function getExerciseStatisticsForLearningGoal(
+  goal: LearningGoal,
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): {
+  newExercises: number;
+  dueExercises: number;
+  notDueExercises: number;
+  totalExercises: number;
+  percentages: {
+    new: number;
+    due: number;
+    notDue: number;
+  };
+} {
+  const allExercises = getAllExercisesForLearningGoal(goal);
+  const now = new Date();
+  
+  let newExercises = 0;
+  let dueExercises = 0;
+  let notDueExercises = 0;
+  
+  for (const exercise of allExercises) {
+    const progress = exerciseProgressStore.progress[exercise.id];
+    
+    if (!progress) {
+      // Exercise has never been practiced
+      newExercises++;
+    } else {
+      // Exercise has been practiced, check if it's due
+      const dueDate = new Date(progress.due);
+      if (dueDate <= now) {
+        dueExercises++;
+      } else {
+        notDueExercises++;
+      }
+    }
+  }
+  
+  const totalExercises = newExercises + dueExercises + notDueExercises;
+  const percentages = totalExercises === 0 
+    ? { new: 0, due: 0, notDue: 0 }
+    : {
+        new: Math.round((newExercises / totalExercises) * 100),
+        due: Math.round((dueExercises / totalExercises) * 100),
+        notDue: Math.round((notDueExercises / totalExercises) * 100)
+      };
+  
+  return {
+    newExercises,
+    dueExercises,
+    notDueExercises,
+    totalExercises,
+    percentages
+  };
+}
+
+// Function to get overall exercise statistics across all learning goals
+function getOverallExerciseStatistics(
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): {
+  totalNew: number;
+  totalDue: number;
+  totalNotDue: number;
+} {
+  let totalNew = 0;
+  let totalDue = 0;
+  let totalNotDue = 0;
+  
+  for (const goal of Object.values(learningGoalMap)) {
+    const stats = getExerciseStatisticsForLearningGoal(goal, exerciseProgressStore);
+    totalNew += stats.newExercises;
+    totalDue += stats.dueExercises;
+    totalNotDue += stats.notDueExercises;
+  }
+  
+  return { totalNew, totalDue, totalNotDue };
+}
+
+// Function to get overall progress statistics
+function getOverallProgressStatistics(
+  progressStore: ReturnType<typeof useLearningGoalProgressStore>
+): {
+  goalsWithProgress: number;
+  totalProgressEntries: number;
+} {
+  const allGoalsWithProgress = getLearningGoalsWithProgress(progressStore);
+  const goalsWithProgress = allGoalsWithProgress.filter(goal => goal.progress).length;
+  const totalProgressEntries = allGoalsWithProgress.reduce((sum, goal) => sum + (goal.progress?.repetitions || 0), 0);
+  
+  return { goalsWithProgress, totalProgressEntries };
+}
+
+// Function to get blacklist statistics
+function getBlacklistStatistics(
+  isBlacklistedFn: (goalName: string) => boolean
+): {
+  blacklistedCount: number;
+  effectivelyBlacklistedCount: number;
+  activeCount: number;
+} {
+  const allGoals = Object.values(learningGoalMap);
+  const blacklistedCount = allGoals.filter(goal => isBlacklistedFn(goal.name)).length;
+  const effectivelyBlacklistedCount = allGoals.filter(goal => isEffectivelyBlacklisted(goal, isBlacklistedFn)).length;
+  const activeCount = allGoals.length - effectivelyBlacklistedCount;
+  
+  return { blacklistedCount, effectivelyBlacklistedCount, activeCount };
+}
+
+// Function to get exercise statistics
+function getExerciseCountStatistics(
+  isBlacklistedFn: (goalName: string) => boolean
+): {
+  totalExercises: number;
+  exercisesOnEffectivelyBlacklisted: number;
+  exercisesOnActive: number;
+} {
+  const allGoals = Object.values(learningGoalMap);
+  const totalExercises = allGoals.reduce((sum, goal) => sum + goal.exercises.length, 0);
+  const exercisesOnEffectivelyBlacklisted = allGoals
+    .filter(goal => isEffectivelyBlacklisted(goal, isBlacklistedFn))
+    .reduce((sum, goal) => sum + goal.exercises.length, 0);
+  const exercisesOnActive = totalExercises - exercisesOnEffectivelyBlacklisted;
+  
+  return { totalExercises, exercisesOnEffectivelyBlacklisted, exercisesOnActive };
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -293,5 +433,11 @@ export function useLearningData() {
     updateLearningGoalProgress,
     getLearningGoalsWithProgress,
     getLearningGoalWithProgress,
+    getAllExercisesForLearningGoal,
+    getExerciseStatisticsForLearningGoal,
+    getOverallExerciseStatistics,
+    getOverallProgressStatistics,
+    getBlacklistStatistics,
+    getExerciseCountStatistics,
   };
 }
