@@ -5,6 +5,7 @@ import LearningGoalWidget from './LearningGoalWidget.vue';
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
 import { useLearningData } from '../data/useLearningData';
 import { useExerciseProgressStore } from '../tracking/exercise/exerciseProgressStore';
+import IconLockClosed from '@/modules/icons/IconLockClosed.vue';
 
 const props = defineProps<{
   learningGoal: LearningGoal,
@@ -37,6 +38,11 @@ const exerciseStats = computed(() =>
   getExerciseStatisticsForLearningGoal(props.learningGoal, exerciseProgressStore)
 );
 
+const isBlocked = computed(() => props.learningGoal.blockedBy.length > 0);
+const blockingGoalsNames = computed(() => 
+  props.learningGoal.blockedBy.map(goal => goal.name).join(', ')
+);
+
 function toggleBlacklist() {
   progressStore.setProgress({
     ...progress.value,
@@ -48,8 +54,16 @@ function toggleBlacklist() {
 
 <template>
   <div :class="['border rounded p-2 bg-base-100', isGreyed ? 'opacity-50 grayscale' : '']">
-    <div class="text-xs">{{ props.learningGoal.name }}</div>
+    <div class="text-xs flex items-center gap-1">
+      <IconLockClosed v-if="isBlocked" class="w-3 h-3 text-red-500" />
+      {{ props.learningGoal.name }}
+    </div>
     {{ props.learningGoal.description }}
+    
+    <!-- Blocked By Information -->
+    <div v-if="isBlocked" class="mt-1 p-1 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+      <span class="font-semibold">Blocked by:</span> {{ blockingGoalsNames }}
+    </div>
     
     <!-- Progress Data Box -->
     <div v-if="progress" class="mt-2 p-2 bg-base-200 rounded text-xs">
