@@ -83,11 +83,52 @@ function getAllDescendantsCount(goal: LearningGoal): number {
   return countDescendants(goal);
 }
 
+function getDirectExercisesCount(goal: LearningGoal): number {
+  return goal.exercises.length;
+}
+
+function getAllDescendantExercisesCount(goal: LearningGoal): number {
+  const visited = new Set<LearningGoal>();
+  function countExercises(g: LearningGoal): number {
+    if (visited.has(g)) return 0;
+    visited.add(g);
+    let count = g.exercises.length;
+    for (const child of g.children) {
+      count += countExercises(child);
+    }
+    return count;
+  }
+  return countExercises(goal);
+}
+
+function getDirectParentsCount(goal: LearningGoal): number {
+  return goal.parents.length;
+}
+
+function getAllAncestorsCount(goal: LearningGoal): number {
+  const visited = new Set<LearningGoal>();
+  function countAncestors(g: LearningGoal): number {
+    let count = 0;
+    for (const parent of g.parents) {
+      if (!visited.has(parent)) {
+        visited.add(parent);
+        count += 1 + countAncestors(parent);
+      }
+    }
+    return count;
+  }
+  return countAncestors(goal);
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
     getRootLearningGoals,
     getDirectChildrenCount,
     getAllDescendantsCount,
+    getDirectExercisesCount,
+    getAllDescendantExercisesCount,
+    getDirectParentsCount,
+    getAllAncestorsCount,
   };
 }

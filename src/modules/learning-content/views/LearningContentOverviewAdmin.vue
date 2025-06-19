@@ -2,7 +2,15 @@
 import { useLearningData } from '../data/useLearningData';
 import LearningGoalWidget from './LearningGoalWidget.vue';
 
-const { getRootLearningGoals, getDirectChildrenCount, getAllDescendantsCount } = useLearningData();
+const {
+  getRootLearningGoals,
+  getDirectChildrenCount,
+  getAllDescendantsCount,
+  getDirectExercisesCount,
+  getAllDescendantExercisesCount,
+  getDirectParentsCount,
+  getAllAncestorsCount
+} = useLearningData();
 const learningGoals = getRootLearningGoals();
 </script>
 
@@ -16,6 +24,10 @@ const learningGoals = getRootLearningGoals();
         :learning-goal="goal"
         :get-direct-children-count="getDirectChildrenCount"
         :get-all-descendants-count="getAllDescendantsCount"
+        :get-direct-exercises-count="getDirectExercisesCount"
+        :get-all-descendant-exercises-count="getAllDescendantExercisesCount"
+        :get-direct-parents-count="getDirectParentsCount"
+        :get-all-ancestors-count="getAllAncestorsCount"
       />
     </div>
   </div>
