@@ -1,3 +1,9 @@
 export type ExerciseType = {
-    id: string;   
-}
+  id: string;
+  instruction: string;
+  data: {
+    zoom: number;
+    panIndex?: number;
+    country: string;
+  };
+};

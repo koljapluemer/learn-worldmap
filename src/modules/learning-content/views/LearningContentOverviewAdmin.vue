@@ -15,7 +15,8 @@ const {
   getAllAncestorsCount,
   isEffectivelyBlacklisted,
   getEffectiveInterest,
-  getEffectiveDifficulty
+  getEffectiveDifficulty,
+  getRandomExercise
 } = useLearningData();
 const progressStore = useLearningGoalProgressStore();
 
@@ -40,11 +41,21 @@ const exercisesOnActive = computed(() =>
   totalExercises.value - exercisesOnEffectivelyBlacklisted.value
 );
 const learningGoals = getRootLearningGoals();
+
+function showRandomExercise() {
+  const ex = getRandomExercise();
+  if (!ex) {
+    alert('No exercise found!');
+    return;
+  }
+  alert(`Random Exercise:\nID: ${ex.id}\nInstruction: ${ex.instruction}`);
+}
 </script>
 
 <template>
   <div class="p-4">
     <h1 class="text-xl font-bold mb-4">Learning Goals Admin Overview</h1>
+    <button class="btn btn-primary btn-sm mb-4" @click="showRandomExercise">Get random exercise</button>
     <div class="mb-2 text-sm">
       <span class="mr-4">Total: <b>{{ allGoals.length }}</b></span>
       <span class="mr-4">Blacklisted: <b class="text-red-500">{{ blacklistedCount }}</b></span>

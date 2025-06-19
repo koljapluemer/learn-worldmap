@@ -9,10 +9,29 @@ import type { LearningGoalData, ExerciseData } from '../dataTypes';
 const learningGoalsData: Record<string, LearningGoalData> = learningGoalsRaw as any;
 const exercisesData: Record<string, ExerciseData> = exercisesRaw as any;
 
-// Build ExerciseType map
+// Build ExerciseType map and array
 const exerciseMap: Record<string, ExerciseType> = {};
+const allExercisesArr: ExerciseType[] = [];
 Object.values(exercisesData).forEach((ex) => {
-  exerciseMap[ex.id] = { id: ex.id };
+  let data: ExerciseType['data'];
+  if (ex.data && typeof ex.data.zoom === 'number' && typeof ex.data.country === 'string') {
+    data = {
+      zoom: ex.data.zoom,
+      country: ex.data.country,
+      ...(typeof ex.data.panIndex === 'number' ? { panIndex: ex.data.panIndex } : {})
+    };
+  } else {
+    // fallback or skip if data is malformed
+    // For now, skip exercises with invalid data
+    return;
+  }
+  const exercise: ExerciseType = {
+    id: ex.id,
+    instruction: ex.instruction,
+    data
+  };
+  exerciseMap[ex.id] = exercise;
+  allExercisesArr.push(exercise);
 });
 
 // First pass: create all LearningGoal objects with empty relations
@@ -155,6 +174,13 @@ function getEffectiveDifficulty(goal: LearningGoal, visited = new Set<string>())
   return sum;
 }
 
+// Expose a function to get a random exercise
+function getRandomExercise(): ExerciseType | undefined {
+  if (!allExercisesArr.length) return undefined;
+  const idx = Math.floor(Math.random() * allExercisesArr.length);
+  return allExercisesArr[idx];
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -168,5 +194,6 @@ export function useLearningData() {
     isEffectivelyBlacklisted,
     getEffectiveInterest,
     getEffectiveDifficulty,
+    getRandomExercise,
   };
 }
