@@ -7,6 +7,7 @@ import type { LearningGoalData, ExerciseData } from '../dataTypes';
 import type { LearningGoalProgress } from '../tracking/learning-goal-progress/LearningGoalProgress';
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
 import type { ExerciseProgress } from '../tracking/exercise/ExerciseProgress';
+import { useExerciseProgressStore } from '../tracking/exercise/exerciseProgressStore';
 
 // Helper to type the imported JSON
 const learningGoalsData: Record<string, LearningGoalData> = learningGoalsRaw as any;
@@ -192,11 +193,46 @@ function getEffectiveDifficulty(goal: LearningGoal, visited = new Set<string>())
   return sum;
 }
 
+// Helper to get all ancestors (including self) of a learning goal
+function getAllAncestorsInclSelf(goal: LearningGoal, visited = new Set<string>()): LearningGoal[] {
+  if (visited.has(goal.name)) return [];
+  visited.add(goal.name);
+  let ancestors = [goal];
+  for (const parent of goal.parents) {
+    ancestors = ancestors.concat(getAllAncestorsInclSelf(parent, visited));
+  }
+  return ancestors;
+}
+
 // Expose a function to get a random exercise
 function getRandomExercise(): ExerciseType | undefined {
-  if (!allExercisesArr.length) return undefined;
-  const idx = Math.floor(Math.random() * allExercisesArr.length);
-  return allExercisesArr[idx];
+  const exerciseProgressStore = useExerciseProgressStore();
+  // Only pick exercises whose ALL recursive ancestors are not effectively blocked
+  const eligibleExercises: ExerciseType[] = [];
+  for (const exercise of allExercisesArr) {
+    // Each exercise can have multiple parents (learning goals)
+    // It is eligible if ALL its parents (and their ancestors) are not effectively blocked
+    let isEligible = false;
+    for (const parentGoal of exercise.parents) {
+      // For this parent, check all ancestors (including self)
+      const ancestors = getAllAncestorsInclSelf(parentGoal);
+      // If ANY ancestor is effectively blocked, this exercise is not eligible for this parent
+      const anyBlocked = ancestors.some(ancestor => {
+        const blockingStatus = getEffectiveBlockingStatus(ancestor, exerciseProgressStore);
+        return blockingStatus.isEffectivelyBlocked;
+      });
+      if (!anyBlocked) {
+        isEligible = true;
+        break; // If at least one parent path is unblocked, the exercise is eligible
+      }
+    }
+    if (isEligible) {
+      eligibleExercises.push(exercise);
+    }
+  }
+  if (!eligibleExercises.length) return undefined;
+  const idx = Math.floor(Math.random() * eligibleExercises.length);
+  return eligibleExercises[idx];
 }
 
 // Function to find learning goals by exercise ID
