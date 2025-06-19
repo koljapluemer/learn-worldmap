@@ -4,6 +4,8 @@ import type { ExerciseType } from '../exercise/ExerciseType';
 import learningGoalsRaw from './learningGoals.min.json';
 import exercisesRaw from './exercises.min.json';
 import type { LearningGoalData, ExerciseData } from '../dataTypes';
+import type { LearningGoalProgress } from '../tracking/learning-goal-progress/LearningGoalProgress';
+import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
 
 // Helper to type the imported JSON
 const learningGoalsData: Record<string, LearningGoalData> = learningGoalsRaw as any;
@@ -28,6 +30,7 @@ Object.values(exercisesData).forEach((ex) => {
   const exercise: ExerciseType = {
     id: ex.id,
     instruction: ex.instruction,
+    parents: [], // Will be filled in the second pass
     data
   };
   exerciseMap[ex.id] = exercise;
@@ -70,6 +73,19 @@ Object.entries(learningGoalsData).forEach(([_name, data]) => {
   // Exercises
   if (data.exercises) {
     goal.exercises = data.exercises.map((eid) => exerciseMap[eid]).filter(Boolean);
+  }
+});
+
+// Third pass: fill exercise parents
+Object.entries(learningGoalsData).forEach(([_name, data]) => {
+  const goal = learningGoalMap[_name];
+  if (data.exercises) {
+    data.exercises.forEach((eid) => {
+      const exercise = exerciseMap[eid];
+      if (exercise) {
+        exercise.parents.push(goal);
+      }
+    });
   }
 });
 
@@ -182,6 +198,58 @@ function getRandomExercise(): ExerciseType | undefined {
   return allExercisesArr[idx];
 }
 
+// Function to find learning goals by exercise ID
+function findLearningGoalsByExerciseId(exerciseId: string): LearningGoal[] {
+  return Object.values(learningGoalMap).filter(goal => 
+    goal.exercises.some(exercise => exercise.id === exerciseId)
+  );
+}
+
+// Function to get all ancestors of a learning goal (including the goal itself)
+function getAllAncestors(goal: LearningGoal, visited = new Set<string>()): LearningGoal[] {
+  if (visited.has(goal.name)) return [];
+  visited.add(goal.name);
+  
+  const ancestors = [goal];
+  for (const parent of goal.parents) {
+    ancestors.push(...getAllAncestors(parent, visited));
+  }
+  return ancestors;
+}
+
+// Function to update learning goal progress recursively
+function updateLearningGoalProgress(
+  exerciseId: string,
+  isCorrect: boolean,
+  progressStore: ReturnType<typeof useLearningGoalProgressStore>
+): void {
+  const learningGoals = findLearningGoalsByExerciseId(exerciseId);
+  
+  for (const learningGoal of learningGoals) {
+    const allAffectedGoals = getAllAncestors(learningGoal);
+    
+    for (const goal of allAffectedGoals) {
+      const currentProgress = progressStore.getProgress(goal.name) || {
+        learningGoalName: goal.name,
+        repetitions: 0,
+        streak: 0,
+        correctRepetitionCount: 0
+      };
+      
+      const updatedProgress: LearningGoalProgress = {
+        ...currentProgress,
+        lastSeenAt: new Date(),
+        repetitions: (currentProgress.repetitions || 0) + 1,
+        lastRepetitionCorrect: isCorrect,
+        streak: isCorrect ? (currentProgress.streak || 0) + 1 : 0,
+        correctRepetitionCount: (currentProgress.correctRepetitionCount || 0) + (isCorrect ? 1 : 0)
+      };
+      
+      progressStore.setProgress(updatedProgress);
+    }
+  }
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -196,5 +264,8 @@ export function useLearningData() {
     getEffectiveInterest,
     getEffectiveDifficulty,
     getRandomExercise,
+    findLearningGoalsByExerciseId,
+    getAllAncestors,
+    updateLearningGoalProgress,
   };
 }
