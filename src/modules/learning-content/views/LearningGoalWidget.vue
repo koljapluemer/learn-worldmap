@@ -87,9 +87,8 @@ function toggleBlacklist() {
     </div>
     
     <!-- Progress Data Box -->
-    <div v-if="progress" class="mt-2 p-2 bg-base-200 rounded text-xs">
-      <div class="font-semibold mb-1">Progress:</div>
-      <div class="grid grid-cols-2 gap-1">
+    <div  class="mt-2 p-2 bg-base-200 rounded text-xs">
+      <div class="grid grid-cols-2 gap-1" v-if="progress">
         <div>Last seen: {{ progress.lastSeenAt ? new Date(progress.lastSeenAt).toLocaleDateString() : 'Never' }}</div>
         <div>Repetitions: {{ progress.repetitions || 0 }}</div>
         <div>Streak: {{ progress.streak || 0 }}</div>
@@ -101,20 +100,11 @@ function toggleBlacklist() {
         </div>
         <div v-if="progress.priority !== undefined">Priority: {{ progress.priority }}</div>
       </div>
-      
-      <hr class="my-2 border-base-300">
-      
-      <div class="font-semibold mb-1">Exercise Status:</div>
-      <div class="grid grid-cols-1 gap-1">
-        <div class="text-blue-600">New exercises: {{ exerciseStats.newExercises }} ({{ exerciseStats.percentages.new }}%)</div>
-        <div class="text-orange-600">Due now: {{ exerciseStats.dueExercises }} ({{ exerciseStats.percentages.due }}%)</div>
-        <div class="text-gray-600">Not due: {{ exerciseStats.notDueExercises }} ({{ exerciseStats.percentages.notDue }}%)</div>
-      </div>
+      <div v-else>No progress data</div>
     </div>
     
-    <!-- Exercise Status Box (when no progress data) -->
-    <div v-else class="mt-2 p-2 bg-base-200 rounded text-xs">
-      <div class="font-semibold mb-1">Exercise Status:</div>
+    <!-- Exercise Status Box ) -->
+    <div class="mt-2 p-2 bg-base-200 rounded text-xs">
       <div class="grid grid-cols-1 gap-1">
         <div class="text-blue-600">New exercises: {{ exerciseStats.newExercises }} ({{ exerciseStats.percentages.new }}%)</div>
         <div class="text-orange-600">Due now: {{ exerciseStats.dueExercises }} ({{ exerciseStats.percentages.due }}%)</div>

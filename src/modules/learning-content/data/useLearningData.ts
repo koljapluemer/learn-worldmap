@@ -204,53 +204,76 @@ function getAllAncestorsInclSelf(goal: LearningGoal, visited = new Set<string>()
   return ancestors;
 }
 
-// Expose a function to get a random exercise
+// Expose a function to pick a due exercise (or new if no due exercises available)
 let lastExerciseCountry: string | null = null;
 
-function getRandomExercise(): ExerciseType | undefined {
+function pickDueExercise(): ExerciseType | undefined {
   const exerciseProgressStore = useExerciseProgressStore();
-  // Only pick exercises whose ALL recursive ancestors are not effectively blocked
-  const eligibleExercises: ExerciseType[] = [];
+  
+  // First, try to find due exercises
+  const dueExercises: ExerciseType[] = [];
+  const newExercises: ExerciseType[] = [];
+  
   for (const exercise of allExercisesArr) {
     // Skip if this exercise has the same country as the last one
     if (lastExerciseCountry && exercise.data.country === lastExerciseCountry) {
       continue;
     }
     
-    // Each exercise can have multiple parents (learning goals)
-    // It is eligible if ALL its parents (and their ancestors) are not effectively blocked
+    // Check if this exercise is eligible (not blocked by ancestors)
     let isEligible = false;
     for (const parentGoal of exercise.parents) {
-      // For this parent, check all ancestors (including self)
       const ancestors = getAllAncestorsInclSelf(parentGoal);
-      // If ANY ancestor is effectively blocked, this exercise is not eligible for this parent
       const anyBlocked = ancestors.some(ancestor => {
         const blockingStatus = getEffectiveBlockingStatus(ancestor, exerciseProgressStore);
         return blockingStatus.isEffectivelyBlocked;
       });
       if (!anyBlocked) {
         isEligible = true;
-        break; // If at least one parent path is unblocked, the exercise is eligible
+        break;
       }
     }
-    if (isEligible) {
-      eligibleExercises.push(exercise);
+    
+    if (!isEligible) continue;
+    
+    // Check exercise status
+    const progress = exerciseProgressStore.progress[exercise.id];
+    if (!progress) {
+      // New exercise (no progress)
+      newExercises.push(exercise);
+    } else {
+      // Exercise has progress, check if it's due
+      const now = new Date();
+      const dueDate = new Date(progress.due);
+      if (dueDate <= now) {
+        dueExercises.push(exercise);
+      }
     }
+  }
+  
+  // Prioritize due exercises
+  let selectedExercise: ExerciseType | undefined;
+  
+  if (dueExercises.length > 0) {
+    // Pick a random due exercise
+    const idx = Math.floor(Math.random() * dueExercises.length);
+    selectedExercise = dueExercises[idx];
+  } else if (newExercises.length > 0) {
+    // Pick a random new exercise
+    const idx = Math.floor(Math.random() * newExercises.length);
+    selectedExercise = newExercises[idx];
   }
   
   // If no eligible exercises found, try again without country restriction
-  if (!eligibleExercises.length && lastExerciseCountry) {
+  if (!selectedExercise && lastExerciseCountry) {
     lastExerciseCountry = null;
-    return getRandomExercise();
+    return pickDueExercise();
   }
   
-  if (!eligibleExercises.length) return undefined;
-  
-  const idx = Math.floor(Math.random() * eligibleExercises.length);
-  const selectedExercise = eligibleExercises[idx];
-  
-  // Update the last country
-  lastExerciseCountry = selectedExercise.data.country;
+  if (selectedExercise) {
+    // Update the last country
+    lastExerciseCountry = selectedExercise.data.country;
+  }
   
   return selectedExercise;
 }
@@ -608,7 +631,7 @@ export function useLearningData() {
     isEffectivelyBlacklisted,
     getEffectiveInterest,
     getEffectiveDifficulty,
-    getRandomExercise,
+    pickDueExercise,
     findLearningGoalsByExerciseId,
     getAllAncestors,
     updateLearningGoalProgress,

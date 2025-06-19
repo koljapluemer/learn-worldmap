@@ -29,8 +29,18 @@ export const useExerciseProgressStore = defineStore('exerciseProgress', {
       }
       // Use fsrs.next to get the new card state
       const { card } = scheduler.next(entry, timestamp, rating)
-      this.progress[id] = {
+      
+      // If the exercise was incorrect, reset it to be due immediately
+      // otherwise, it unlocks the next exercise level for the country
+      // even though the exercise was wrong
+      // also, we don't want to wait 10 minutes to practice a country again
+      const updatedCard = correct ? card : {
         ...card,
+        due: timestamp // Reset to current time so it's due immediately
+      }
+      
+      this.progress[id] = {
+        ...updatedCard,
         exerciseId: id,
         streak: correct ? (entry.streak + 1) : 0
       }

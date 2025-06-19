@@ -17,7 +17,7 @@ const {
   isEffectivelyBlacklisted,
   getEffectiveInterest,
   getEffectiveDifficulty,
-  getRandomExercise,
+  pickDueExercise,
   getLearningGoalsWithProgress,
   getOverallExerciseStatistics,
   getUniqueOverallExerciseStatistics,
@@ -42,7 +42,7 @@ const overallExerciseStats = computed(() => getUniqueOverallExerciseStatistics(e
 const overallProgressStats = computed(() => getOverallProgressStatistics(progressStore));
 
 function showRandomExercise() {
-  const ex = getRandomExercise();
+  const ex = pickDueExercise();
   if (!ex) {
     alert('No exercise found!');
     return;
