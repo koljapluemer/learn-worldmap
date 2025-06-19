@@ -34,12 +34,16 @@ const handleGameComplete = (result: LearningEvent) => {
 }
 </script>
 
+
 <template>
+
   <div class="container mx-auto p-4">
     <div v-if="!currentExercise" class="flex justify-center items-center h-64 text-gray-400">
       No exercise available.
     </div>
     <div v-else class="relative">
+    zoom: {{ currentExercise.data.zoom }}
+    panIndex: {{ currentExercise.data.panIndex }}
       <Transition name="flip" mode="out-in">
         <div v-if="currentExercise" :key="currentExercise.id" 
           class="card card-border p-2 m-2 absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-base-100/95 backdrop-blur-sm shadow-sm inline-block w-full max-w-4/5 text-center"

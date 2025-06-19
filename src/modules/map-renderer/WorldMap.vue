@@ -13,7 +13,7 @@ const props = defineProps<{
   useCircleAroundHighlight?: boolean
   zoomLevel?: number
   targetCountry?: string
-  panField?: number
+  panIndex?: number
 }>()
 
 console.log('[WorldMap] mounted with zoomLevel:', props.zoomLevel)
@@ -126,36 +126,63 @@ const updateMapTransform = () => {
       const currentScale = worldScale + (maxZoomScale - worldScale) * zoomProgress
       const centroid = d3.geoCentroid(targetFeature)
       
+      console.log('[ZOOM DEBUG]', {
+        worldScale,
+        countryScale,
+        maxZoomScale,
+        currentScale,
+        zoomProgress,
+        centroid,
+        targetX: undefined,
+        targetY: undefined
+      })
+      
       if (zoomProgress > 0) {
         const gridSize = 3
         const cellWidth = width / gridSize
         const cellHeight = height / gridSize
         
-        const cellIndex = props.panField !== undefined ? props.panField : Math.floor(Math.random() * 9)
+        const cellIndex = props.panIndex !== undefined ? props.panIndex : Math.floor(Math.random() * 9)
         const cellX = cellIndex % gridSize
         const cellY = Math.floor(cellIndex / gridSize)
         
         const targetX = cellX * cellWidth + cellWidth / 2
         const targetY = cellY * cellHeight + cellHeight / 2
         
+        console.log('[ZOOM DEBUG] pan', { cellIndex, cellX, cellY, targetX, targetY })
+        
         projection.value
           .center(centroid)
           .scale(currentScale)
           .translate([targetX, targetY])
       } else {
+        console.log('Resetting zoom because zoomProgress is 0')
         projection.value.fitSize([width, height], mapData.value)
       }
     } else {
+      console.log('Resetting zoom because targetFeature is not found')
       projection.value.fitSize([width, height], mapData.value)
     }
   } else {
+    console.log('Resetting zoom because props.zoomLevel is undefined')
     projection.value.fitSize([width, height], mapData.value)
   }
 
   const path = d3.geoPath().projection(projection.value)
+  // Remove all existing paths and re-create them with the new projection
+  svg.value.selectAll('path').remove();
   svg.value
     .selectAll('path')
+    .data(mapData.value.features)
+    .enter()
+    .append('path')
     .attr('d', path as any)
+    .attr('fill', landColor.value)
+    .attr('stroke', borderColor.value)
+    .attr('stroke-width', borderThickness.value)
+    .attr('class', 'country')
+    .attr('data-country', (d: any) => d.properties.name);
+  console.log('Number of paths:', svg.value.selectAll('path').size());
 
   if (props.countryToHighlight) {
     const countryFeature = mapData.value.features.find(

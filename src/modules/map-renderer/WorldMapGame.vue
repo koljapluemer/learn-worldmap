@@ -6,7 +6,7 @@ const props = defineProps<{
   targetCountryToClick: string
   zoomLevel?: number
   allowMoreThanOneAttempt: boolean
-  panField?: number
+  panIndex?: number
   exerciseId: string
 }>()
 
@@ -26,7 +26,6 @@ const attempts = ref(0)
 const countryToHighlight = ref<string | undefined>(undefined)
 const highlightColor = ref<string>('#3b82f6')
 const useCircleAroundHighlight = ref(false)
-const zoomLevel = ref(100)
 const isLoading = ref(false)
 const isMapReady = ref(false)
 
@@ -131,8 +130,9 @@ onUnmounted(() => {
         :country-to-highlight="countryToHighlight" 
         :highlight-color="highlightColor"
         :use-circle-around-highlight="useCircleAroundHighlight" 
-        :zoom-level="zoomLevel"
+        :zoom-level="props.zoomLevel"
         :target-country="targetCountryToClick" 
+        :pan-index="panIndex"
         @map-clicked="handleMapClicked" 
         @map-ready="handleMapReady"
         :is-interactive="true" 
