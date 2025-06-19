@@ -1,28 +1,34 @@
 export interface LearningGoalData {
     name: string;
     description?: string;
-    children?: string[];
     parents?: string[];
+    blockedBy?: string[];
     exercises?: string[];
+    inherentInterest?: number;
+    inherentDifficulty?: number;
     data?: Record<string, unknown>;
 }
 
 export interface MapLearningGoalData extends LearningGoalData {
     data: {
-        country?: string;
+        typeOfGeopoliticalUnit?: string;
+        geopoliticalUnit?: string;
     };
 }
 
 export interface ExerciseData  {
     id: string;
     instruction: string;
+    blockedBy?: string[];
+    inherentInterest?: number;
+    inherentDifficulty?: number;
     data?: Record<string, unknown>;
   };
 
   export interface MapExerciseData extends ExerciseData {
     data: {
         zoom: number;
-        panIndex: number;
+        panIndex?: number;
         country: string;
     };
   }
