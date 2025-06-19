@@ -53,15 +53,15 @@ Object.entries(learningGoalsData).forEach(([name, data]) => {
 });
 
 // Second pass: resolve relations
-Object.entries(learningGoalsData).forEach(([name, data]) => {
-  const goal = learningGoalMap[name];
+Object.entries(learningGoalsData).forEach(([_name, data]) => {
+  const goal = learningGoalMap[_name];
   // Parents
   if (data.parents) {
     goal.parents = data.parents.map((p) => learningGoalMap[p]).filter(Boolean);
   }
   // Children (by name, not by object reference)
   goal.children = Object.entries(learningGoalsData)
-    .filter(([_childName, childData]) => (childData.parents || []).includes(name))
+    .filter(([, childData]) => (childData.parents || []).includes(_name))
     .map(([childName]) => learningGoalMap[childName]);
   // BlockedBy
   if (data.blockedBy) {
@@ -142,7 +142,8 @@ function getAllAncestorsCount(goal: LearningGoal): number {
 // Returns true if this goal or any ancestor is blacklisted
 function isEffectivelyBlacklisted(
   goal: LearningGoal,
-  isBlacklisted: (name: string) => boolean,
+  // eslint-disable-next-line no-unused-vars
+  isBlacklisted: (goalName: string) => boolean,
   visited = new Set<string>()
 ): boolean {
   if (visited.has(goal.name)) return false; // Prevent infinite loop

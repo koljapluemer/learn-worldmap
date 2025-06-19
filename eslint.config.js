@@ -34,7 +34,13 @@ export default [
         setTimeout: 'readonly',
       },
     },
+    plugins: {
+      vue,
+    },
     ...vue.configs['vue3-recommended'],
+    rules: {
+      'no-unused-vars': 'off',
+    },
   },
   {
     files: ['**/*.ts'],

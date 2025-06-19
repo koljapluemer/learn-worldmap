@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, nextTick } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import WorldMap from './WorldMap.vue'
 
 const props = defineProps<{
@@ -11,14 +11,14 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'gameComplete', result: {
+  gameComplete: [{
     timestamp: Date,
     exerciseId: string,
     msFromExerciseToFirstClick: number,
     msFromExerciseToFinishClick: number,
     numberOfClicksNeeded: number,
     distanceOfFirstClickToCenterOfCountry: number
-  }): void
+  }]
 }>()
 
 // Game state
@@ -51,7 +51,7 @@ const handleCorrectCountryFound = async () => {
   })
 }
 
-const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: number) => {
+const handleMapClicked = async (_touchedCountries: string[], distanceToTarget?: number) => {
   if (isLoading.value) return
 
   attempts.value++
@@ -62,7 +62,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
   }
 
   if (props.allowMoreThanOneAttempt) {
-    if (touchedCountries.includes(props.targetCountryToClick)) {
+    if (_touchedCountries.includes(props.targetCountryToClick)) {
       handleCorrectCountryFound()
     } else {
       if (attempts.value === 1) {
@@ -75,7 +75,7 @@ const handleMapClicked = async (touchedCountries: string[], distanceToTarget?: n
       }
     }
   } else {
-    if (touchedCountries.includes(props.targetCountryToClick)) {
+    if (_touchedCountries.includes(props.targetCountryToClick)) {
       handleCorrectCountryFound()
     } else {
       countryToHighlight.value = props.targetCountryToClick

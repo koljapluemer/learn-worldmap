@@ -19,10 +19,9 @@ const initializeCountrySelection = () => {
 
 const countrySelection = ref<Record<string, boolean>>(initializeCountrySelection())
 
-// Computed property for selected countries
 const selectedCountries = computed(() => 
   Object.entries(countrySelection.value)
-    .filter(([_, selected]) => selected)
+    .filter(([, selected]) => selected)
     .map(([country]) => country)
 )
 

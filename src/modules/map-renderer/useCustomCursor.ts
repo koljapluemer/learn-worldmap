@@ -1,28 +1,33 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from "vue";
 
 interface PointerPosition {
-  clientX: number
-  clientY: number
+  clientX: number;
+  clientY: number;
 }
 
 interface TouchEventWithTouches extends Event {
-  touches: Touch[]
-  preventDefault: () => void
+  touches: Touch[];
+  preventDefault: () => void;
 }
 
 interface CursorState {
-  element: HTMLElement | null
-  isTouchDevice: boolean
-  isVisible: boolean
-  isDragging: boolean
+  element: HTMLElement | null;
+  isTouchDevice: boolean;
+  isVisible: boolean;
+  isDragging: boolean;
 }
 
 // Pure functions for calculations
-const calculateDistance = (x1: number, y1: number, x2: number, y2: number): number => {
-  const dx = x1 - x2
-  const dy = y1 - y2
-  return Math.sqrt(dx * dx + dy * dy)
-}
+const calculateDistance = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+): number => {
+  const dx = x1 - x2;
+  const dy = y1 - y2;
+  return Math.sqrt(dx * dx + dy * dy);
+};
 
 const getClosestPointOnRectangle = (
   rect: DOMRect,
@@ -30,35 +35,24 @@ const getClosestPointOnRectangle = (
   pointY: number
 ): { x: number; y: number } => ({
   x: Math.max(rect.left, Math.min(pointX, rect.right)),
-  y: Math.max(rect.top, Math.min(pointY, rect.bottom))
-})
-
-const isPointInCircle = (
-  pointX: number,
-  pointY: number,
-  centerX: number,
-  centerY: number,
-  radius: number
-): boolean => {
-  const distance = calculateDistance(pointX, pointY, centerX, centerY)
-  return distance <= radius
-}
+  y: Math.max(rect.top, Math.min(pointY, rect.bottom)),
+});
 
 const getElementCenter = (element: HTMLElement): { x: number; y: number } => {
-  const rect = element.getBoundingClientRect()
+  const rect = element.getBoundingClientRect();
   return {
     x: rect.left + rect.width / 2,
-    y: rect.top + rect.height / 2
-  }
-}
+    y: rect.top + rect.height / 2,
+  };
+};
 
 // DOM manipulation functions
-const createCursorElement = (size: number): HTMLElement => {
-  const cursor = document.createElement('div')
-  cursor.className = 'custom-cursor'
-  document.body.appendChild(cursor)
-  return cursor
-}
+const createCursorElement = (): HTMLElement => {
+  const cursor = document.createElement("div");
+  cursor.className = "custom-cursor";
+  document.body.appendChild(cursor);
+  return cursor;
+};
 
 const createCursorStyles = (size: number): string => `
   body.hovering-map { cursor: none; }
@@ -88,37 +82,21 @@ const createCursorStyles = (size: number): string => `
       pointer-events: auto !important;
     }
   }
-`
+`;
 
 const applyCursorStyles = (size: number): void => {
-  const style = document.createElement('style')
-  style.textContent = createCursorStyles(size)
-  document.head.appendChild(style)
-}
+  const style = document.createElement("style");
+  style.textContent = createCursorStyles(size);
+  document.head.appendChild(style);
+};
 
 // Touch handling functions
 const getTouchFromEvent = (e: Event): Touch | null => {
-  const touchEvent = e as TouchEventWithTouches
-  return ('touches' in touchEvent && touchEvent.touches.length > 0) ? touchEvent.touches[0] : null
-}
-
-const isTouchOnCursor = (
-  touch: Touch,
-  cursor: HTMLElement,
-  size: number
-): boolean => {
-  const rect = cursor.getBoundingClientRect()
-  const cursorCenterX = rect.left + rect.width / 2
-  const cursorCenterY = rect.top + rect.height / 2
-  
-  return isPointInCircle(
-    touch.clientX,
-    touch.clientY,
-    cursorCenterX,
-    cursorCenterY,
-    size / 2
-  )
-}
+  const touchEvent = e as TouchEventWithTouches;
+  return "touches" in touchEvent && touchEvent.touches.length > 0
+    ? touchEvent.touches[0]
+    : null;
+};
 
 const findTouchedCountries = (
   container: HTMLElement | null,
@@ -127,145 +105,161 @@ const findTouchedCountries = (
   size: number,
   detectionRadiusMultiplier: number = 1
 ): string[] => {
-  if (!container) return []
-  
-  const touchedCountries: string[] = []
-  const countryElements = container.querySelectorAll('path')
-  const cursorRadius = (size / 2) * detectionRadiusMultiplier
+  if (!container) return [];
 
-  countryElements.forEach(element => {
-    const rect = element.getBoundingClientRect()
-    const { x: closestX, y: closestY } = getClosestPointOnRectangle(rect, cursorX, cursorY)
-    const distance = calculateDistance(cursorX, cursorY, closestX, closestY)
+  const touchedCountries: string[] = [];
+  const countryElements = container.querySelectorAll("path");
+  const _cursorRadius = (size / 2) * detectionRadiusMultiplier;
 
-    if (distance <= cursorRadius) {
-      const countryName = element.getAttribute('data-country')
-      if (countryName) touchedCountries.push(countryName)
+  countryElements.forEach((element) => {
+    const rect = element.getBoundingClientRect();
+    const { x: closestX, y: closestY } = getClosestPointOnRectangle(
+      rect,
+      cursorX,
+      cursorY
+    );
+    const distance = calculateDistance(cursorX, cursorY, closestX, closestY);
+
+    if (distance <= _cursorRadius) {
+      const countryName = element.getAttribute("data-country");
+      if (countryName) touchedCountries.push(countryName);
     }
-  })
+  });
 
-  return touchedCountries
-}
+  return touchedCountries;
+};
 
 const dispatchMapClickEvent = (
   container: HTMLElement | null,
   cursorX: number,
   cursorY: number
 ): void => {
-  if (!container) return
+  if (!container) return;
 
-  const clickEvent = new MouseEvent('click', {
+  const clickEvent = new MouseEvent("click", {
     bubbles: true,
     cancelable: true,
     clientX: cursorX,
-    clientY: cursorY
-  })
-  container.dispatchEvent(clickEvent)
-}
+    clientY: cursorY,
+  });
+  container.dispatchEvent(clickEvent);
+};
 
 export function useCustomCursor(
   size: number = 76,
-  emit?: (event: 'mapClicked', touchedCountries: string[], distanceToTarget?: number) => void
+  emit?: () => void
 ) {
   const state = ref<CursorState>({
     element: null,
     isTouchDevice: false,
     isVisible: false,
-    isDragging: false
-  })
-  const containerRef = ref<HTMLElement | null>(null)
+    isDragging: false,
+  });
+  const containerRef = ref<HTMLElement | null>(null);
 
   const updateCursorVisibility = (isVisible: boolean): void => {
-    document.body.classList.toggle('hovering-map', isVisible)
-  }
+    document.body.classList.toggle("hovering-map", isVisible);
+  };
 
-  const updateCursorPosition = (cursor: HTMLElement, position: PointerPosition): void => {
-    if (!state.value.element || !containerRef.value) return
+  const updateCursorPosition = (
+    cursor: HTMLElement,
+    position: PointerPosition
+  ): void => {
+    if (!state.value.element || !containerRef.value) return;
 
-    const rect = containerRef.value.getBoundingClientRect()
-    const cursorRadius = size / 2
+    const rect = containerRef.value.getBoundingClientRect();
+    const cursorRadius = size / 2;
 
     // Constrain the cursor position within the map boundaries
-    const constrainedX = Math.max(rect.left + cursorRadius, Math.min(position.clientX, rect.right - cursorRadius))
-    const constrainedY = Math.max(rect.top + cursorRadius, Math.min(position.clientY, rect.bottom - cursorRadius))
+    const constrainedX = Math.max(
+      rect.left + cursorRadius,
+      Math.min(position.clientX, rect.right - cursorRadius)
+    );
+    const constrainedY = Math.max(
+      rect.top + cursorRadius,
+      Math.min(position.clientY, rect.bottom - cursorRadius)
+    );
 
-    cursor.style.left = `${constrainedX}px`
-    cursor.style.top = `${constrainedY}px`
-  }
+    cursor.style.left = `${constrainedX}px`;
+    cursor.style.top = `${constrainedY}px`;
+  };
 
   const initializeCursorPosition = () => {
-    if (!state.value.element || !containerRef.value) return
+    if (!state.value.element || !containerRef.value) return;
 
-    const rect = containerRef.value.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
+    const rect = containerRef.value.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
     updateCursorPosition(state.value.element, {
       clientX: centerX,
-      clientY: centerY
-    })
-  }
+      clientY: centerY,
+    });
+  };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (state.value.isVisible && state.value.element) {
       updateCursorPosition(state.value.element, {
         clientX: e.clientX,
-        clientY: e.clientY
-      })
+        clientY: e.clientY,
+      });
     }
-  }
+  };
 
   const handleContainerEnter = () => {
     if (!state.value.isTouchDevice) {
-      state.value.isVisible = true
-      updateCursorVisibility(true)
+      state.value.isVisible = true;
+      updateCursorVisibility(true);
     }
-  }
+  };
 
   const handleContainerLeave = () => {
     if (!state.value.isTouchDevice) {
-      state.value.isVisible = false
-      updateCursorVisibility(false)
+      state.value.isVisible = false;
+      updateCursorVisibility(false);
     }
-  }
+  };
 
   const handleTouchStart = (e: Event) => {
-    const touch = getTouchFromEvent(e)
-    if (!touch || !state.value.element || !containerRef.value) return
+    const touch = getTouchFromEvent(e);
+    if (!touch || !state.value.element || !containerRef.value) return;
 
-    const rect = containerRef.value.getBoundingClientRect()
-    const cursorRadius = size / 2
+    const rect = containerRef.value.getBoundingClientRect();
 
     // Only handle touch events that start within the map boundaries
-    if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-        touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-      state.value.isDragging = true
-      state.value.isVisible = true
-      updateCursorVisibility(true)
+    if (
+      touch.clientX >= rect.left &&
+      touch.clientX <= rect.right &&
+      touch.clientY >= rect.top &&
+      touch.clientY <= rect.bottom
+    ) {
+      state.value.isDragging = true;
+      state.value.isVisible = true;
+      updateCursorVisibility(true);
       updateCursorPosition(state.value.element, {
         clientX: touch.clientX,
-        clientY: touch.clientY
-      })
-      ;(e as TouchEventWithTouches).preventDefault()
+        clientY: touch.clientY,
+      });
+      (e as TouchEventWithTouches).preventDefault();
     }
-  }
+  };
 
   const handleTouchMove = (e: Event) => {
-    if (!state.value.isDragging || !state.value.element) return
-    
-    const touch = getTouchFromEvent(e)
-    if (!touch) return
+    if (!state.value.isDragging || !state.value.element) return;
+
+    const touch = getTouchFromEvent(e);
+    if (!touch) return;
 
     updateCursorPosition(state.value.element, {
       clientX: touch.clientX,
-      clientY: touch.clientY
-    })
-  }
+      clientY: touch.clientY,
+    });
+  };
 
-  const handleTouchEnd = (e: Event) => {
-    if (!state.value.isDragging || !state.value.element) return
+  const handleTouchEnd = () => {
+    if (!state.value.isDragging || !state.value.element) return;
 
-    const { x: cursorX, y: cursorY } = getElementCenter(state.value.element)
+    const { x: cursorX, y: cursorY } = getElementCenter(state.value.element);
 
     // Only check for correctness when the user finishes dragging
     const touchedCountries = findTouchedCountries(
@@ -273,70 +267,79 @@ export function useCustomCursor(
       cursorX,
       cursorY,
       size
-    )
+    );
 
     if (touchedCountries.length > 0) {
       if (emit) {
         // Directly emit the event instead of dispatching a click
-        emit('mapClicked', touchedCountries)
+        emit();
       } else {
         // Fallback to click event for backward compatibility
-        dispatchMapClickEvent(containerRef.value, cursorX, cursorY)
+        dispatchMapClickEvent(containerRef.value, cursorX, cursorY);
       }
     }
 
-    state.value.isDragging = false
-    state.value.isVisible = false
-    updateCursorVisibility(false)
-  }
+    state.value.isDragging = false;
+    state.value.isVisible = false;
+    updateCursorVisibility(false);
+  };
 
   onMounted(() => {
-    if (!containerRef.value) return
+    if (!containerRef.value) return;
 
     // Detect touch device once on mount
-    state.value.isTouchDevice = 'ontouchstart' in window || 
-                               navigator.maxTouchPoints > 0 || 
-                               (navigator as any).msMaxTouchPoints > 0
+    state.value.isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      (navigator as any).msMaxTouchPoints > 0;
 
-    state.value.element = createCursorElement(size)
-    applyCursorStyles(size)
+    state.value.element = createCursorElement();
+    applyCursorStyles(size);
 
     // Initialize cursor position
-    initializeCursorPosition()
+    initializeCursorPosition();
 
     if (!state.value.isTouchDevice) {
       // Mouse device event listeners
-      document.addEventListener('mousemove', handleMouseMove)
-      containerRef.value.addEventListener('mouseenter', handleContainerEnter)
-      containerRef.value.addEventListener('mouseleave', handleContainerLeave)
+      document.addEventListener("mousemove", handleMouseMove);
+      containerRef.value.addEventListener("mouseenter", handleContainerEnter);
+      containerRef.value.addEventListener("mouseleave", handleContainerLeave);
     } else {
       // Touch device event listeners - only for drag and drop
-      document.addEventListener('touchstart', handleTouchStart, { passive: false })
-      document.addEventListener('touchmove', handleTouchMove)
-      document.addEventListener('touchend', handleTouchEnd)
+      document.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("touchend", handleTouchEnd);
     }
 
     // Add resize handler to reposition cursor if needed
-    window.addEventListener('resize', initializeCursorPosition)
-  })
+    window.addEventListener("resize", initializeCursorPosition);
+  });
 
   onUnmounted(() => {
     if (!state.value.isTouchDevice && containerRef.value) {
-      document.removeEventListener('mousemove', handleMouseMove)
-      containerRef.value.removeEventListener('mouseenter', handleContainerEnter)
-      containerRef.value.removeEventListener('mouseleave', handleContainerLeave)
+      document.removeEventListener("mousemove", handleMouseMove);
+      containerRef.value.removeEventListener(
+        "mouseenter",
+        handleContainerEnter
+      );
+      containerRef.value.removeEventListener(
+        "mouseleave",
+        handleContainerLeave
+      );
     } else {
-      document.removeEventListener('touchstart', handleTouchStart)
-      document.removeEventListener('touchmove', handleTouchMove)
-      document.removeEventListener('touchend', handleTouchEnd)
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
     }
 
-    window.removeEventListener('resize', initializeCursorPosition)
+    window.removeEventListener("resize", initializeCursorPosition);
 
     if (state.value.element?.parentNode) {
-      state.value.element.parentNode.removeChild(state.value.element)
+      state.value.element.parentNode.removeChild(state.value.element);
     }
-  })
+  });
 
   return {
     containerRef,
@@ -344,9 +347,13 @@ export function useCustomCursor(
     isTouchDevice: state.value.isTouchDevice,
     isVisible: state.value.isVisible,
     isDragging: state.value.isDragging,
-    isCursorOverlappingElement: (element: Element, cursorX: number, cursorY: number) =>
-      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length > 0,
-    findTouchedCountries: (container: HTMLElement | null, cursorX: number, cursorY: number) =>
-      findTouchedCountries(container, cursorX, cursorY, size)
-  }
-} 
+    isCursorOverlappingElement: (cursorX: number, cursorY: number) =>
+      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length >
+      0,
+    findTouchedCountries: (
+      container: HTMLElement | null,
+      cursorX: number,
+      cursorY: number
+    ) => findTouchedCountries(container, cursorX, cursorY, size),
+  };
+}

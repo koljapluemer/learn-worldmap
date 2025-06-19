@@ -22,7 +22,5 @@
 </template>
 
 <script setup lang="ts">
-import IconFilter from '@/modules/icons/IconFilter.vue'
 import IconSettings from '@/modules/icons/IconSettings.vue'
-import IconStats from '@/modules/icons/IconStats.vue'
 </script>
