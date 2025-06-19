@@ -205,11 +205,18 @@ function getAllAncestorsInclSelf(goal: LearningGoal, visited = new Set<string>()
 }
 
 // Expose a function to get a random exercise
+let lastExerciseCountry: string | null = null;
+
 function getRandomExercise(): ExerciseType | undefined {
   const exerciseProgressStore = useExerciseProgressStore();
   // Only pick exercises whose ALL recursive ancestors are not effectively blocked
   const eligibleExercises: ExerciseType[] = [];
   for (const exercise of allExercisesArr) {
+    // Skip if this exercise has the same country as the last one
+    if (lastExerciseCountry && exercise.data.country === lastExerciseCountry) {
+      continue;
+    }
+    
     // Each exercise can have multiple parents (learning goals)
     // It is eligible if ALL its parents (and their ancestors) are not effectively blocked
     let isEligible = false;
@@ -230,9 +237,22 @@ function getRandomExercise(): ExerciseType | undefined {
       eligibleExercises.push(exercise);
     }
   }
+  
+  // If no eligible exercises found, try again without country restriction
+  if (!eligibleExercises.length && lastExerciseCountry) {
+    lastExerciseCountry = null;
+    return getRandomExercise();
+  }
+  
   if (!eligibleExercises.length) return undefined;
+  
   const idx = Math.floor(Math.random() * eligibleExercises.length);
-  return eligibleExercises[idx];
+  const selectedExercise = eligibleExercises[idx];
+  
+  // Update the last country
+  lastExerciseCountry = selectedExercise.data.country;
+  
+  return selectedExercise;
 }
 
 // Function to find learning goals by exercise ID
