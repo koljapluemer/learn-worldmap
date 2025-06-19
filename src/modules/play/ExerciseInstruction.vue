@@ -8,8 +8,8 @@ const taskPre = isTouchDevice ? "Move the red circle so that it touches " : "Pla
 const taskPost = "."
 
 const formattedInstruction = props.instruction
-  .replace('$task_pre', taskPre)
-  .replace('$task_post', taskPost)
+  .replace('{{instruction_pre}}', taskPre)
+  .replace('{{instruction_post}}', taskPost)
 </script>
 
 <template>

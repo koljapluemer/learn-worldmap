@@ -1,18 +1,37 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
 import ExerciseInstruction from './ExerciseInstruction.vue'
+import { useLearningData } from '@/modules/learning-content/data/useLearningData'
 
+const { getRandomExercise } = useLearningData()
+
+const currentExercise = ref<ReturnType<typeof getRandomExercise> | undefined>(getRandomExercise())
+const attempts = ref(0)
+const isSuccess = ref(false)
+
+const instruction = computed(() => {
+  if (!currentExercise.value) return ''
+  return currentExercise.value.instruction
+})
+
+const handleGameComplete = (result: { country: string, attempts: number }) => {
+  attempts.value = result.attempts
+  isSuccess.value = true
+
+  setTimeout(() => {
+    currentExercise.value = getRandomExercise()
+    isSuccess.value = false
+    attempts.value = 0
+  }, 1000)
+}
 </script>
 
 <template>
   <div class="container mx-auto p-4">
-    <!-- Loading State -->
-    <div v-if="isLoading" class="flex justify-center items-center h-64">
-      <div class="loading loading-spinner loading-lg"></div>
+    <div v-if="!currentExercise" class="flex justify-center items-center h-64 text-gray-400">
+      No exercise available.
     </div>
-
-    <!-- Game Component -->
     <div v-else class="relative">
       <Transition name="flip" mode="out-in">
         <div v-if="currentExercise" :key="currentExercise.id" 
@@ -27,7 +46,7 @@ import ExerciseInstruction from './ExerciseInstruction.vue'
         v-if="currentExercise"
         :target-country-to-click="currentExercise.data.country"
         :zoom-level="currentExercise.data.zoom"
-        :pan-field="currentExercise.data.panField as number | undefined"
+        :pan-index="currentExercise.data.panIndex"
         :exercise-id="currentExercise.id"
         @game-complete="handleGameComplete"
         :allow-more-than-one-attempt="true"
