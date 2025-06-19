@@ -6,6 +6,7 @@ import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress
 import { useLearningData } from '../data/useLearningData';
 import { useExerciseProgressStore } from '../tracking/exercise/exerciseProgressStore';
 import IconLockClosed from '@/modules/icons/IconLockClosed.vue';
+import IconLockOpen from '@/modules/icons/IconLockOpen.vue';
 
 const props = defineProps<{
   learningGoal: LearningGoal,
@@ -24,7 +25,7 @@ const props = defineProps<{
 const expanded = ref(false);
 const progressStore = useLearningGoalProgressStore();
 const exerciseProgressStore = useExerciseProgressStore();
-const { getLearningGoalWithProgress, getExerciseStatisticsForLearningGoal } = useLearningData();
+const { getLearningGoalWithProgress, getExerciseStatisticsForLearningGoal, getEffectiveBlockingStatus } = useLearningData();
 
 const learningGoalWithProgress = computed(() => 
   getLearningGoalWithProgress(props.learningGoal.name, progressStore)
@@ -38,9 +39,24 @@ const exerciseStats = computed(() =>
   getExerciseStatisticsForLearningGoal(props.learningGoal, exerciseProgressStore)
 );
 
+const blockingStatus = computed(() => 
+  getEffectiveBlockingStatus(props.learningGoal, exerciseProgressStore)
+);
+
 const isBlocked = computed(() => props.learningGoal.blockedBy.length > 0);
+const isEffectivelyBlocked = computed(() => blockingStatus.value.isEffectivelyBlocked);
 const blockingGoalsNames = computed(() => 
-  props.learningGoal.blockedBy.map(goal => goal.name).join(', ')
+  blockingStatus.value.blockingGoals.map(blocking => {
+    const name = blocking.goal.name;
+    return blocking.isLifted ? `<s>${name}</s>` : name;
+  }).join(', ')
+);
+
+const blockingGoalsDisplay = computed(() => 
+  blockingStatus.value.blockingGoals.map(blocking => ({
+    name: blocking.goal.name,
+    isLifted: blocking.isLifted
+  }))
 );
 
 function toggleBlacklist() {
@@ -55,14 +71,19 @@ function toggleBlacklist() {
 <template>
   <div :class="['border rounded p-2 bg-base-100', isGreyed ? 'opacity-50 grayscale' : '']">
     <div class="text-xs flex items-center gap-1">
-      <IconLockClosed v-if="isBlocked" class="w-3 h-3 text-red-500" />
+      <IconLockClosed v-if="isEffectivelyBlocked" class="w-3 h-3 text-red-500" />
+      <IconLockOpen v-else-if="isBlocked && !isEffectivelyBlocked" class="w-3 h-3 text-gray-500" />
       {{ props.learningGoal.name }}
     </div>
     {{ props.learningGoal.description }}
     
     <!-- Blocked By Information -->
     <div v-if="isBlocked" class="mt-1 p-1 bg-red-50 border border-red-200 rounded text-xs text-red-700">
-      <span class="font-semibold">Blocked by:</span> {{ blockingGoalsNames }}
+      <span class="font-semibold">Blocked by:</span> 
+      <span v-for="(blocking, index) in blockingGoalsDisplay" :key="blocking.name">
+        <span v-if="index > 0">, </span>
+        <span :class="{ 'line-through': blocking.isLifted }">{{ blocking.name }}</span>
+      </span>
     </div>
     
     <!-- Progress Data Box -->

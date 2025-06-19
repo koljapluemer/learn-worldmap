@@ -439,15 +439,15 @@ function getOverallProgressStatistics(
 
 // Function to get blacklist statistics
 function getBlacklistStatistics(
-  isBlacklistedFn: (goalName: string) => boolean
+  isBlacklistedFn: ReturnType<typeof useLearningGoalProgressStore>['getProgress']
 ): {
   blacklistedCount: number;
   effectivelyBlacklistedCount: number;
   activeCount: number;
 } {
   const allGoals = Object.values(learningGoalMap);
-  const blacklistedCount = allGoals.filter(goal => isBlacklistedFn(goal.name)).length;
-  const effectivelyBlacklistedCount = allGoals.filter(goal => isEffectivelyBlacklisted(goal, isBlacklistedFn)).length;
+  const blacklistedCount = allGoals.filter(goal => isBlacklistedFn(goal.name)?.isBlacklisted ?? false).length;
+  const effectivelyBlacklistedCount = allGoals.filter(goal => isEffectivelyBlacklisted(goal, (name) => isBlacklistedFn(name)?.isBlacklisted ?? false)).length;
   const activeCount = allGoals.length - effectivelyBlacklistedCount;
   
   return { blacklistedCount, effectivelyBlacklistedCount, activeCount };
@@ -455,7 +455,7 @@ function getBlacklistStatistics(
 
 // Function to get exercise statistics
 function getExerciseCountStatistics(
-  isBlacklistedFn: (goalName: string) => boolean
+  isBlacklistedFn: ReturnType<typeof useLearningGoalProgressStore>['getProgress']
 ): {
   totalExercises: number;
   exercisesOnEffectivelyBlacklisted: number;
@@ -464,7 +464,7 @@ function getExerciseCountStatistics(
   const allGoals = Object.values(learningGoalMap);
   const totalExercises = allGoals.reduce((sum, goal) => sum + goal.exercises.length, 0);
   const exercisesOnEffectivelyBlacklisted = allGoals
-    .filter(goal => isEffectivelyBlacklisted(goal, isBlacklistedFn))
+    .filter(goal => isEffectivelyBlacklisted(goal, (name) => isBlacklistedFn(name)?.isBlacklisted ?? false))
     .reduce((sum, goal) => sum + goal.exercises.length, 0);
   const exercisesOnActive = totalExercises - exercisesOnEffectivelyBlacklisted;
   
@@ -504,6 +504,41 @@ function getLearningGoalsByMostDuePercentage(
     .slice(0, 10);
 }
 
+// Function to check if a blocking learning goal has its block lifted (50%+ exercises not due)
+function isBlockingGoalLifted(
+  blockingGoal: LearningGoal,
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): boolean {
+  const stats = getExerciseStatisticsForLearningGoal(blockingGoal, exerciseProgressStore);
+  if (stats.totalExercises === 0) return true; // No exercises means no blocking
+  
+  const notDuePercentage = (stats.notDueExercises / stats.totalExercises) * 100;
+  return notDuePercentage >= 50;
+}
+
+// Function to get effective blocking status for a learning goal
+function getEffectiveBlockingStatus(
+  goal: LearningGoal,
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): {
+  isEffectivelyBlocked: boolean;
+  blockingGoals: Array<{ goal: LearningGoal; isLifted: boolean }>;
+} {
+  if (goal.blockedBy.length === 0) {
+    return { isEffectivelyBlocked: false, blockingGoals: [] };
+  }
+  
+  const blockingGoals = goal.blockedBy.map(blockingGoal => ({
+    goal: blockingGoal,
+    isLifted: isBlockingGoalLifted(blockingGoal, exerciseProgressStore)
+  }));
+  
+  // A goal is effectively blocked if ANY of its blocking goals are not lifted
+  const isEffectivelyBlocked = blockingGoals.some(blocking => !blocking.isLifted);
+  
+  return { isEffectivelyBlocked, blockingGoals };
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -532,5 +567,7 @@ export function useLearningData() {
     getExerciseCountStatistics,
     getLearningGoalsByMostDueAbsolute,
     getLearningGoalsByMostDuePercentage,
+    isBlockingGoalLifted,
+    getEffectiveBlockingStatus,
   };
 }
