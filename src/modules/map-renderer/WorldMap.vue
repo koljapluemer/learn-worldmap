@@ -16,11 +16,7 @@ const props = defineProps<{
   panIndex?: number
 }>()
 
-console.log('[WorldMap] mounted with zoomLevel:', props.zoomLevel)
 
-watch(() => props.zoomLevel, (newVal, oldVal) => {
-  console.log('[WorldMap] zoomLevel prop changed from', oldVal, 'to', newVal)
-})
 
 const emit = defineEmits<{
   (e: 'mapClicked', touchedCountries: string[], distanceToTarget?: number): void
@@ -99,7 +95,6 @@ const handleMapClick = (event: Event) => {
 }
 
 const updateMapTransform = () => {
-  console.log('[WorldMap] updateMapTransform called with zoomLevel:', props.zoomLevel)
   if (!svg.value || !mapData.value || !containerRef.value) return
 
   const width = containerRef.value.clientWidth
@@ -117,7 +112,6 @@ const updateMapTransform = () => {
     if (targetFeature) {
       const countryProjection = d3.geoMercator().fitSize([width, height], targetFeature)
       const countryScale = countryProjection.scale()
-      console.log('zoomLevel', props.zoomLevel)
       const zoomProgress = props.zoomLevel 
         ? Math.min((props.zoomLevel - 100) / 75, 1)
         : 0
@@ -125,17 +119,7 @@ const updateMapTransform = () => {
       const maxZoomScale = worldScale + (countryScale - worldScale) * 0.6
       const currentScale = worldScale + (maxZoomScale - worldScale) * zoomProgress
       const centroid = d3.geoCentroid(targetFeature)
-      
-      console.log('[ZOOM DEBUG]', {
-        worldScale,
-        countryScale,
-        maxZoomScale,
-        currentScale,
-        zoomProgress,
-        centroid,
-        targetX: undefined,
-        targetY: undefined
-      })
+  
       
       if (zoomProgress > 0) {
         const gridSize = 3
@@ -149,22 +133,18 @@ const updateMapTransform = () => {
         const targetX = cellX * cellWidth + cellWidth / 2
         const targetY = cellY * cellHeight + cellHeight / 2
         
-        console.log('[ZOOM DEBUG] pan', { cellIndex, cellX, cellY, targetX, targetY })
         
         projection.value
           .center(centroid)
           .scale(currentScale)
           .translate([targetX, targetY])
       } else {
-        console.log('Resetting zoom because zoomProgress is 0')
         projection.value.fitSize([width, height], mapData.value)
       }
     } else {
-      console.log('Resetting zoom because targetFeature is not found')
       projection.value.fitSize([width, height], mapData.value)
     }
   } else {
-    console.log('Resetting zoom because props.zoomLevel is undefined')
     projection.value.fitSize([width, height], mapData.value)
   }
 
@@ -182,7 +162,6 @@ const updateMapTransform = () => {
     .attr('stroke-width', borderThickness.value)
     .attr('class', 'country')
     .attr('data-country', (d: any) => d.properties.name);
-  console.log('Number of paths:', svg.value.selectAll('path').size());
 
   if (props.countryToHighlight) {
     const countryFeature = mapData.value.features.find(
