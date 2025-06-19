@@ -104,7 +104,7 @@ This is the core. Start by making one learning goal per country. Should look lik
 
 ```ts
 {
-    name: "Ghana"
+    name: "Country: Ghana"
     description: "Know where Ghana is."
     parents: ["World"]
     inherentDifficulty: -2
@@ -133,7 +133,7 @@ For every country, no matter what, make one learning goal like this:
 {
     name: "Ghana-World"
     description: "Know where Ghana is on the world map."
-    parents: ["Ghana"]
+    parents: ["Country: Ghana"]
     exercises: []
     data: {
         typeOfGeopoliticalUnit: "Country";
@@ -152,7 +152,7 @@ Then, if the `zoomRegional` property for the given country in `zoomLevelData.jso
 {
     name: "Ghana-Region"
     description: "Know where Ghana is in its region."
-    parents: ["Ghana"],
+    parents: ["Country: Ghana"],
     exercises: []
     blockedBy: ["Ghana-World"]
     data: {
@@ -173,7 +173,7 @@ At last, if the `zoomNeighborhood` prop for the given country in `zoomLevelData`
     name: "Ghana-Region"
     description: "Know where Ghana is in its neighborhood."
     exercises: []
-    parents: ["Ghana"],
+    parents: ["Country: Ghana"],
     blockedBy: ["Ghana-World", "Ghana-Region"]
     data: {
         typeOfGeopoliticalUnit: "Country";
@@ -292,15 +292,15 @@ For example, based on the geojson data for Costa Rica, we want the following lea
 
 ```ts
 {
-    name: "Americas"
+    name: "Region: Americas"
     description: "Know where the countries are in Americas."
 }
 
 {
-    name: "Central America"
+    name: "Central America (Americas)"
     description: "Know where the countries are in Central America."
-    parents: ["Americas"]
+    parents: ["Region: Americas"]
 }
 ```
 
-The base goal for Costa Rica should also include "Central America" as a parent (but not "Americas", that would be redundant)
+The base goal for Costa Rica should also include "Central America (Americas)" as a parent (but not "Region: Americas", that would be redundant)

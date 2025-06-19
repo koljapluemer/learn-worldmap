@@ -106,15 +106,21 @@ def main():
     }
     # --- Add region and subregion goals ---
     for region, subregions in region_to_subregions.items():
-        learning_goals[region] = {
-            'name': region,
+        region_goal_name = f"Region: {region}"
+        if region_goal_name in learning_goals:
+            raise ValueError(f"Learning goal name collision: {region_goal_name}")
+        learning_goals[region_goal_name] = {
+            'name': region_goal_name,
             'description': f'Know where the countries are in {region}.'
         }
         for subregion in subregions:
-            learning_goals[subregion] = {
-                'name': subregion,
-                'description': f'Know where the countries are in {subregion}.',
-                'parents': [region]
+            subregion_goal_name = f"{subregion} ({region})"
+            if subregion_goal_name in learning_goals:
+                raise ValueError(f"Learning goal name collision: {subregion_goal_name}")
+            learning_goals[subregion_goal_name] = {
+                'name': subregion_goal_name,
+                'description': f'Know where the countries are in {subregion}.' ,
+                'parents': [region_goal_name]
             }
 
     for country in countries:
@@ -134,10 +140,14 @@ def main():
             parents.append('Biggest')
         # Add subregion parent if available
         subregion = props.get('subregion')
-        if subregion and subregion in learning_goals:
-            parents.append(subregion)
+        region = props.get('region_un')
+        if subregion and region:
+            subregion_goal_name = f"{subregion} ({region})"
+            if subregion_goal_name in learning_goals:
+                parents.append(subregion_goal_name)
+        country_goal_name = f"Country: {country}"
         base_goal = {
-            'name': country,
+            'name': country_goal_name,
             'description': f"Know where {country} is.",
             'parents': parents,
             'inherentDifficulty': inherent_difficulty,
@@ -146,7 +156,9 @@ def main():
                 'geopoliticalUnit': country
             }
         }
-        learning_goals[country] = base_goal
+        if country_goal_name in learning_goals:
+            raise ValueError(f"Learning goal name collision: {country_goal_name}")
+        learning_goals[country_goal_name] = base_goal
 
         # --- Country Triplet ---
         zoom = zoom_data.get(country)
@@ -155,10 +167,12 @@ def main():
 
         # 1. World
         world_goal_name = f"{country}-World"
+        if world_goal_name in learning_goals:
+            raise ValueError(f"Learning goal name collision: {world_goal_name}")
         world_goal = {
             'name': world_goal_name,
             'description': f"Know where {country} is on the world map.",
-            'parents': [country],
+            'parents': [country_goal_name],
             'data': {
                 'typeOfGeopoliticalUnit': 'Country',
                 'geopoliticalUnit': country
@@ -166,6 +180,8 @@ def main():
         }
         # Exercise for world
         world_ex_id = f"{country}-World-0"
+        if world_ex_id in exercises:
+            raise ValueError(f"Exercise id collision: {world_ex_id}")
         world_ex = {
             'id': world_ex_id,
             'instruction': f"{{{{instruction_pre}}}} {country} {{{{instruction_post}}}}",
@@ -182,10 +198,12 @@ def main():
         region_goal = None
         if zoom.get('zoomRegional', '').strip():
             region_goal_name = f"{country}-Region"
+            if region_goal_name in learning_goals:
+                raise ValueError(f"Learning goal name collision: {region_goal_name}")
             region_goal = {
                 'name': region_goal_name,
                 'description': f"Know where {country} is in its region.",
-                'parents': [country],
+                'parents': [country_goal_name],
                 'blockedBy': [world_goal_name],
                 'data': {
                     'typeOfGeopoliticalUnit': 'Country',
@@ -197,6 +215,8 @@ def main():
             zoom_val = int(zoom['zoomRegional'])
             for i in range(9):
                 ex_id = f"{country}-Region-{i}"
+                if ex_id in exercises:
+                    raise ValueError(f"Exercise id collision: {ex_id}")
                 ex = {
                     'id': ex_id,
                     'instruction': f"{{{{instruction_pre}}}} {country} {{{{instruction_post}}}}",
@@ -214,10 +234,12 @@ def main():
         # 3. Neighborhood
         if zoom.get('zoomNeighborhood', '').strip():
             neigh_goal_name = f"{country}-Neighborhood"
+            if neigh_goal_name in learning_goals:
+                raise ValueError(f"Learning goal name collision: {neigh_goal_name}")
             neigh_goal = {
                 'name': neigh_goal_name,
                 'description': f"Know where {country} is in its neighborhood.",
-                'parents': [country],
+                'parents': [country_goal_name],
                 'blockedBy': [world_goal_name],
                 'data': {
                     'typeOfGeopoliticalUnit': 'Country',
@@ -231,6 +253,8 @@ def main():
             zoom_val = int(zoom['zoomNeighborhood'])
             for i in range(9):
                 ex_id = f"{country}-Neighborhood-{i}"
+                if ex_id in exercises:
+                    raise ValueError(f"Exercise id collision: {ex_id}")
                 ex = {
                     'id': ex_id,
                     'instruction': f"{{{{instruction_pre}}}} {country} {{{{instruction_post}}}}",

@@ -36,6 +36,7 @@ function toggleBlacklist() {
 
 <template>
   <div :class="['border rounded p-2 bg-base-100', isGreyed ? 'opacity-50 grayscale' : '']">
+    <div class="text-xs">{{ props.learningGoal.name }}</div>
     {{ props.learningGoal.description }}
     <div class="text-xs text-gray-500 mt-1">
       Direct children: {{ props.getDirectChildrenCount(props.learningGoal) }}<br>
