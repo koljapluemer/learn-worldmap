@@ -250,6 +250,30 @@ function updateLearningGoalProgress(
   }
 }
 
+// Function to get learning goals with their progress data attached
+function getLearningGoalsWithProgress(
+  progressStore: ReturnType<typeof useLearningGoalProgressStore>
+): Array<LearningGoal & { progress?: LearningGoalProgress }> {
+  return Object.values(learningGoalMap).map(goal => ({
+    ...goal,
+    progress: progressStore.getProgress(goal.name)
+  }));
+}
+
+// Function to get a single learning goal with progress data
+function getLearningGoalWithProgress(
+  goalName: string,
+  progressStore: ReturnType<typeof useLearningGoalProgressStore>
+): (LearningGoal & { progress?: LearningGoalProgress }) | undefined {
+  const goal = learningGoalMap[goalName];
+  if (!goal) return undefined;
+  
+  return {
+    ...goal,
+    progress: progressStore.getProgress(goalName)
+  };
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -267,5 +291,7 @@ export function useLearningData() {
     findLearningGoalsByExerciseId,
     getAllAncestors,
     updateLearningGoalProgress,
+    getLearningGoalsWithProgress,
+    getLearningGoalWithProgress,
   };
 }

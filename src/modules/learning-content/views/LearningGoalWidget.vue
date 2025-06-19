@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import type { LearningGoal } from '../learning-goal/LearningGoalType';
 import LearningGoalWidget from './LearningGoalWidget.vue';
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
+import { useLearningData } from '../data/useLearningData';
 
 const props = defineProps<{
   learningGoal: LearningGoal,
@@ -20,8 +21,13 @@ const props = defineProps<{
 
 const expanded = ref(false);
 const progressStore = useLearningGoalProgressStore();
+const { getLearningGoalWithProgress } = useLearningData();
 
-const progress = computed(() => progressStore.getProgress(props.learningGoal.name));
+const learningGoalWithProgress = computed(() => 
+  getLearningGoalWithProgress(props.learningGoal.name, progressStore)
+);
+
+const progress = computed(() => learningGoalWithProgress.value?.progress);
 const isDirectlyBlacklisted = computed(() => progress.value?.isBlacklisted ?? false);
 const isGreyed = computed(() => props.isEffectivelyBlacklisted(props.learningGoal, props.isBlacklisted));
 
@@ -38,6 +44,24 @@ function toggleBlacklist() {
   <div :class="['border rounded p-2 bg-base-100', isGreyed ? 'opacity-50 grayscale' : '']">
     <div class="text-xs">{{ props.learningGoal.name }}</div>
     {{ props.learningGoal.description }}
+    
+    <!-- Progress Data Box -->
+    <div v-if="progress" class="mt-2 p-2 bg-base-200 rounded text-xs">
+      <div class="font-semibold mb-1">Progress:</div>
+      <div class="grid grid-cols-2 gap-1">
+        <div>Last seen: {{ progress.lastSeenAt ? new Date(progress.lastSeenAt).toLocaleDateString() : 'Never' }}</div>
+        <div>Repetitions: {{ progress.repetitions || 0 }}</div>
+        <div>Streak: {{ progress.streak || 0 }}</div>
+        <div>Correct: {{ progress.correctRepetitionCount || 0 }}</div>
+        <div>Last correct: 
+          <span v-if="progress.lastRepetitionCorrect === true" class="text-success">✓</span>
+          <span v-else-if="progress.lastRepetitionCorrect === false" class="text-error">✗</span>
+          <span v-else>-</span>
+        </div>
+        <div v-if="progress.priority !== undefined">Priority: {{ progress.priority }}</div>
+      </div>
+    </div>
+    
     <div class="text-xs text-gray-500 mt-1">
       Direct children: {{ props.getDirectChildrenCount(props.learningGoal) }}<br>
       All descendants: {{ props.getAllDescendantsCount(props.learningGoal) }}<br>

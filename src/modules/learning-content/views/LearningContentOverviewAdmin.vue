@@ -16,11 +16,13 @@ const {
   isEffectivelyBlacklisted,
   getEffectiveInterest,
   getEffectiveDifficulty,
-  getRandomExercise
+  getRandomExercise,
+  getLearningGoalsWithProgress
 } = useLearningData();
 const progressStore = useLearningGoalProgressStore();
 
 const allGoals = computed(() => getAllLearningGoals());
+const allGoalsWithProgress = computed(() => getLearningGoalsWithProgress(progressStore));
 const isBlacklisted = (name: string) => progressStore.getProgress(name)?.isBlacklisted ?? false;
 const blacklistedCount = computed(() =>
   allGoals.value.filter(goal => isBlacklisted(goal.name)).length
@@ -41,6 +43,14 @@ const exercisesOnActive = computed(() =>
   totalExercises.value - exercisesOnEffectivelyBlacklisted.value
 );
 const learningGoals = getRootLearningGoals();
+
+// Progress statistics
+const goalsWithProgress = computed(() => 
+  allGoalsWithProgress.value.filter(goal => goal.progress).length
+);
+const totalProgressEntries = computed(() => 
+  allGoalsWithProgress.value.reduce((sum, goal) => sum + (goal.progress?.repetitions || 0), 0)
+);
 
 function showRandomExercise() {
   const ex = getRandomExercise();
@@ -66,6 +76,10 @@ function showRandomExercise() {
       <span class="mr-4">Exercises: <b>{{ totalExercises }}</b></span>
       <span class="mr-4">Active: <b class="text-green-600">{{ exercisesOnActive }}</b></span>
       <span>Blacklisted: <b class="text-orange-500">{{ exercisesOnEffectivelyBlacklisted }}</b></span>
+    </div>
+    <div class="mb-4 text-sm">
+      <span class="mr-4">Goals with progress: <b class="text-blue-600">{{ goalsWithProgress }}</b></span>
+      <span>Total practice sessions: <b class="text-blue-600">{{ totalProgressEntries }}</b></span>
     </div>
     <div class="space-y-2">
       <LearningGoalWidget
