@@ -120,6 +120,21 @@ function getAllAncestorsCount(goal: LearningGoal): number {
   return countAncestors(goal);
 }
 
+// Returns true if this goal or any ancestor is blacklisted
+function isEffectivelyBlacklisted(
+  goal: LearningGoal,
+  isBlacklisted: (name: string) => boolean,
+  visited = new Set<string>()
+): boolean {
+  if (visited.has(goal.name)) return false; // Prevent infinite loop
+  visited.add(goal.name);
+  if (isBlacklisted(goal.name)) return true;
+  for (const parent of goal.parents) {
+    if (isEffectivelyBlacklisted(parent, isBlacklisted, visited)) return true;
+  }
+  return false;
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -130,5 +145,6 @@ export function useLearningData() {
     getAllDescendantExercisesCount,
     getDirectParentsCount,
     getAllAncestorsCount,
+    isEffectivelyBlacklisted,
   };
 }
