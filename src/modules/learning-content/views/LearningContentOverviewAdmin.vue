@@ -13,7 +13,9 @@ const {
   getAllDescendantExercisesCount,
   getDirectParentsCount,
   getAllAncestorsCount,
-  isEffectivelyBlacklisted
+  isEffectivelyBlacklisted,
+  getEffectiveInterest,
+  getEffectiveDifficulty
 } = useLearningData();
 const progressStore = useLearningGoalProgressStore();
 
@@ -67,6 +69,8 @@ const learningGoals = getRootLearningGoals();
         :get-all-ancestors-count="getAllAncestorsCount"
         :is-effectively-blacklisted="isEffectivelyBlacklisted"
         :is-blacklisted="isBlacklisted"
+        :get-effective-interest="getEffectiveInterest"
+        :get-effective-difficulty="getEffectiveDifficulty"
       />
     </div>
   </div>

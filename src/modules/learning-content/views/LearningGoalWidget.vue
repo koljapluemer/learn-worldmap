@@ -14,6 +14,8 @@ const props = defineProps<{
   getAllAncestorsCount: (goal: LearningGoal) => number,
   isEffectivelyBlacklisted: (goal: LearningGoal, isBlacklisted: (name: string) => boolean) => boolean,
   isBlacklisted: (name: string) => boolean,
+  getEffectiveInterest: (goal: LearningGoal) => number,
+  getEffectiveDifficulty: (goal: LearningGoal) => number,
 }>();
 
 const expanded = ref(false);
@@ -43,7 +45,9 @@ function toggleBlacklist() {
       Direct parents: {{ props.getDirectParentsCount(props.learningGoal) }}<br>
       All ancestors: {{ props.getAllAncestorsCount(props.learningGoal) }}<br>
       Interest: {{ props.learningGoal.inherentInterest }}<br>
-      Difficulty: {{ props.learningGoal.inherentDifficulty }}
+      Difficulty: {{ props.learningGoal.inherentDifficulty }}<br>
+      Effective interest: {{ props.getEffectiveInterest(props.learningGoal) }}<br>
+      Effective difficulty: {{ props.getEffectiveDifficulty(props.learningGoal) }}
     </div>
     <button class="btn btn-xs mt-1 mr-2" @click="toggleBlacklist">
       {{ isDirectlyBlacklisted ? 'Unblacklist' : 'Blacklist' }}
@@ -64,6 +68,8 @@ function toggleBlacklist() {
         :get-all-ancestors-count="props.getAllAncestorsCount"
         :is-effectively-blacklisted="props.isEffectivelyBlacklisted"
         :is-blacklisted="props.isBlacklisted"
+        :get-effective-interest="props.getEffectiveInterest"
+        :get-effective-difficulty="props.getEffectiveDifficulty"
       />
     </div>
   </div>

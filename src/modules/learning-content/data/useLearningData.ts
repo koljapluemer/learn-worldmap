@@ -135,6 +135,26 @@ function isEffectivelyBlacklisted(
   return false;
 }
 
+function getEffectiveInterest(goal: LearningGoal, visited = new Set<string>()): number {
+  if (visited.has(goal.name)) return 0;
+  visited.add(goal.name);
+  let sum = goal.inherentInterest;
+  for (const parent of goal.parents) {
+    sum += getEffectiveInterest(parent, visited);
+  }
+  return sum;
+}
+
+function getEffectiveDifficulty(goal: LearningGoal, visited = new Set<string>()): number {
+  if (visited.has(goal.name)) return 0;
+  visited.add(goal.name);
+  let sum = goal.inherentDifficulty;
+  for (const parent of goal.parents) {
+    sum += getEffectiveDifficulty(parent, visited);
+  }
+  return sum;
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -146,5 +166,7 @@ export function useLearningData() {
     getDirectParentsCount,
     getAllAncestorsCount,
     isEffectivelyBlacklisted,
+    getEffectiveInterest,
+    getEffectiveDifficulty,
   };
 }
