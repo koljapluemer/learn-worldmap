@@ -5,9 +5,11 @@ import ExerciseInstruction from './ExerciseInstruction.vue'
 import { useLearningData } from '@/modules/learning-content/data/useLearningData'
 import { useLearningEventStore } from '@/modules/learning-content/tracking/learning-event/learningEventStore'
 import type { LearningEvent } from '@/modules/learning-content/tracking/learning-event/LearningEvent'
+import { useExerciseProgressStore } from '@/modules/learning-content/tracking/exercise/exerciseProgressStore'
 
 const { getRandomExercise } = useLearningData()
 const eventStore = useLearningEventStore()
+const exerciseProgressStore = useExerciseProgressStore()
 
 const currentExercise = ref<ReturnType<typeof getRandomExercise> | undefined>(getRandomExercise())
 const attempts = ref(0)
@@ -22,6 +24,7 @@ const handleGameComplete = (result: LearningEvent) => {
   attempts.value = result.numberOfClicksNeeded
   isSuccess.value = true
   eventStore.addEvent(result)
+  exerciseProgressStore.updateProgressFromEvent(result)
 
   setTimeout(() => {
     currentExercise.value = getRandomExercise()
