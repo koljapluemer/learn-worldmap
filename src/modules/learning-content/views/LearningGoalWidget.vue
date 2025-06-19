@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { LearningGoal } from '../learning-goal/LearningGoalType';
+import LearningGoalWidget from './LearningGoalWidget.vue';
 
 defineProps<{
   learningGoal: LearningGoal,
   getDirectChildrenCount: (goal: LearningGoal) => number,
   getAllDescendantsCount: (goal: LearningGoal) => number,
 }>();
+
+const expanded = ref(false);
 </script>
 
 <template>
@@ -14,6 +18,18 @@ defineProps<{
     <div class="text-xs text-gray-500 mt-1">
       Direct children: {{ getDirectChildrenCount(learningGoal) }}<br>
       All descendants: {{ getAllDescendantsCount(learningGoal) }}
+    </div>
+    <button v-if="learningGoal.children.length" class="btn btn-xs mt-1" @click="expanded = !expanded">
+      {{ expanded ? 'Hide' : 'Show' }} children
+    </button>
+    <div v-if="expanded" class="ml-4 mt-2 space-y-2">
+      <LearningGoalWidget
+        v-for="child in learningGoal.children"
+        :key="child.name"
+        :learning-goal="child"
+        :get-direct-children-count="getDirectChildrenCount"
+        :get-all-descendants-count="getAllDescendantsCount"
+      />
     </div>
   </div>
 </template>
