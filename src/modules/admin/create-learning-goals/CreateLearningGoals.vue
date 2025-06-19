@@ -147,6 +147,31 @@ function logLearningGoals() {
     console.log(lessonDataArray)
 }
 
+function logSimpleData() {
+    const goals = getLearningGoals()
+    const simpleData = countryList.map(country => {
+        const countryGoal = goals[country]
+        if (!countryGoal) {
+            return {
+                name: country,
+                zoomRegional: '',
+                zoomNeighborhood: ''
+            }
+        }
+        
+        const regionalTemplate = countryGoal.templates.find(t => t.id.endsWith('-2'))
+        const neighborhoodTemplate = countryGoal.templates.find(t => t.id.endsWith('-3'))
+        
+        return {
+            name: country,
+            zoomRegional: regionalTemplate?.data?.zoom?.toString() || '',
+            zoomNeighborhood: neighborhoodTemplate?.data?.zoom?.toString() || ''
+        }
+    })
+    
+    console.log(simpleData)
+}
+
 function commitZoomLevel2() {
     zoomLevel.value = pendingZoomLevel2.value
 }
@@ -173,6 +198,7 @@ onMounted(() => {
         <div class="flex flex-col items-start mb-4 gap-2">
             <button class="btn btn-primary" @click="saveAndNext">Save and Next</button>
             <button class="btn btn-secondary" @click="logLearningGoals">Log Data</button>
+            <button class="btn btn-secondary" @click="logSimpleData">Log Simple Data</button>
             <div class="text-lg">Current: <span class="font-bold">{{ selectedCountry }}</span></div>
         </div>
         <div class="flex flex-row gap-4">
