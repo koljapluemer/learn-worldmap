@@ -221,6 +221,6 @@ The relevant regional learning goal for this country should then have all nine e
 
 At last, *if* a "Neighborhood" learning goal was generated, generate another 9 exercises, with the necessary adaptions
 
-### Country Triplet
+### Other Goals
 
 *We will worry about those later*.
