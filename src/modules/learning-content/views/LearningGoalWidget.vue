@@ -41,7 +41,9 @@ function toggleBlacklist() {
       Direct exercises: {{ props.getDirectExercisesCount(props.learningGoal) }}<br>
       All descendant exercises: {{ props.getAllDescendantExercisesCount(props.learningGoal) }}<br>
       Direct parents: {{ props.getDirectParentsCount(props.learningGoal) }}<br>
-      All ancestors: {{ props.getAllAncestorsCount(props.learningGoal) }}
+      All ancestors: {{ props.getAllAncestorsCount(props.learningGoal) }}<br>
+      Interest: {{ props.learningGoal.inherentInterest }}<br>
+      Difficulty: {{ props.learningGoal.inherentDifficulty }}
     </div>
     <button class="btn btn-xs mt-1 mr-2" @click="toggleBlacklist">
       {{ isDirectlyBlacklisted ? 'Unblacklist' : 'Blacklist' }}
