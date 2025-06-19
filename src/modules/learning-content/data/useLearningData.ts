@@ -414,6 +414,39 @@ function getExerciseCountStatistics(
   return { totalExercises, exercisesOnEffectivelyBlacklisted, exercisesOnActive };
 }
 
+// Function to get learning goals sorted by most due exercises (absolute count)
+function getLearningGoalsByMostDueAbsolute(
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): Array<{ goal: LearningGoal; dueCount: number }> {
+  const goalsWithDueCounts = Object.values(learningGoalMap).map(goal => {
+    const stats = getExerciseStatisticsForLearningGoal(goal, exerciseProgressStore);
+    return { goal, dueCount: stats.dueExercises };
+  });
+  
+  return goalsWithDueCounts
+    .filter(item => item.dueCount > 0)
+    .sort((a, b) => b.dueCount - a.dueCount)
+    .slice(0, 10);
+}
+
+// Function to get learning goals sorted by most due exercises (percentage)
+function getLearningGoalsByMostDuePercentage(
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): Array<{ goal: LearningGoal; duePercentage: number }> {
+  const goalsWithDuePercentages = Object.values(learningGoalMap).map(goal => {
+    const stats = getExerciseStatisticsForLearningGoal(goal, exerciseProgressStore);
+    const duePercentage = stats.totalExercises > 0 
+      ? Math.round((stats.dueExercises / stats.totalExercises) * 100)
+      : 0;
+    return { goal, duePercentage };
+  });
+  
+  return goalsWithDuePercentages
+    .filter(item => item.duePercentage > 0)
+    .sort((a, b) => b.duePercentage - a.duePercentage)
+    .slice(0, 10);
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -439,5 +472,7 @@ export function useLearningData() {
     getOverallProgressStatistics,
     getBlacklistStatistics,
     getExerciseCountStatistics,
+    getLearningGoalsByMostDueAbsolute,
+    getLearningGoalsByMostDuePercentage,
   };
 }

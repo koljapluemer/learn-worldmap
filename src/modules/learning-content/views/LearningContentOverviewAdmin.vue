@@ -22,7 +22,9 @@ const {
   getOverallExerciseStatistics,
   getOverallProgressStatistics,
   getBlacklistStatistics,
-  getExerciseCountStatistics
+  getExerciseCountStatistics,
+  getLearningGoalsByMostDueAbsolute,
+  getLearningGoalsByMostDuePercentage
 } = useLearningData();
 const progressStore = useLearningGoalProgressStore();
 const exerciseProgressStore = useExerciseProgressStore();
@@ -46,12 +48,42 @@ function showRandomExercise() {
   }
   alert(`Random Exercise:\nID: ${ex.id}\nInstruction: ${ex.instruction}`);
 }
+
+function showLearningGoalsWithMostDueAbsolute() {
+  const topGoals = getLearningGoalsByMostDueAbsolute(exerciseProgressStore);
+  if (topGoals.length === 0) {
+    alert('No learning goals have due exercises.');
+    return;
+  }
+  
+  const message = topGoals
+    .map((item, index) => `${index + 1}. ${item.goal.description || item.goal.name} (${item.dueCount} due)`)
+    .join('\n');
+  
+  alert(`Top 10 Learning Goals with Most Due Exercises:\n\n${message}`);
+}
+
+function showLearningGoalsWithMostDuePercentage() {
+  const topGoals = getLearningGoalsByMostDuePercentage(exerciseProgressStore);
+  if (topGoals.length === 0) {
+    alert('No learning goals have due exercises.');
+    return;
+  }
+  
+  const message = topGoals
+    .map((item, index) => `${index + 1}. ${item.goal.description || item.goal.name} (${item.duePercentage}% due)`)
+    .join('\n');
+  
+  alert(`Top 10 Learning Goals with Highest Due Percentage:\n\n${message}`);
+}
 </script>
 
 <template>
   <div class="p-4">
     <h1 class="text-xl font-bold mb-4">Learning Goals Admin Overview</h1>
     <button class="btn btn-primary btn-sm mb-4" @click="showRandomExercise">Get random exercise</button>
+    <button class="btn btn-secondary btn-sm mb-4 ml-2" @click="showLearningGoalsWithMostDueAbsolute">Show learning goals with most due (absolute)</button>
+    <button class="btn btn-secondary btn-sm mb-4 ml-2" @click="showLearningGoalsWithMostDuePercentage">Show learning goals with most due (%)</button>
     <div class="mb-2 text-sm">
       <span class="mr-4">Total: <b>{{ allGoals.length }}</b></span>
       <span class="mr-4">Blacklisted: <b class="text-red-500">{{ blacklistStats.blacklistedCount }}</b></span>
