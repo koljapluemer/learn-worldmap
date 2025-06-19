@@ -1,9 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Play from './modules/play/Play.vue';
-import StatsView from './modules/stats-view/main-stats/StatsView.vue';
-import CountryStatsView from './modules/stats-view/per-country-stats/CountryStatsView.vue';
 import SettingsView from './modules/settings-view/SettingsView.vue';
 import CreateLearningGoals from './modules/admin/create-learning-goals/CreateLearningGoals.vue';
+import LearningContentOverviewAdmin from './modules/learning-content/views/LearningContentOverviewAdmin.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -18,17 +17,6 @@ const router = createRouter({
       component: Play
     },
     {
-      path: '/stats',
-      name: 'stats',
-      component: StatsView
-    },
-    {
-      path: '/stats/:country',
-      name: 'countryStats',
-      component: CountryStatsView,
-      props: true
-    },
-    {
       path: '/settings',
       name: 'settings',
       component: SettingsView
@@ -37,6 +25,11 @@ const router = createRouter({
       path: '/admin/goals',
       name: 'adminGoals',
       component: CreateLearningGoals
+    },
+    {
+      path: '/admin/data',
+      name: 'adminData',
+      component: LearningContentOverviewAdmin
     }
   ]
 });

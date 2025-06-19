@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import WorldMap from '@/modules/map-renderer/WorldMap.vue'
-import countryList from '@/modules/map-data/country-lists/all-countries.json'
+import countryList from './all-countries.json'
 import type { ExerciseTemplateData, LessonData } from 'igu-schemas'
 
 // Component state

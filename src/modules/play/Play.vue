@@ -1,59 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import WorldMapGame from '@/modules/map-renderer/WorldMapGame.vue'
-import { useLessonLearning } from '@/modules/spaced-repetition-learning/calculate-learning/useLessonLearning'
-import { LessonManager } from '@/lessons/LessonManager'
-import type { Exercise } from '@/lessons/types'
 import ExerciseInstruction from './ExerciseInstruction.vue'
 
-const lessonManager = LessonManager.getInstance()
-const currentLessonId = ref<string | null>(null)
-const currentExercise = ref<Exercise | null>(null)
-const isLoading = ref(true)
-const attempts = ref(0)
-const isSuccess = ref(false)
-
-const { setLessons, handleExerciseCompletion, selectNextLesson, selectNextExercise } = useLessonLearning()
-
-const instruction = computed(() => {
-  if (!currentExercise.value) return ''
-  return currentExercise.value.instruction
-})
-
-// Detect touch device properly
-onMounted(async () => {
-  try {
-    // Check for touch capability
-
-    await lessonManager.loadLessons()
-    setLessons(lessonManager.getAllLessonIds())
-    currentLessonId.value = await selectNextLesson()
-    if (currentLessonId.value) {
-      currentExercise.value = await selectNextExercise(currentLessonId.value)
-    }
-    isLoading.value = false
-  } catch (error) {
-    console.error('Failed to load lessons:', error)
-    isLoading.value = false
-  }
-})
-
-const handleGameComplete = async (result: { country: string, attempts: number }) => {
-  attempts.value = result.attempts
-  isSuccess.value = true
-  
-  // Wait a bit before loading next exercise
-  setTimeout(async () => {
-    if (currentLessonId.value && currentExercise.value) {
-      await handleExerciseCompletion(currentLessonId.value, currentExercise.value, result.attempts)
-      currentLessonId.value = await selectNextLesson()
-      if (currentLessonId.value) {
-        currentExercise.value = await selectNextExercise(currentLessonId.value)
-        isSuccess.value = false
-      }
-    }
-  }, 1000)
-}
 </script>
 
 <template>

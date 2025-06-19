@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, nextTick } from 'vue'
 import WorldMap from './WorldMap.vue'
-import { useDexie } from '@/modules/spaced-repetition-learning/calculate-learning/useDexie'
 
 const props = defineProps<{
   targetCountryToClick: string
@@ -22,7 +21,6 @@ const highlightColor = ref<string>('#3b82f6')
 const useCircleAroundHighlight = ref(false)
 const zoomLevel = ref(100)
 const isLoading = ref(false)
-const { saveLearningEvent } = useDexie()
 const isMapReady = ref(false)
 
 // Learning event tracking
@@ -36,14 +34,6 @@ const handleCorrectCountryFound = async () => {
   useCircleAroundHighlight.value = true
   isLoading.value = true
 
-  await saveLearningEvent({
-    timestamp: new Date(),
-    exerciseId: props.exerciseId,
-    msFromExerciseToFirstClick: (firstClickTime.value || 0) - exerciseStartTime.value,
-    msFromExerciseToFinishClick: Date.now() - exerciseStartTime.value,
-    numberOfClicksNeeded: attempts.value,
-    distanceOfFirstClickToCenterOfCountry: firstClickDistance.value || 0
-  })
 
   emit('gameComplete', {
     country: props.targetCountryToClick,
