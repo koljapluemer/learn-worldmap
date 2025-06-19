@@ -366,6 +366,63 @@ function getOverallExerciseStatistics(
   return { totalNew, totalDue, totalNotDue };
 }
 
+// Function to get unique exercise statistics across all learning goals (no double-counting)
+function getUniqueOverallExerciseStatistics(
+  exerciseProgressStore: { progress: Record<string, ExerciseProgress> }
+): {
+  totalNew: number;
+  totalDue: number;
+  totalNotDue: number;
+} {
+  const allExercises = new Set<string>();
+  const exerciseStatus = new Map<string, 'new' | 'due' | 'notDue'>();
+  const now = new Date();
+  
+  // Collect all unique exercises and their status
+  for (const goal of Object.values(learningGoalMap)) {
+    const goalExercises = getAllExercisesForLearningGoal(goal);
+    
+    for (const exercise of goalExercises) {
+      if (!allExercises.has(exercise.id)) {
+        allExercises.add(exercise.id);
+        
+        const progress = exerciseProgressStore.progress[exercise.id];
+        if (!progress) {
+          exerciseStatus.set(exercise.id, 'new');
+        } else {
+          const dueDate = new Date(progress.due);
+          if (dueDate <= now) {
+            exerciseStatus.set(exercise.id, 'due');
+          } else {
+            exerciseStatus.set(exercise.id, 'notDue');
+          }
+        }
+      }
+    }
+  }
+  
+  // Count unique exercises by status
+  let totalNew = 0;
+  let totalDue = 0;
+  let totalNotDue = 0;
+  
+  for (const status of exerciseStatus.values()) {
+    switch (status) {
+      case 'new':
+        totalNew++;
+        break;
+      case 'due':
+        totalDue++;
+        break;
+      case 'notDue':
+        totalNotDue++;
+        break;
+    }
+  }
+  
+  return { totalNew, totalDue, totalNotDue };
+}
+
 // Function to get overall progress statistics
 function getOverallProgressStatistics(
   progressStore: ReturnType<typeof useLearningGoalProgressStore>
@@ -469,6 +526,7 @@ export function useLearningData() {
     getAllExercisesForLearningGoal,
     getExerciseStatisticsForLearningGoal,
     getOverallExerciseStatistics,
+    getUniqueOverallExerciseStatistics,
     getOverallProgressStatistics,
     getBlacklistStatistics,
     getExerciseCountStatistics,

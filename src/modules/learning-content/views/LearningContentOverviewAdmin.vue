@@ -20,6 +20,7 @@ const {
   getRandomExercise,
   getLearningGoalsWithProgress,
   getOverallExerciseStatistics,
+  getUniqueOverallExerciseStatistics,
   getOverallProgressStatistics,
   getBlacklistStatistics,
   getExerciseCountStatistics,
@@ -37,7 +38,7 @@ const learningGoals = getRootLearningGoals();
 // Get all statistics from composable
 const blacklistStats = computed(() => getBlacklistStatistics(isBlacklisted));
 const exerciseCountStats = computed(() => getExerciseCountStatistics(isBlacklisted));
-const overallExerciseStats = computed(() => getOverallExerciseStatistics(exerciseProgressStore));
+const overallExerciseStats = computed(() => getUniqueOverallExerciseStatistics(exerciseProgressStore));
 const overallProgressStats = computed(() => getOverallProgressStatistics(progressStore));
 
 function showRandomExercise() {
