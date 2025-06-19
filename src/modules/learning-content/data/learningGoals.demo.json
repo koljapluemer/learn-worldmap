@@ -1,0 +1,74 @@
+{
+  "Australia and New Zealand": {
+    "name": "Australia and New Zealand",
+    "description": "Know where the countries are in Australia and New Zealand.",
+    "parents": ["Oceania"]
+  },
+  "Melanesia": {
+    "name": "Melanesia",
+    "description": "Know where the countries are in Melanesia.",
+    "parents": ["Oceania"]
+  },
+  "Costa Rica": {
+    "name": "Costa Rica",
+    "description": "Know where Costa Rica is.",
+    "parents": ["World", "Central America"],
+    "inherentDifficulty": -6,
+    "data": {
+      "typeOfGeopoliticalUnit": "Country",
+      "geopoliticalUnit": "Costa Rica"
+    }
+  },
+  "Costa Rica-World": {
+    "name": "Costa Rica-World",
+    "description": "Know where Costa Rica is on the world map.",
+    "parents": ["Costa Rica"],
+    "data": {
+      "typeOfGeopoliticalUnit": "Country",
+      "geopoliticalUnit": "Costa Rica"
+    },
+    "exercises": ["Costa Rica-World-0"]
+  },
+  "Costa Rica-Region": {
+    "name": "Costa Rica-Region",
+    "description": "Know where Costa Rica is in its region.",
+    "parents": ["Costa Rica"],
+    "blockedBy": ["Costa Rica-World"],
+    "data": {
+      "typeOfGeopoliticalUnit": "Country",
+      "geopoliticalUnit": "Costa Rica"
+    },
+    "exercises": [
+      "Costa Rica-Region-0",
+      "Costa Rica-Region-1",
+      "Costa Rica-Region-2",
+      "Costa Rica-Region-3",
+      "Costa Rica-Region-4",
+      "Costa Rica-Region-5",
+      "Costa Rica-Region-6",
+      "Costa Rica-Region-7",
+      "Costa Rica-Region-8"
+    ]
+  },
+  "Costa Rica-Neighborhood": {
+    "name": "Costa Rica-Neighborhood",
+    "description": "Know where Costa Rica is in its neighborhood.",
+    "parents": ["Costa Rica"],
+    "blockedBy": ["Costa Rica-World", "Costa Rica-Region"],
+    "data": {
+      "typeOfGeopoliticalUnit": "Country",
+      "geopoliticalUnit": "Costa Rica"
+    },
+    "exercises": [
+      "Costa Rica-Neighborhood-0",
+      "Costa Rica-Neighborhood-1",
+      "Costa Rica-Neighborhood-2",
+      "Costa Rica-Neighborhood-3",
+      "Costa Rica-Neighborhood-4",
+      "Costa Rica-Neighborhood-5",
+      "Costa Rica-Neighborhood-6",
+      "Costa Rica-Neighborhood-7",
+      "Costa Rica-Neighborhood-8"
+    ]
+  }
+}

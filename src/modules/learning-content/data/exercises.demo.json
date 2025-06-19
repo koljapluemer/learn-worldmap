@@ -1,0 +1,10 @@
+{
+  "Costa Rica-World-0": {
+    "id": "Costa Rica-World-0",
+    "instruction": "{{instruction_pre}} Costa Rica {{instruction_post}}",
+    "data": {
+      "zoom": 100,
+      "country": "Costa Rica"
+    }
+  }
+}

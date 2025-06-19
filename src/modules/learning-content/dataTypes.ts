@@ -19,9 +19,6 @@ export interface MapLearningGoalData extends LearningGoalData {
 export interface ExerciseData  {
     id: string;
     instruction: string;
-    blockedBy?: string[];
-    inherentInterest?: number;
-    inherentDifficulty?: number;
     data?: Record<string, unknown>;
   };
 
