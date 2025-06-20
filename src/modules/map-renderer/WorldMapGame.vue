@@ -99,7 +99,7 @@ const handleMapReady = () => {
   isMapReady.value = true
 }
 
-watch(() => props.targetCountryToClick, () => {
+watch([() => props.targetCountryToClick, () => props.exerciseId], () => {
   attempts.value = 0
   highlightColor.value = '#3b82f6'
   isLoading.value = false
@@ -110,8 +110,8 @@ watch(() => props.targetCountryToClick, () => {
   firstClickDistance.value = null
 }, { immediate: true })
 
-watch(() => props.targetCountryToClick, (newValue) => {
-  if (newValue) {
+watch([() => props.targetCountryToClick, () => props.exerciseId], (newValues) => {
+  if (newValues[0]) {
     document.body.classList.add('hovering-map')
   } else {
     document.body.classList.remove('hovering-map')
