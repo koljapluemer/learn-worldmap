@@ -14,6 +14,7 @@
     "testdev": "npm run dev -- --mode test"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
     "@tailwindcss/vite": "^4.1.7",
     "@types/uuid": "^10.0.0",
     "@types/vue": "^2.0.0",

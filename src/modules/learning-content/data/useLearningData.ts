@@ -673,7 +673,7 @@ function pickDueLearningGoal(): LearningGoal | undefined {
 }
 
 // Function to pick a random exercise from a picked learning goal
-function pickRandomExerciseFromPickedLearningGoal(): ExerciseType | undefined {
+function pickRandomExerciseFromPickedLearningGoal(): { exercise: ExerciseType; learningGoal: LearningGoal } | undefined {
   // First pick a learning goal
   const pickedGoal = pickDueLearningGoal();
   if (!pickedGoal) {
@@ -719,7 +719,10 @@ function pickRandomExerciseFromPickedLearningGoal(): ExerciseType | undefined {
   
   console.log('Picked exercise:', selectedExercise.id, 'from goal:', pickedGoal.name);
   
-  return selectedExercise;
+  return {
+    exercise: selectedExercise,
+    learningGoal: pickedGoal
+  };
 }
 
 export function useLearningData() {
