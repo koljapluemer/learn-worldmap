@@ -8,6 +8,7 @@ import type { LearningGoalProgress } from '../tracking/learning-goal-progress/Le
 import { useLearningGoalProgressStore } from '../tracking/learning-goal-progress/learningGoalProgressStore';
 import type { ExerciseProgress } from '../tracking/exercise/ExerciseProgress';
 import { useExerciseProgressStore } from '../tracking/exercise/exerciseProgressStore';
+import type { LearningEvent } from '../tracking/learning-event/LearningEvent';
 
 // Helper to type the imported JSON
 const learningGoalsData: Record<string, LearningGoalData> = learningGoalsRaw as any;
@@ -301,31 +302,17 @@ function getAllAncestors(goal: LearningGoal, visited = new Set<string>()): Learn
 function updateLearningGoalProgress(
   exerciseId: string,
   isCorrect: boolean,
-  progressStore: ReturnType<typeof useLearningGoalProgressStore>
+  event: LearningEvent
 ): void {
+  const progressStore = useLearningGoalProgressStore();
+  
   const learningGoals = findLearningGoalsByExerciseId(exerciseId);
   
   for (const learningGoal of learningGoals) {
     const allAffectedGoals = getAllAncestors(learningGoal);
     
     for (const goal of allAffectedGoals) {
-      const currentProgress = progressStore.getProgress(goal.name) || {
-        learningGoalName: goal.name,
-        repetitions: 0,
-        streak: 0,
-        correctRepetitionCount: 0
-      };
-      
-      const updatedProgress: LearningGoalProgress = {
-        ...currentProgress,
-        lastSeenAt: new Date(),
-        repetitions: (currentProgress.repetitions || 0) + 1,
-        lastRepetitionCorrect: isCorrect,
-        streak: isCorrect ? (currentProgress.streak || 0) + 1 : 0,
-        correctRepetitionCount: (currentProgress.correctRepetitionCount || 0) + (isCorrect ? 1 : 0)
-      };
-      
-      progressStore.setProgress(updatedProgress);
+      progressStore.updateProgressFromEvent(event, goal.name);
     }
   }
 }
@@ -511,7 +498,7 @@ function getOverallProgressStatistics(
 } {
   const allGoalsWithProgress = getLearningGoalsWithProgress(progressStore);
   const goalsWithProgress = allGoalsWithProgress.filter(goal => goal.progress).length;
-  const totalProgressEntries = allGoalsWithProgress.reduce((sum, goal) => sum + (goal.progress?.repetitions || 0), 0);
+  const totalProgressEntries = allGoalsWithProgress.reduce((sum, goal) => sum + (goal.progress?.reps || 0), 0);
   
   return { goalsWithProgress, totalProgressEntries };
 }

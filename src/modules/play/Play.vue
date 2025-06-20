@@ -6,12 +6,10 @@ import { useLearningData } from '@/modules/learning-content/data/useLearningData
 import { useLearningEventStore } from '@/modules/learning-content/tracking/learning-event/learningEventStore'
 import type { LearningEvent } from '@/modules/learning-content/tracking/learning-event/LearningEvent'
 import { useExerciseProgressStore } from '@/modules/learning-content/tracking/exercise/exerciseProgressStore'
-import { useLearningGoalProgressStore } from '@/modules/learning-content/tracking/learning-goal-progress/learningGoalProgressStore'
 
 const { pickDueExercise, updateLearningGoalProgress } = useLearningData()
 const eventStore = useLearningEventStore()
 const exerciseProgressStore = useExerciseProgressStore()
-const learningGoalProgressStore = useLearningGoalProgressStore()
 
 const currentExercise = ref<ReturnType<typeof pickDueExercise> | undefined>(pickDueExercise())
 const attempts = ref(0)
@@ -30,8 +28,7 @@ const handleGameComplete = (result: LearningEvent) => {
 
   // Update learning goal progress
   if (currentExercise.value) {
-    const isCorrect = result.numberOfClicksNeeded === 1
-    updateLearningGoalProgress(currentExercise.value.id, isCorrect, learningGoalProgressStore)
+    updateLearningGoalProgress(currentExercise.value.id, result.numberOfClicksNeeded === 1, result)
   }
 
   setTimeout(() => {

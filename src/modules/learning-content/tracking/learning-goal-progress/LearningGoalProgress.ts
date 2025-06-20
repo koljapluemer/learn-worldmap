@@ -1,4 +1,6 @@
-export interface LearningGoalProgress {
+import type { Card } from "ts-fsrs"
+
+export interface LearningGoalProgress extends Card {
     learningGoalName: string
     
     // prio etcs
@@ -7,7 +9,6 @@ export interface LearningGoalProgress {
 
     // learning stuff
     lastSeenAt?: Date
-    repetitions?: number
     streak?: number
     lastRepetitionCorrect?: boolean
     correctRepetitionCount?: number

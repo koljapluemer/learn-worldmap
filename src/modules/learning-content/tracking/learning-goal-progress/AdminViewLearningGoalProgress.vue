@@ -5,7 +5,7 @@ import { useLearningGoalProgressStore } from './learningGoalProgressStore'
 const store = useLearningGoalProgressStore()
 
 const sortedProgress = computed(() =>
-  [...store.progressList]
+  Object.values(store.progress)
     .sort((a, b) => {
       const aTime = a.lastSeenAt ? new Date(a.lastSeenAt).getTime() : 0
       const bTime = b.lastSeenAt ? new Date(b.lastSeenAt).getTime() : 0
@@ -25,7 +25,15 @@ const sortedProgress = computed(() =>
           <tr>
             <th>Learning Goal</th>
             <th>Last Seen</th>
-            <th>Repetitions</th>
+            <th>Due Date</th>
+            <th>Stability</th>
+            <th>Difficulty</th>
+            <th>Elapsed Days</th>
+            <th>Scheduled Days</th>
+            <th>Reps</th>
+            <th>Lapses</th>
+            <th>State</th>
+            <th>Last Review</th>
             <th>Streak</th>
             <th>Last Correct</th>
             <th>Correct Count</th>
@@ -37,7 +45,15 @@ const sortedProgress = computed(() =>
           <tr v-for="(entry, idx) in sortedProgress" :key="entry.learningGoalName">
             <td>{{ entry.learningGoalName }}</td>
             <td>{{ entry.lastSeenAt ? new Date(entry.lastSeenAt).toLocaleString() : '' }}</td>
-            <td>{{ entry.repetitions || 0 }}</td>
+            <td>{{ new Date(entry.due).toLocaleString() }}</td>
+            <td>{{ entry.stability?.toFixed(2) || '-' }}</td>
+            <td>{{ entry.difficulty?.toFixed(2) || '-' }}</td>
+            <td>{{ entry.elapsed_days || '-' }}</td>
+            <td>{{ entry.scheduled_days || '-' }}</td>
+            <td>{{ entry.reps || '-' }}</td>
+            <td>{{ entry.lapses || '-' }}</td>
+            <td>{{ entry.state || '-' }}</td>
+            <td>{{ entry.last_review ? new Date(entry.last_review).toLocaleString() : '-' }}</td>
             <td>{{ entry.streak || 0 }}</td>
             <td>
               <span v-if="entry.lastRepetitionCorrect === true" class="text-success">✓</span>
