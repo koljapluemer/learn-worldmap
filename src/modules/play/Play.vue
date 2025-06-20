@@ -7,11 +7,11 @@ import { useLearningEventStore } from '@/modules/learning-content/tracking/learn
 import type { LearningEvent } from '@/modules/learning-content/tracking/learning-event/LearningEvent'
 import { useExerciseProgressStore } from '@/modules/learning-content/tracking/exercise/exerciseProgressStore'
 
-const { pickDueExercise, updateLearningGoalProgress } = useLearningData()
+const { pickRandomExerciseFromPickedLearningGoal, updateLearningGoalProgress } = useLearningData()
 const eventStore = useLearningEventStore()
 const exerciseProgressStore = useExerciseProgressStore()
 
-const currentExercise = ref<ReturnType<typeof pickDueExercise> | undefined>(pickDueExercise())
+const currentExercise = ref<ReturnType<typeof pickRandomExerciseFromPickedLearningGoal> | undefined>(pickRandomExerciseFromPickedLearningGoal())
 const attempts = ref(0)
 const isSuccess = ref(false)
 
@@ -32,7 +32,7 @@ const handleGameComplete = (result: LearningEvent) => {
   }
 
   setTimeout(() => {
-    currentExercise.value = pickDueExercise()
+    currentExercise.value = pickRandomExerciseFromPickedLearningGoal()
     isSuccess.value = false
     attempts.value = 0
   }, 1000)

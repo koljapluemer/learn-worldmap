@@ -665,6 +665,56 @@ function pickDueLearningGoal(): LearningGoal | undefined {
   return selectedGoal;
 }
 
+// Function to pick a random exercise from a picked learning goal
+function pickRandomExerciseFromPickedLearningGoal(): ExerciseType | undefined {
+  // First pick a learning goal
+  const pickedGoal = pickDueLearningGoal();
+  if (!pickedGoal) {
+    console.log('No learning goal available, cannot pick exercise');
+    return undefined;
+  }
+  
+  console.log('Picked learning goal for exercise selection:', pickedGoal.name);
+  
+  // Get all exercises for this learning goal (recursively)
+  const allExercises = getAllExercisesForLearningGoal(pickedGoal);
+  console.log('Total exercises for goal:', allExercises.length);
+  
+  // Filter out blocked exercises
+  const exerciseProgressStore = useExerciseProgressStore();
+  const unblockedExercises = allExercises.filter(exercise => {
+    // Check if this exercise is eligible (not blocked by ancestors)
+    let isEligible = false;
+    for (const parentGoal of exercise.parents) {
+      const ancestors = getAllAncestorsInclSelf(parentGoal);
+      const anyBlocked = ancestors.some(ancestor => {
+        const blockingStatus = getEffectiveBlockingStatus(ancestor, exerciseProgressStore);
+        return blockingStatus.isEffectivelyBlocked;
+      });
+      if (!anyBlocked) {
+        isEligible = true;
+        break;
+      }
+    }
+    return isEligible;
+  });
+  
+  console.log('Unblocked exercises:', unblockedExercises.length);
+  
+  if (unblockedExercises.length === 0) {
+    console.log('No unblocked exercises available for picked goal');
+    return undefined;
+  }
+  
+  // Pick a random unblocked exercise
+  const randomIndex = Math.floor(Math.random() * unblockedExercises.length);
+  const selectedExercise = unblockedExercises[randomIndex];
+  
+  console.log('Picked exercise:', selectedExercise.id, 'from goal:', pickedGoal.name);
+  
+  return selectedExercise;
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -696,5 +746,6 @@ export function useLearningData() {
     isBlockingGoalLifted,
     getEffectiveBlockingStatus,
     pickDueLearningGoal,
+    pickRandomExerciseFromPickedLearningGoal,
   };
 }
