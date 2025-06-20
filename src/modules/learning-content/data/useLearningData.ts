@@ -605,6 +605,66 @@ function getEffectiveBlockingStatus(
   return { isEffectivelyBlocked, blockingGoals };
 }
 
+// Function to pick a due learning goal or a new one with highest interest
+function pickDueLearningGoal(): LearningGoal | undefined {
+  const progressStore = useLearningGoalProgressStore();
+  const now = new Date();
+  
+  // Find all learning goals
+  const allGoals = Object.values(learningGoalMap);
+  
+  // Separate goals into categories
+  const dueGoals: LearningGoal[] = [];
+  const notDueGoals: LearningGoal[] = [];
+  const newGoals: LearningGoal[] = [];
+  
+  for (const goal of allGoals) {
+    const progress = progressStore.getProgress(goal.name);
+    
+    if (!progress) {
+      // New goal (no progress)
+      newGoals.push(goal);
+    } else {
+      // Goal has progress, check if it's due
+      const dueDate = new Date(progress.due);
+      if (dueDate <= now) {
+        dueGoals.push(goal);
+      } else {
+        notDueGoals.push(goal);
+      }
+    }
+  }
+  
+  // Log important numbers
+  console.log('Learning Goal Selection Stats:');
+  console.log('- Due goals:', dueGoals.length);
+  console.log('- Not due goals:', notDueGoals.length);
+  console.log('- New goals:', newGoals.length);
+  
+  let selectedGoal: LearningGoal | undefined;
+  
+  if (dueGoals.length > 0) {
+    // Pick a random due goal
+    const randomIndex = Math.floor(Math.random() * dueGoals.length);
+    selectedGoal = dueGoals[randomIndex];
+    console.log('Picking a DUE goal:', selectedGoal.name);
+  } else if (newGoals.length > 0) {
+    // Sort new goals by effective interest and pick the highest
+    const sortedNewGoals = newGoals.sort((a, b) => {
+      const interestA = getEffectiveInterest(a);
+      const interestB = getEffectiveInterest(b);
+      return interestB - interestA; // Descending order
+    });
+    
+    selectedGoal = sortedNewGoals[0];
+    console.log('Picking a NEW goal by interest:', selectedGoal.name, 'Interest:', getEffectiveInterest(selectedGoal));
+  } else {
+    console.log('No goals available (all not due)');
+  }
+  
+  return selectedGoal;
+}
+
 export function useLearningData() {
   return {
     getAllLearningGoals,
@@ -635,5 +695,6 @@ export function useLearningData() {
     getLearningGoalsByMostDuePercentage,
     isBlockingGoalLifted,
     getEffectiveBlockingStatus,
+    pickDueLearningGoal,
   };
 }

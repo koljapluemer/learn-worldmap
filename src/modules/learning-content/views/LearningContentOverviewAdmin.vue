@@ -18,6 +18,7 @@ const {
   getEffectiveInterest,
   getEffectiveDifficulty,
   pickDueExercise,
+  pickDueLearningGoal,
   getLearningGoalsWithProgress,
   getOverallExerciseStatistics,
   getUniqueOverallExerciseStatistics,
@@ -77,6 +78,17 @@ function showLearningGoalsWithMostDuePercentage() {
   
   alert(`Top 10 Learning Goals with Highest Due Percentage:\n\n${message}`);
 }
+
+function showPickedLearningGoal() {
+  const goal = pickDueLearningGoal();
+  if (!goal) {
+    alert('No learning goal available!');
+    return;
+  }
+  
+  const description = goal.description || 'No description available';
+  alert(`Picked Learning Goal:\n\nName: ${goal.name}\nDescription: ${description}`);
+}
 </script>
 
 <template>
@@ -85,6 +97,7 @@ function showLearningGoalsWithMostDuePercentage() {
     <button class="btn btn-primary btn-sm mb-4" @click="showRandomExercise">Get random exercise</button>
     <button class="btn btn-secondary btn-sm mb-4 ml-2" @click="showLearningGoalsWithMostDueAbsolute">Show learning goals with most due (absolute)</button>
     <button class="btn btn-secondary btn-sm mb-4 ml-2" @click="showLearningGoalsWithMostDuePercentage">Show learning goals with most due (%)</button>
+    <button class="btn btn-secondary btn-sm mb-4 ml-2" @click="showPickedLearningGoal">Show picked learning goal</button>
     <div class="mb-2 text-sm">
       <span class="mr-4">Total: <b>{{ allGoals.length }}</b></span>
       <span class="mr-4">Blacklisted: <b class="text-red-500">{{ blacklistStats.blacklistedCount }}</b></span>
