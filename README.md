@@ -23,6 +23,8 @@ _do you know where the countries are?_
 
 First of all: Feedback is welcome, bug reports are welcome, contributions are welcome. If anything's unclear, head over to issues and write what's on your mind.
 
+Note that here is a [doc/](/doc/) folder that may be of interesting, containing more info.
+
 ### Running It
 
 1. Clone the repository
