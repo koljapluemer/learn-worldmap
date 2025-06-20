@@ -5,6 +5,8 @@
 1. Find cool data on [Natural Earth](https://www.naturalearthdata.com/), and download.
 
     - My recommendation: Always make a reduced file containing just one or two countries from any data you get, and pretty-print format it. Way easier to reason about the data, both for you and any LLMs who may want to help.
+    - [This raster map](https://www.naturalearthdata.com/downloads/50m-raster-data/50m-gray-earth/) seems a cool compromsise between looks and size, but I'm not sure how easy it is to combine with the country data
+    - [Admin 0 from here](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) seems like the most reasonable country map (also small-ish)
 
 2. At this point, you probably want to make a new repo. Having this awkward python infra in `generate` is pretty annoying.
 3. Make a flat, authoritative list of country names.
