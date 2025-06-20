@@ -608,6 +608,7 @@ function getEffectiveBlockingStatus(
 // Function to pick a due learning goal or a new one with highest interest
 function pickDueLearningGoal(): LearningGoal | undefined {
   const progressStore = useLearningGoalProgressStore();
+  const exerciseProgressStore = useExerciseProgressStore();
   const now = new Date();
   
   // Find all learning goals
@@ -619,6 +620,12 @@ function pickDueLearningGoal(): LearningGoal | undefined {
   const newGoals: LearningGoal[] = [];
   
   for (const goal of allGoals) {
+    // Skip blocked goals
+    const blockingStatus = getEffectiveBlockingStatus(goal, exerciseProgressStore);
+    if (blockingStatus.isEffectivelyBlocked) {
+      continue;
+    }
+    
     const progress = progressStore.getProgress(goal.name);
     
     if (!progress) {
@@ -659,7 +666,7 @@ function pickDueLearningGoal(): LearningGoal | undefined {
     selectedGoal = sortedNewGoals[0];
     console.log('Picking a NEW goal by interest:', selectedGoal.name, 'Interest:', getEffectiveInterest(selectedGoal));
   } else {
-    console.log('No goals available (all not due)');
+    console.log('No unblocked goals available (all blocked or not due)');
   }
   
   return selectedGoal;
