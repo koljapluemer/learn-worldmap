@@ -21,7 +21,7 @@ const emit = defineEmits<{
   mapReady: []
 }>()
 
-const { containerRef, findTouchedCountries } = useCustomCursor(76, 100, () => {
+const { containerRef, findTouchedCountries } = useCustomCursor(() => {
   if (!props.isInteractive) return
   
   // Get current cursor position from the cursor element

@@ -18,9 +18,9 @@ interface CursorState {
   touchStartPosition: PointerPosition | null;
 }
 
-// Configuration constants
-const MOUSE_CURSOR_SIZE = 1125;
-const TOUCH_CURSOR_SIZE = 35;
+// Configuration constants - settable at the beginning of the file
+const MOUSE_CURSOR_SIZE = 45;
+const TOUCH_CURSOR_SIZE = 40;
 
 // Pure functions for calculations
 const calculateDistance = (
@@ -108,7 +108,14 @@ const createCursorStyles = (mouseSize: number, touchSize: number): string => `
 `;
 
 const applyCursorStyles = (mouseSize: number, touchSize: number): void => {
+  // Remove any existing cursor styles
+  const existingStyle = document.getElementById('custom-cursor-styles');
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+  
   const style = document.createElement("style");
+  style.id = 'custom-cursor-styles';
   style.textContent = createCursorStyles(mouseSize, touchSize);
   document.head.appendChild(style);
 };
@@ -152,11 +159,7 @@ const findTouchedCountries = (
   return touchedCountries;
 };
 
-export function useCustomCursor(
-  mouseSize: number = MOUSE_CURSOR_SIZE,
-  touchSize: number = TOUCH_CURSOR_SIZE,
-  emit?: () => void
-) {
+export function useCustomCursor(emit?: () => void) {
   const state = ref<CursorState>({
     element: null,
     isTouchDevice: false,
@@ -177,7 +180,7 @@ export function useCustomCursor(
     if (!state.value.element || !containerRef.value) return;
 
     const rect = containerRef.value.getBoundingClientRect();
-    const currentSize = state.value.isTouchDevice ? touchSize : mouseSize;
+    const currentSize = state.value.isTouchDevice ? TOUCH_CURSOR_SIZE : MOUSE_CURSOR_SIZE;
     const cursorRadius = currentSize / 2;
 
     // Constrain the cursor position within the map boundaries
@@ -237,7 +240,7 @@ export function useCustomCursor(
       containerRef.value,
       e.clientX,
       e.clientY,
-      mouseSize
+      MOUSE_CURSOR_SIZE
     );
 
     if (touchedCountries.length > 0 && emit) {
@@ -307,7 +310,7 @@ export function useCustomCursor(
       containerRef.value,
       cursorX,
       cursorY,
-      touchSize
+      TOUCH_CURSOR_SIZE
     );
 
     if (touchedCountries.length > 0 && emit) {
@@ -327,7 +330,7 @@ export function useCustomCursor(
     state.value.isTouchDevice = isTouchDevice();
 
     state.value.element = createCursorElement(state.value.isTouchDevice);
-    applyCursorStyles(mouseSize, touchSize);
+    applyCursorStyles(MOUSE_CURSOR_SIZE, TOUCH_CURSOR_SIZE);
 
     // Initialize cursor position
     initializeCursorPosition();
@@ -384,7 +387,7 @@ export function useCustomCursor(
       container, 
       cursorX, 
       cursorY, 
-      state.value.isTouchDevice ? touchSize : mouseSize
+      state.value.isTouchDevice ? TOUCH_CURSOR_SIZE : MOUSE_CURSOR_SIZE
     ),
   };
 }
