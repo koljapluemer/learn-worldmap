@@ -21,7 +21,22 @@ const emit = defineEmits<{
   mapReady: []
 }>()
 
-const { containerRef, findTouchedCountries } = useCustomCursor(76)
+const { containerRef, findTouchedCountries } = useCustomCursor(76, 100, () => {
+  if (!props.isInteractive) return
+  
+  // Get current cursor position from the cursor element
+  const cursorElement = document.querySelector('.custom-cursor') as HTMLElement
+  if (!cursorElement) return
+  
+  const rect = cursorElement.getBoundingClientRect()
+  const cursorX = rect.left + rect.width / 2
+  const cursorY = rect.top + rect.height / 2
+  
+  const distance = calculateDistanceToCountryCenter(cursorX, cursorY)
+  const touchedCountries = findTouchedCountries(containerRef.value, cursorX, cursorY)
+  emit('mapClicked', touchedCountries, distance)
+})
+
 const highlightCircles = ref<SVGCircleElement[]>([])
 const svg = ref<d3.Selection<SVGSVGElement, unknown, null, undefined>>()
 const mapData = ref<FeatureCollection>(rawMapData as FeatureCollection)
@@ -76,20 +91,6 @@ const calculateDistanceToCountryCenter = (clickX: number, clickY: number): numbe
     Math.sin(dLon/2) * Math.sin(dLon/2)
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
   return R * c
-}
-
-const handleMapClick = (event: Event) => {
-  if (!props.isInteractive) return
-  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return
-
-  event.preventDefault()
-  event.stopPropagation()
-  
-  if (!(event instanceof MouseEvent)) return
-
-  const distance = calculateDistanceToCountryCenter(event.clientX, event.clientY)
-  const touchedCountries = findTouchedCountries(containerRef.value, event.clientX, event.clientY)
-  emit('mapClicked', touchedCountries, distance)
 }
 
 const updateMapTransform = () => {
@@ -177,6 +178,12 @@ const updateMapTransform = () => {
 
   // Set map as ready after first transform
   isMapReady.value = true
+
+  if (props.isInteractive) {
+    containerRef.value.classList.add('cursor-tracking')
+  }
+
+  window.addEventListener('resize', handleResize)
 }
 
 watch(() => props.countryToHighlight, (newCountry) => {
@@ -304,10 +311,6 @@ onMounted(() => {
     .attr('class', 'country')
     .attr('data-country', (d: any) => d.properties.name)
 
-  if (props.isInteractive && !('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
-    containerRef.value.addEventListener('click', handleMapClick)
-  }
-
   if (props.isInteractive) {
     containerRef.value.classList.add('cursor-tracking')
   }
@@ -317,10 +320,6 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
-  
-  if (containerRef.value) {
-    containerRef.value.removeEventListener('click', handleMapClick)
-  }
   
   if (props.isInteractive) {
     document.body.classList.remove('hovering-map')
@@ -349,33 +348,6 @@ body.hovering-map {
   user-select: none;
   position: relative;
   overflow: hidden;
-}
-
-.custom-cursor {
-  width: 76px;
-  height: 76px;
-  background: rgba(59, 130, 246, 0.3);
-  border: 2px solid #3b82f6;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-body.hovering-map .custom-cursor {
-  opacity: 1;
-}
-
-@media (hover: none) {
-  body.hovering-map {
-    cursor: auto;
-  }
-  .custom-cursor {
-    display: none !important;
-  }
 }
 </style>
 

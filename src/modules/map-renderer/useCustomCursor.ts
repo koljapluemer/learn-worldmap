@@ -15,7 +15,12 @@ interface CursorState {
   isTouchDevice: boolean;
   isVisible: boolean;
   isDragging: boolean;
+  touchStartPosition: PointerPosition | null;
 }
+
+// Configuration constants
+const MOUSE_CURSOR_SIZE = 1125;
+const TOUCH_CURSOR_SIZE = 35;
 
 // Pure functions for calculations
 const calculateDistance = (
@@ -46,19 +51,26 @@ const getElementCenter = (element: HTMLElement): { x: number; y: number } => {
   };
 };
 
+// Touch detection
+const isTouchDevice = (): boolean => {
+  return (
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    (navigator as any).msMaxTouchPoints > 0
+  );
+};
+
 // DOM manipulation functions
-const createCursorElement = (): HTMLElement => {
+const createCursorElement = (isTouch: boolean): HTMLElement => {
   const cursor = document.createElement("div");
-  cursor.className = "custom-cursor";
+  cursor.className = isTouch ? "custom-cursor touch-cursor" : "custom-cursor mouse-cursor";
   document.body.appendChild(cursor);
   return cursor;
 };
 
-const createCursorStyles = (size: number): string => `
+const createCursorStyles = (mouseSize: number, touchSize: number): string => `
   body.hovering-map { cursor: none; }
   .custom-cursor {
-    width: ${size}px;
-    height: ${size}px;
     background: rgba(255, 107, 107, 0.2);
     border: 2px solid #ff6b6b;
     border-radius: 50%;
@@ -69,6 +81,15 @@ const createCursorStyles = (size: number): string => `
     opacity: 0;
     transition: opacity 0.2s ease;
   }
+  .custom-cursor.mouse-cursor {
+    width: ${mouseSize}px;
+    height: ${mouseSize}px;
+  }
+  .custom-cursor.touch-cursor {
+    width: ${touchSize}px;
+    height: ${touchSize}px;
+    pointer-events: auto;
+  }
   body.hovering-map .custom-cursor {
     opacity: 1;
   }
@@ -76,17 +97,19 @@ const createCursorStyles = (size: number): string => `
     body.hovering-map {
       cursor: auto;
     }
-    .custom-cursor {
+    .custom-cursor.touch-cursor {
       display: block !important;
       opacity: 1 !important;
-      pointer-events: auto !important;
+    }
+    .custom-cursor.mouse-cursor {
+      display: none !important;
     }
   }
 `;
 
-const applyCursorStyles = (size: number): void => {
+const applyCursorStyles = (mouseSize: number, touchSize: number): void => {
   const style = document.createElement("style");
-  style.textContent = createCursorStyles(size);
+  style.textContent = createCursorStyles(mouseSize, touchSize);
   document.head.appendChild(style);
 };
 
@@ -109,7 +132,7 @@ const findTouchedCountries = (
 
   const touchedCountries: string[] = [];
   const countryElements = container.querySelectorAll("path");
-  const _cursorRadius = (size / 2) * detectionRadiusMultiplier;
+  const cursorRadius = (size / 2) * detectionRadiusMultiplier;
 
   countryElements.forEach((element) => {
     const rect = element.getBoundingClientRect();
@@ -120,7 +143,7 @@ const findTouchedCountries = (
     );
     const distance = calculateDistance(cursorX, cursorY, closestX, closestY);
 
-    if (distance <= _cursorRadius) {
+    if (distance <= cursorRadius) {
       const countryName = element.getAttribute("data-country");
       if (countryName) touchedCountries.push(countryName);
     }
@@ -129,24 +152,9 @@ const findTouchedCountries = (
   return touchedCountries;
 };
 
-const dispatchMapClickEvent = (
-  container: HTMLElement | null,
-  cursorX: number,
-  cursorY: number
-): void => {
-  if (!container) return;
-
-  const clickEvent = new MouseEvent("click", {
-    bubbles: true,
-    cancelable: true,
-    clientX: cursorX,
-    clientY: cursorY,
-  });
-  container.dispatchEvent(clickEvent);
-};
-
 export function useCustomCursor(
-  size: number = 76,
+  mouseSize: number = MOUSE_CURSOR_SIZE,
+  touchSize: number = TOUCH_CURSOR_SIZE,
   emit?: () => void
 ) {
   const state = ref<CursorState>({
@@ -154,6 +162,7 @@ export function useCustomCursor(
     isTouchDevice: false,
     isVisible: false,
     isDragging: false,
+    touchStartPosition: null,
   });
   const containerRef = ref<HTMLElement | null>(null);
 
@@ -168,7 +177,8 @@ export function useCustomCursor(
     if (!state.value.element || !containerRef.value) return;
 
     const rect = containerRef.value.getBoundingClientRect();
-    const cursorRadius = size / 2;
+    const currentSize = state.value.isTouchDevice ? touchSize : mouseSize;
+    const cursorRadius = currentSize / 2;
 
     // Constrain the cursor position within the map boundaries
     const constrainedX = Math.max(
@@ -198,7 +208,7 @@ export function useCustomCursor(
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (state.value.isVisible && state.value.element) {
+    if (state.value.isVisible && state.value.element && !state.value.isTouchDevice) {
       updateCursorPosition(state.value.element, {
         clientX: e.clientX,
         clientY: e.clientY,
@@ -220,6 +230,21 @@ export function useCustomCursor(
     }
   };
 
+  const handleMouseClick = (e: MouseEvent) => {
+    if (state.value.isTouchDevice) return;
+    
+    const touchedCountries = findTouchedCountries(
+      containerRef.value,
+      e.clientX,
+      e.clientY,
+      mouseSize
+    );
+
+    if (touchedCountries.length > 0 && emit) {
+      emit();
+    }
+  };
+
   const handleTouchStart = (e: Event) => {
     const touch = getTouchFromEvent(e);
     if (!touch || !state.value.element || !containerRef.value) return;
@@ -233,7 +258,11 @@ export function useCustomCursor(
       touch.clientY >= rect.top &&
       touch.clientY <= rect.bottom
     ) {
-      state.value.isDragging = true;
+      state.value.touchStartPosition = {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      };
+      state.value.isDragging = false;
       state.value.isVisible = true;
       updateCursorVisibility(true);
       updateCursorPosition(state.value.element, {
@@ -245,10 +274,22 @@ export function useCustomCursor(
   };
 
   const handleTouchMove = (e: Event) => {
-    if (!state.value.isDragging || !state.value.element) return;
+    if (!state.value.touchStartPosition || !state.value.element) return;
 
     const touch = getTouchFromEvent(e);
     if (!touch) return;
+
+    // Check if we've moved enough to consider this a drag
+    const distance = calculateDistance(
+      state.value.touchStartPosition.clientX,
+      state.value.touchStartPosition.clientY,
+      touch.clientX,
+      touch.clientY
+    );
+
+    if (distance > 10) { // 10px threshold for drag detection
+      state.value.isDragging = true;
+    }
 
     updateCursorPosition(state.value.element, {
       clientX: touch.clientX,
@@ -257,30 +298,25 @@ export function useCustomCursor(
   };
 
   const handleTouchEnd = () => {
-    if (!state.value.isDragging || !state.value.element) return;
+    if (!state.value.touchStartPosition || !state.value.element) return;
 
     const { x: cursorX, y: cursorY } = getElementCenter(state.value.element);
 
-    // Only check for correctness when the user finishes dragging
+    // Handle both tap and drag end
     const touchedCountries = findTouchedCountries(
       containerRef.value,
       cursorX,
       cursorY,
-      size
+      touchSize
     );
 
-    if (touchedCountries.length > 0) {
-      if (emit) {
-        // Directly emit the event instead of dispatching a click
-        emit();
-      } else {
-        // Fallback to click event for backward compatibility
-        dispatchMapClickEvent(containerRef.value, cursorX, cursorY);
-      }
+    if (touchedCountries.length > 0 && emit) {
+      emit();
     }
 
     state.value.isDragging = false;
     state.value.isVisible = false;
+    state.value.touchStartPosition = null;
     updateCursorVisibility(false);
   };
 
@@ -288,13 +324,10 @@ export function useCustomCursor(
     if (!containerRef.value) return;
 
     // Detect touch device once on mount
-    state.value.isTouchDevice =
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0 ||
-      (navigator as any).msMaxTouchPoints > 0;
+    state.value.isTouchDevice = isTouchDevice();
 
-    state.value.element = createCursorElement();
-    applyCursorStyles(size);
+    state.value.element = createCursorElement(state.value.isTouchDevice);
+    applyCursorStyles(mouseSize, touchSize);
 
     // Initialize cursor position
     initializeCursorPosition();
@@ -304,8 +337,9 @@ export function useCustomCursor(
       document.addEventListener("mousemove", handleMouseMove);
       containerRef.value.addEventListener("mouseenter", handleContainerEnter);
       containerRef.value.addEventListener("mouseleave", handleContainerLeave);
+      containerRef.value.addEventListener("click", handleMouseClick);
     } else {
-      // Touch device event listeners - only for drag and drop
+      // Touch device event listeners
       document.addEventListener("touchstart", handleTouchStart, {
         passive: false,
       });
@@ -320,14 +354,9 @@ export function useCustomCursor(
   onUnmounted(() => {
     if (!state.value.isTouchDevice && containerRef.value) {
       document.removeEventListener("mousemove", handleMouseMove);
-      containerRef.value.removeEventListener(
-        "mouseenter",
-        handleContainerEnter
-      );
-      containerRef.value.removeEventListener(
-        "mouseleave",
-        handleContainerLeave
-      );
+      containerRef.value.removeEventListener("mouseenter", handleContainerEnter);
+      containerRef.value.removeEventListener("mouseleave", handleContainerLeave);
+      containerRef.value.removeEventListener("click", handleMouseClick);
     } else {
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
@@ -347,13 +376,15 @@ export function useCustomCursor(
     isTouchDevice: state.value.isTouchDevice,
     isVisible: state.value.isVisible,
     isDragging: state.value.isDragging,
-    isCursorOverlappingElement: (cursorX: number, cursorY: number) =>
-      findTouchedCountries(containerRef.value, cursorX, cursorY, size).length >
-      0,
     findTouchedCountries: (
       container: HTMLElement | null,
       cursorX: number,
       cursorY: number
-    ) => findTouchedCountries(container, cursorX, cursorY, size),
+    ) => findTouchedCountries(
+      container, 
+      cursorX, 
+      cursorY, 
+      state.value.isTouchDevice ? touchSize : mouseSize
+    ),
   };
 }
