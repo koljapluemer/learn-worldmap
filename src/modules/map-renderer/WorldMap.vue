@@ -6,6 +6,9 @@ import rawMapData from '@/modules/map-data/map.geo.json'
 import { getMapSettings } from '@/modules/settings-view/defaultSettings'
 import type { FeatureCollection } from 'geojson'
 
+// Configuration constants - settable at the beginning of the file
+const HIGHLIGHT_CIRCLE_RADIUS = 25
+
 const props = defineProps<{
   isInteractive?: boolean
   countryToHighlight?: string
@@ -222,7 +225,7 @@ watch(() => props.countryToHighlight, (newCountry) => {
         const circle = svg.append('circle')
           .attr('cx', centroid[0])
           .attr('cy', centroid[1])
-          .attr('r', 38)
+          .attr('r', HIGHLIGHT_CIRCLE_RADIUS)
           .attr('class', 'highlight-circle')
           .style('stroke', props.highlightColor || '#3b82f6')
           .style('fill', 'none')
