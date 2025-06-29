@@ -9,7 +9,7 @@ const taskPost = "."
 
 const formattedInstruction = props.instruction
   .replace('{{instruction_pre}}', taskPre)
-  .replace('{{instruction_post}}', taskPost)
+  .replace('{{instruction_post}}', '').trimEnd()+taskPost
 </script>
 
 <template>
