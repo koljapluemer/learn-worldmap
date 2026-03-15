@@ -4,7 +4,7 @@
 
 _do you know where the countries are?_
 
-**[Play the free online practice game](https://map.koljapluemer.com)**
+**[Play the free online practice game](https://map.koljasam.com)**
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S81CWUVD)
 

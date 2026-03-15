@@ -2,7 +2,7 @@
        <footer class="p-4 flex flex-col items-center gap-4 text-center text-xs text-base-content/70">
       <p class="flex flex-row gap-4 items-center">
         <span>
-          Made with ♥ by <a href="https://koljapluemer.com" target="_blank" rel="noopener noreferrer" class="link">Kolja
+          Made with ♥ by <a href="https://koljasam.com" target="_blank" rel="noopener noreferrer" class="link">Kolja
             Sam</a>
         </span>
         <a href='https://ko-fi.com/S6S81CWUVD' target='_blank'><img height='36' style='border:0px;height:36px;'

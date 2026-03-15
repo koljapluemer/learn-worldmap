@@ -6,12 +6,10 @@ import { useLearningData } from '@/modules/learning-content/data/useLearningData
 import { useLearningEventStore } from '@/modules/learning-content/tracking/learning-event/learningEventStore'
 import type { LearningEvent } from '@/modules/learning-content/tracking/learning-event/LearningEvent'
 import { useExerciseProgressStore } from '@/modules/learning-content/tracking/exercise/exerciseProgressStore'
-import { useRemoteLogging } from '@/modules/learning-content/tracking/remote-logging/useRemoteLogging'
 
 const { pickRandomExerciseFromPickedLearningGoal, updateLearningGoalProgress } = useLearningData()
 const eventStore = useLearningEventStore()
 const exerciseProgressStore = useExerciseProgressStore()
-const { logLearningEvent } = useRemoteLogging()
 
 const currentExerciseData = ref<ReturnType<typeof pickRandomExerciseFromPickedLearningGoal> | undefined>(pickRandomExerciseFromPickedLearningGoal())
 const attempts = ref(0)
@@ -25,7 +23,7 @@ const instruction = computed(() => {
   return currentExercise.value.instruction
 })
 
-const handleGameComplete = async (result: LearningEvent) => {
+const handleGameComplete = (result: LearningEvent) => {
   attempts.value = result.numberOfClicksNeeded
   isSuccess.value = true
   eventStore.addEvent(result)
@@ -34,11 +32,6 @@ const handleGameComplete = async (result: LearningEvent) => {
   // Update learning goal progress
   if (currentExercise.value) {
     updateLearningGoalProgress(currentExercise.value.id, result.numberOfClicksNeeded === 1, result)
-    
-    // Log to remote server with the EXACT learning goal that was used to pick this exercise
-    if (currentLearningGoal.value) {
-      await logLearningEvent(result, currentLearningGoal.value.name)
-    }
   }
 
   setTimeout(() => {
